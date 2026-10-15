@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>Manual AZ-900 Módulo 2</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>
+/* Layout: cabecera azul Azure, índice lateral fijo con las unidades, una sección ancha por unidad con tablas desplazables y cuatro dibujos propios (medidor de SLA, escalado, escudo y ciclo de sostenibilidad) */
+:root{
+  --bg:#f3f7fc; --surface:#ffffff; --surface2:#e8f1fb; --fg:#0b1b2e; --muted:#47607c;
+  --azure:#0078d4; --azure-deep:#004e8c; --azure-soft:#cfe5f8; --violet:#6b4fd8; --violet-soft:#e4defa; --line:#c9d9ea;
+  --bad:#c4314b; --hero1:#005ba1; --hero2:#0078d4; --on-hero:#ffffff;
+  --display:'Sora',system-ui,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --bad:#ff7a90; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --bad:#ff7a90; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+.hero{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:56px max(16px,env(safe-area-inset-left,0px)) 48px;background:radial-gradient(1200px 420px at 85% -10%,rgba(160,139,255,.45),transparent 60%),linear-gradient(135deg,var(--hero1),var(--hero2));color:var(--on-hero)}
+.hero-in{max-width:1100px;margin:0 auto}
+.tag{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+h1{font:800 clamp(30px,5.4vw,54px)/1.08 var(--display);margin:14px 0 14px;text-wrap:balance;letter-spacing:-.02em}
+.lead{max-width:60ch;font-size:18px;opacity:.95;margin:0 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 12px var(--mono);padding:6px 12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(255,255,255,.1)}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:210px minmax(0,1fr);gap:40px;padding-block:36px 72px}
+nav{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line)}
+nav a:hover,nav a:focus-visible{color:var(--azure);border-left-color:var(--azure);outline:none}
+nav .sep{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
+main{min-width:0;display:flex;flex-direction:column;gap:52px}
+section{scroll-margin-top:24px;min-width:0}
+.unit{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.unit .n{font:700 12px var(--mono);letter-spacing:.08em;color:var(--azure);border:1px solid var(--azure);border-radius:6px;padding:3px 8px;white-space:nowrap}
+h2{font:700 26px/1.2 var(--display);margin:0 0 14px;letter-spacing:-.01em;text-wrap:balance}
+h3{font:600 17px var(--display);margin:26px 0 8px;color:var(--azure)}
+p{margin:0 0 12px;max-width:70ch}
+.idea{background:linear-gradient(135deg,var(--azure-soft),var(--surface2));border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch;margin-bottom:16px}
+.idea b{color:var(--azure)}
+.callout{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch}
+.callout b{color:var(--azure)}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th{background:var(--azure-deep);color:#fff;text-align:left;font:600 13px var(--display);padding:10px 14px;letter-spacing:.02em}
+td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600;color:var(--azure)}
+tr:hover td{background:var(--surface2)}
+ul{margin:0 0 12px;padding-left:20px}li{margin-bottom:4px}
+.check{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.check label{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer}
+.check input{accent-color:var(--azure);width:18px;height:18px;margin-top:3px;flex:none}
+.check input:checked+span{text-decoration:line-through;color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 16px}
+.node{padding:8px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-weight:600}
+.node.az{background:var(--azure);color:#fff;border-color:var(--azure)}
+.arrow{color:var(--azure);font-weight:700}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.box h4{margin:0 0 6px;font:600 14px var(--display)}
+.box.ms{border-top:3px solid var(--azure)}.box.cl{border-top:3px solid var(--violet)}.box.dep{border-top:3px dashed var(--muted)}
+.box p{margin:0;font-size:15px}
+.box ul{margin:0;font-size:15px}
+.pc{font-size:14px;color:var(--muted);margin-top:8px}
+.asir{background:var(--violet-soft);border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:10px;padding:14px 18px;max-width:72ch;margin:16px 0}
+.asir h4{margin:0 0 6px;font:600 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+.asir p,.asir ul{margin:0 0 6px;font-size:15px}
+.badge{display:inline-block;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--violet);border:1px solid var(--violet);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle}
+.quote{border-left:3px solid var(--azure);padding:4px 0 4px 14px;margin:0 0 10px;font-weight:500}
+.mnemo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.mnemo div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px}
+.mnemo b{display:block;color:var(--azure);font:600 15px var(--display)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+details p{margin:8px 0 0;color:var(--azure);font-weight:500}
+.src{font-size:14px;color:var(--muted)}
+.src a{color:var(--azure)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;max-width:640px;min-width:0}
+.fig svg{display:block;width:100%;height:auto}
+.fig .ax{stroke:var(--line);stroke-width:1}
+.fig .tx{fill:var(--muted);font:500 12px var(--body)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;margin:10px 0 0;color:var(--muted)}
+.legend i{display:inline-block;width:18px;height:10px;margin-right:6px;vertical-align:middle;border-radius:2px}
+.legend .a{border-top:3px solid var(--azure);height:0}.legend .b{border-top:3px dashed var(--violet);height:0}
+.legend .r{background:var(--azure);border-radius:50%;width:12px;height:12px}
+.legend .f{background:var(--surface);border:2px solid var(--bad);border-radius:50%;width:12px;height:12px}
+.legend .p{border-top:3px dashed var(--violet);height:0}
+.gauge{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
+.gauge .dial{flex:0 1 280px;min-width:0}
+.gauge svg{display:block;width:100%;height:auto}
+.gauge .track{stroke:var(--line);stroke-width:18;fill:none;stroke-linecap:round}
+.gauge .val{stroke:var(--azure);stroke-width:18;fill:none;stroke-linecap:round}
+.gauge .big{fill:var(--fg);font:800 34px var(--display)}
+.gauge .sub{fill:var(--muted);font:500 12px var(--body)}
+.sla{flex:1 1 300px;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;min-width:0}
+.sla div{background:var(--azure-deep);color:#fff;border-radius:8px;padding:10px 12px;text-align:center;font-size:14px}
+.sla b{display:block;font:700 18px var(--display)}
+.vmrow{display:flex;align-items:flex-end;justify-content:center;gap:10px;min-height:96px;margin:6px 0 10px}
+.vm{background:var(--azure-deep);color:#fff;border-radius:6px;font:600 12px var(--mono);display:flex;align-items:center;justify-content:center}
+.vm.old{background:var(--muted)}
+.vmrow .go{color:var(--azure);font:700 22px var(--display);align-self:center}
+.ico{width:36px;height:36px;border-radius:8px;background:var(--azure-soft);color:var(--azure);display:grid;place-items:center;font:700 13px var(--mono);margin-bottom:8px}
+.ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tool .eq{font-size:13px;color:var(--muted);margin-top:6px}
+.shieldrow{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center}
+.shieldrow .sh{flex:0 1 260px;min-width:0}
+.shieldrow svg{display:block;width:100%;height:auto}
+.shieldrow .split{flex:1 1 360px;margin:0}
+.sh .shape{fill:var(--surface2);stroke:var(--azure-deep);stroke-width:3}
+.sh .b1{fill:var(--azure-deep)}.sh .b2{fill:var(--azure)}.sh .b3{fill:var(--violet)}
+.sh .bt{fill:#fff;font:700 13px var(--display)}.sh .bs{fill:#fff;font:500 11px var(--body)}
+.cyc .ring{fill:none;stroke:var(--azure);stroke-width:3}
+.cyc .head{fill:var(--azure)}
+.cyc .nd{fill:var(--azure-deep)}
+.cyc .nt{fill:#fff;font:700 12px var(--display);text-anchor:middle}
+.glb .sphere{fill:var(--surface2);stroke:var(--azure-deep);stroke-width:3}
+.glb .lat{fill:none;stroke:var(--line);stroke-width:1.5}
+.glb .reg{fill:var(--azure)}
+.glb .rt{fill:#fff;font:700 12px var(--display);text-anchor:middle}
+.glb .failed{fill:var(--surface);stroke:var(--bad);stroke-width:3}
+.glb .x{stroke:var(--bad);stroke-width:3.5;stroke-linecap:round}
+.glb .path{fill:none;stroke:var(--violet);stroke-width:3;stroke-dasharray:7 5}
+.glb .head{fill:var(--violet)}
+.glbrow{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
+.glbrow svg{flex:0 1 340px;min-width:0;width:100%;height:auto}
+.pillar{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:12px}
+.pillar div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px;font-weight:600}
+.pillar div.on{background:var(--azure-deep);color:#fff;border-color:var(--azure-deep)}
+.pillar div.part{border:2px dashed var(--violet);color:var(--violet)}
+footer{text-align:center;color:var(--muted);font:500 13px var(--mono);padding:24px 0 8px;border-top:1px solid var(--line);max-width:1100px;margin:0 auto}
+@media(max-width:820px){.wrap{grid-template-columns:1fr;gap:20px}nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}nav a{border:1px solid var(--line);border-radius:999px;padding:4px 12px}nav .sep{display:none}}
+@media(prefers-reduced-motion:no-preference){a,tr td{transition:background .15s,color .15s}}
+</style>
+
+</head>
+<body>
+<header class="hero"><div class="hero-in">
+  <div class="tag">AZ-900 · Microsoft Azure Fundamentals</div>
+  <h1>Módulo 2: Ventajas de usar servicios en la nube</h1>
+  <p class="lead">Manual del módulo completo: alta disponibilidad y escalabilidad, fiabilidad y previsibilidad, seguridad y gobernanza, manejabilidad y sostenibilidad. Cada unidad cierra con lo que cae en el examen.</p>
+  <div class="chips"><span class="chip">Gema San</span><span class="chip">Contrastado con Microsoft Learn</span><span class="chip">Sueña. Aprende. Crece.</span></div>
+</div></header>
+
+<div class="wrap">
+<nav aria-label="Índice">
+  <a href="index.html">← Todos los módulos</a>
+  <a href="#examen">Mapa del examen</a>
+  <div class="sep">Unidades</div>
+  <a href="#u1">1 · Introducción</a><a href="#u2">2 · Disponibilidad y escalabilidad</a><a href="#u3">3 · Fiabilidad y previsibilidad</a><a href="#u4">4 · Seguridad y gobernanza</a><a href="#u5">5 · Manejabilidad</a><a href="#u6">6 · Sostenibilidad</a><a href="#u7">7 · Comprobación</a><a href="#u8">8 · Resumen</a>
+  <div class="sep">Cierre</div>
+  <a href="#repaso">Repaso final</a><a href="#learn">Contraste con Learn</a>
+</nav>
+<main>
+
+<section id="examen"><h2>Dónde encaja este módulo</h2>
+<p>Es el módulo 2 de 3 de la ruta "Describir los conceptos de la nube" y pertenece al bloque de conceptos cloud, que pesa entre el 25 y el 30 % del examen. Aquí no se configura nada: se trata de saber reconocer cada ventaja y qué la hace posible.</p>
+<div class="tablebox"><table><thead><tr><th>Módulo de la ruta</th><th>Tema</th><th>Manual</th></tr></thead><tbody>
+<tr><td>1</td><td>Informática en la nube, responsabilidad compartida, modelos de nube y consumo</td><td>Manual del Módulo 1</td></tr>
+<tr><td>2</td><td>Ventajas de usar servicios en la nube</td><td>Este manual</td></tr>
+<tr><td>3</td><td>Tipos de servicio en la nube: IaaS, PaaS y SaaS</td><td>Pendiente</td></tr></tbody></table></div>
+<h3>Dónde vuelve cada ventaja en el AZ-900</h3>
+<p>Casi todo lo de este módulo reaparece más adelante con nombres de servicios concretos. La configuración detallada llega con el AZ-104.</p>
+<div class="tablebox"><table><thead><tr><th>Ventaja de este módulo</th><th>Dónde vuelve en el examen</th></tr></thead><tbody>
+<tr><td>Alta disponibilidad y escalabilidad</td><td>Regiones y zonas de disponibilidad, Virtual Machine Scale Sets y conjuntos de disponibilidad (bloque de arquitectura)</td></tr>
+<tr><td>Fiabilidad</td><td>Regiones, pares de regiones, zonas de disponibilidad y opciones de redundancia del almacenamiento</td></tr>
+<tr><td>Previsibilidad</td><td>Calculadora de precios, factores que afectan a los costes y Cost Management (bloque de administración y gobierno)</td></tr>
+<tr><td>Seguridad y gobernanza</td><td>RBAC, Microsoft Defender for Cloud, Azure Policy, bloqueos de recursos, etiquetas y Microsoft Purview</td></tr>
+<tr><td>Manejabilidad</td><td>Portal, Cloud Shell, CLI, PowerShell, Azure Arc, infraestructura como código, ARM, Azure Advisor, Service Health y Azure Monitor</td></tr>
+<tr><td>Sostenibilidad</td><td>La guía del examen no la lista como habilidad propia. Encaja con costes y supervisión</td></tr></tbody></table></div>
+<h3>Lo que debo saber de este módulo</h3>
+<ul class="check" id="checklist">
+  <li><label><input type="checkbox"><span>Alta disponibilidad y SLA</span></label></li>
+  <li><label><input type="checkbox"><span>Escalado vertical y horizontal</span></label></li>
+  <li><label><input type="checkbox"><span>Fiabilidad frente a alta disponibilidad</span></label></li>
+  <li><label><input type="checkbox"><span>Previsibilidad de rendimiento y de costes</span></label></li>
+  <li><label><input type="checkbox"><span>Seguridad frente a gobernanza</span></label></li>
+  <li><label><input type="checkbox"><span>Administración de la nube y en la nube</span></label></li>
+  <li><label><input type="checkbox"><span>Sostenibilidad: ajustar, automatizar, optimizar, monitorizar</span></label></li>
+</ul></section>
+
+<section id="u1"><div class="unit"><span class="n">UNIDAD 1/8</span></div>
+<h2>Introducción a las ventajas de la nube</h2>
+<p class="idea"><b>Idea principal.</b> Usar la nube no es solo alquilar servidores. Aporta ventajas concretas que una infraestructura propia cuesta mucho de conseguir: disponibilidad, capacidad de crecer, tolerancia a fallos, costes estimables, control de normas, administración sencilla y uso eficiente de recursos.</p>
+<div class="flow"><span class="node">Disponible y escalable</span><span class="arrow">→</span><span class="node">Fiable y previsible</span><span class="arrow">→</span><span class="node">Segura y gobernada</span><span class="arrow">→</span><span class="node">Manejable</span><span class="arrow">→</span><span class="node az">Sostenible</span></div>
+<h3>Objetivos del módulo</h3>
+<ul><li>Describir las ventajas de la alta disponibilidad y la escalabilidad.</li><li>Describir las ventajas de la fiabilidad y la previsibilidad.</li><li>Describir las ventajas de la seguridad y la gobernanza.</li><li>Describir las ventajas de la manejabilidad.</li><li>Describir las consideraciones de sostenibilidad en la nube.</li></ul>
+<h3>Cada ventaja responde a una pregunta</h3>
+<div class="tablebox"><table><thead><tr><th>Ventaja</th><th>Pregunta que responde</th></tr></thead><tbody>
+<tr><td>Alta disponibilidad</td><td>¿Está el servicio disponible cuando lo necesito?</td></tr>
+<tr><td>Escalabilidad</td><td>¿Aguanta cuando sube la demanda?</td></tr>
+<tr><td>Fiabilidad</td><td>¿Qué pasa si algo falla?</td></tr>
+<tr><td>Previsibilidad</td><td>¿Cuánto rendimiento y cuánto gasto voy a necesitar?</td></tr>
+<tr><td>Seguridad y gobernanza</td><td>¿Está protegido y cumple las normas?</td></tr>
+<tr><td>Manejabilidad</td><td>¿Cómo administro todo esto?</td></tr>
+<tr><td>Sostenibilidad</td><td>¿Estoy usando solo lo que necesito?</td></tr></tbody></table></div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Lo que en el aula resolvías con servidores redundantes, SAI, copias de seguridad, directivas de grupo y scripts, en Azure se contrata como servicio y se activa desde el portal o con código.</p></div></section>
+
+<section id="u2"><div class="unit"><span class="n">UNIDAD 2/8</span></div>
+<h2>Alta disponibilidad y escalabilidad en la nube</h2>
+<p class="idea"><b>Idea principal.</b> Al crear una aplicación en la nube importan dos cosas: que esté disponible (alta disponibilidad) y que aguante la demanda (escalabilidad).</p>
+<h3>Alta disponibilidad</h3>
+<p>Es asegurar la máxima disponibilidad de un recurso, pase lo que pase a su alrededor. Azure ofrece garantías de tiempo de actividad que dependen de cada servicio y que se recogen en los acuerdos de nivel de servicio (SLA).</p>
+<div class="fig"><div class="gauge">
+  <div class="dial"><svg viewBox="0 0 300 175" role="img" aria-label="Medidor semicircular lleno casi por completo con el valor 99,99 % de disponibilidad objetivo">
+    <path class="track" d="M 60 140 A 90 90 0 0 1 240 140"/>
+    <path class="val" d="M 60 140 A 90 90 0 0 1 240 140" stroke-dasharray="282.6 282.7"/>
+    <text class="big" x="150" y="132" text-anchor="middle">99,99 %</text>
+    <text class="sub" x="150" y="156" text-anchor="middle">Disponibilidad objetivo</text>
+  </svg></div>
+  <div class="sla"><div><b>99 %</b>3,65 días al año</div><div><b>99,9 %</b>8,76 horas al año</div><div><b>99,99 %</b>52,6 minutos al año</div></div>
+</div>
+<p class="pc" style="margin-top:10px">Un SLA más alto significa menos tiempo de inactividad, aunque puede aumentar el coste. Cifras calculadas sobre un año de 365 días.</p></div>
+<h3>Cuánto es cada nivel de SLA</h3>
+<div class="tablebox"><table><thead><tr><th>Disponibilidad</th><th>Inactividad máxima al año</th><th>Para recordarlo</th></tr></thead><tbody>
+<tr><td>99 %</td><td>3,65 días</td><td>Varios días</td></tr>
+<tr><td>99,9 %</td><td>8,76 horas</td><td>Horas</td></tr>
+<tr><td>99,99 %</td><td>52,6 minutos</td><td>Minutos</td></tr>
+<tr><td>99,999 %</td><td>5,26 minutos</td><td>Apenas unos minutos <span class="badge">Ampliación</span></td></tr></tbody></table></div>
+<p style="margin-top:12px">Más nueves, menos caídas. El SLA es un compromiso del proveedor para cada servicio, no una garantía de que nada falle.</p>
+<p><span class="badge" style="margin:0 8px 0 0">Ampliación</span>El SLA describe un servicio por separado. Si tu solución combina varios servicios, la disponibilidad total no es automáticamente la de cada uno.</p>
+<h3>Escalabilidad</h3>
+<p>Es la capacidad de ajustar los recursos a la demanda. Si hay un pico de tráfico y los sistemas se saturan, puedes añadir recursos. Como la nube funciona por consumo, si la demanda baja reduces recursos y reduces el gasto. Hay dos formas de escalar.</p>
+<div class="split">
+  <div class="box ms"><h4>Escalado vertical (scale up / down)</h4>
+    <div class="vmrow" role="img" aria-label="Una máquina virtual pequeña pasa a ser una máquina virtual más grande"><div class="vm old" style="width:44px;height:44px">VM</div><span class="go">↑</span><div class="vm" style="width:70px;height:86px">VM</div></div>
+    <p>Aumenta o reduce las capacidades de un recurso: más o menos CPU y RAM en la misma máquina virtual.</p>
+    <p class="pc">Ejemplo ilustrativo: de 4 GB a 16 GB de RAM, o de 2 a 8 vCPU.</p></div>
+  <div class="box cl"><h4>Escalado horizontal (scale out / in)</h4>
+    <div class="vmrow" role="img" aria-label="Una máquina virtual pasa a ser tres máquinas virtuales"><div class="vm old" style="width:48px;height:48px">VM</div><span class="go">→</span><div class="vm" style="width:48px;height:48px">VM</div><div class="vm" style="width:48px;height:48px">VM</div><div class="vm" style="width:48px;height:48px">VM</div></div>
+    <p>Añade o quita recursos: más o menos máquinas virtuales o contenedores, de forma automática o manual.</p>
+    <p class="pc">Ejemplo ilustrativo: de 1 servidor web a 4 servidores web.</p></div>
+</div>
+<div class="fig">
+<svg viewBox="0 0 560 240" role="img" aria-label="Gráfico esquemático en el tiempo: la demanda sube hasta un máximo y vuelve a bajar. La capacidad, en línea discontinua, la sigue siempre un poco por encima.">
+  <line class="ax" x1="60" y1="200" x2="540" y2="200"/>
+  <line class="ax" x1="60" y1="30" x2="60" y2="200"/>
+  <text class="tx" x="60" y="20">Recursos</text>
+  <text class="tx" x="540" y="224" text-anchor="end">Tiempo</text>
+  <polyline points="90,172 160,157 230,127 300,92 370,102 440,142 510,162" fill="none" stroke="var(--violet)" stroke-width="2.5" stroke-dasharray="7 5" transform="translate(0,-20)"/>
+  <polyline points="90,172 160,157 230,127 300,92 370,102 440,142 510,162" fill="none" stroke="var(--azure)" stroke-width="2.5"/>
+</svg>
+<div class="legend"><span><i class="b"></i>Capacidad</span><span><i class="a"></i>Demanda</span></div>
+<p class="pc" style="margin-top:8px">Gráfico esquemático. La capacidad se ajusta a la demanda, sin cifras reales.</p></div>
+<p style="margin-top:12px"><span class="badge" style="margin:0 8px 0 0">Ampliación</span>La elasticidad del Módulo 1 es el escalado hecho automáticamente. En arquitecturas cloud suele preferirse escalar en horizontal: el vertical tiene un límite en una sola máquina y puede causar interrupciones breves.</p>
+<div class="asir"><h4>Traducción ASIR</h4>
+<ul><li><b>Vertical:</b> ampliar RAM y CPU a una VM de Proxmox, VMware o Hyper-V.</li><li><b>Horizontal:</b> clonar esa VM y repartir el tráfico con un balanceador.</li><li><b>SLA:</b> el porcentaje de disponibilidad que el proveedor se compromete a cumplir en el contrato.</li></ul></div>
+<h3>Frases de examen</h3>
+<p class="quote">Escalado vertical: añadir o quitar CPU o RAM a un recurso.</p>
+<p class="quote">Escalado horizontal: añadir o quitar instancias.</p>
+<p class="quote">Alta disponibilidad: minimizar el tiempo de inactividad.</p>
+<p class="quote">El SLA indica el porcentaje de disponibilidad garantizado para un servicio.</p>
+<p>Si el enunciado habla de más potencia sin añadir máquinas, es vertical. Si habla de más máquinas o instancias, es horizontal.</p></section>
+
+<section id="u3"><div class="unit"><span class="n">UNIDAD 3/8</span></div>
+<h2>Fiabilidad y previsibilidad en la nube</h2>
+<p class="idea"><b>Idea principal.</b> La fiabilidad y la previsibilidad te permiten crear soluciones con confianza. La primera responde a qué pasa si algo falla. La segunda, a cuánto rendimiento y cuánto gasto vas a necesitar.</p>
+<h3>Fiabilidad</h3>
+<p>Es la capacidad de un sistema para recuperarse de los fallos y seguir funcionando. Es uno de los pilares del Azure Well-Architected Framework. El diseño descentralizado de la nube permite tener recursos en regiones de todo el mundo: si una sufre un incidente grave, las demás siguen en marcha. Puedes diseñar tus aplicaciones para aprovecharlo, y en algunos casos el propio entorno cambia de región sin que hagas nada.</p>
+<div class="fig"><div class="glbrow">
+  <svg class="glb" viewBox="0 0 340 280" role="img" aria-label="Esquema de una esfera con tres regiones de Azure. La región 1 tiene un fallo y el servicio pasa a la región 2. La región 3 sigue activa.">
+    <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="head" d="M0 0L10 5L0 10z"/></marker></defs>
+    <circle class="sphere" cx="170" cy="140" r="115"/>
+    <ellipse class="lat" cx="170" cy="140" rx="115" ry="38"/>
+    <ellipse class="lat" cx="170" cy="140" rx="45" ry="115"/>
+    <circle class="failed" cx="110" cy="85" r="19"/><text class="rt" x="110" y="89" style="fill:var(--fg)">R1</text>
+    <line class="x" x1="99" y1="74" x2="121" y2="96"/><line class="x" x1="121" y1="74" x2="99" y2="96"/>
+    <circle class="reg" cx="232" cy="112" r="19"/><text class="rt" x="232" y="116">R2</text>
+    <circle class="reg" cx="160" cy="214" r="19"/><text class="rt" x="160" y="218">R3</text>
+    <path class="path" d="M 128 72 Q 175 48 212 100" marker-end="url(#ah)"/>
+  </svg>
+  <div><p><b>Diseño descentralizado entre regiones.</b> Si una región falla, las otras siguen funcionando.</p>
+  <div class="legend" style="flex-direction:column;gap:6px;margin:0"><span><i class="r"></i>Región de Azure</span><span><i class="f"></i>Región con fallo (R1)</span><span><i class="p"></i>Conmutación por error (<i>failover</i>)</span></div></div>
+</div></div>
+<div class="callout" style="margin-top:12px"><b>Fiabilidad frente a alta disponibilidad.</b> La alta disponibilidad busca la máxima disponibilidad aunque ocurran incidencias. La fiabilidad es recuperarse de los fallos y seguir funcionando. Están relacionadas, pero son ventajas distintas.</div>
+<h3>Previsibilidad</h3>
+<p>Te permite avanzar con confianza. Puede ser previsibilidad de rendimiento o de costes, y las dos están muy influidas por el Azure Well-Architected Framework.</p>
+<div class="split">
+  <div class="box ms"><h4>Rendimiento: predecir los recursos necesarios</h4><ul><li>Escalado automático: añade recursos ante la demanda y los retira cuando baja.</li><li>Equilibrio de carga: reparte el exceso hacia zonas menos saturadas.</li><li>Alta disponibilidad.</li></ul></div>
+  <div class="box cl"><h4>Costes: predecir el gasto por adelantado</h4><ul><li>Seguimiento del uso de recursos en tiempo real.</li><li>Análisis de datos para ver patrones y tendencias.</li><li>Calculadora de precios de Azure para estimar el gasto.</li></ul></div>
+</div>
+<h3>Fiabilidad frente a previsibilidad</h3>
+<div class="tablebox"><table><thead><tr><th>Concepto</th><th>Fiabilidad</th><th>Previsibilidad</th></tr></thead><tbody>
+<tr><td>Objetivo</td><td>Seguir funcionando ante fallos</td><td>Anticipar rendimiento y costes</td></tr>
+<tr><td>Se centra en</td><td>Fallos y recuperación</td><td>Planificación</td></tr>
+<tr><td>Beneficio</td><td>Menos interrupciones</td><td>Menos sorpresas</td></tr>
+<tr><td>Herramientas</td><td>Regiones y conmutación por error</td><td>Escalado automático, equilibrio de carga, Calculadora de precios</td></tr>
+<tr><td>Well-Architected Framework</td><td>Es uno de sus pilares</td><td>Está muy influida por el marco</td></tr></tbody></table></div>
+<p style="margin-top:12px"><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Los cinco pilares del Azure Well-Architected Framework:</p>
+<div class="pillar"><div class="on">Fiabilidad</div><div>Seguridad</div><div>Optimización de costes</div><div>Excelencia operativa</div><div>Eficiencia del rendimiento</div></div>
+<div class="asir"><h4>Traducción ASIR</h4>
+<ul><li><b>Fiabilidad:</b> un CPD secundario, clústeres y conmutación por error. En Azure, regiones y <i>failover</i>.</li><li><b>Previsibilidad:</b> calcular antes consumo eléctrico, hardware, licencias y crecimiento. En Azure, herramientas integradas que lo estiman de forma continua.</li></ul></div>
+<h3>Frases de examen</h3>
+<p class="quote">La fiabilidad es la capacidad de un sistema para recuperarse de fallos y seguir funcionando.</p>
+<p class="quote">Un diseño distribuido entre regiones aumenta la fiabilidad.</p>
+<p class="quote">El escalado automático contribuye a la previsibilidad del rendimiento.</p>
+<p class="quote">La Calculadora de precios ayuda a la previsibilidad de los costes.</p>
+<p>Una única máquina virtual no es una solución fiable: la fiabilidad se consigue con redundancia y distribución.</p></section>
+
+<section id="u4"><div class="unit"><span class="n">UNIDAD 4/8</span></div>
+<h2>Seguridad y gobernanza en la nube</h2>
+<p class="idea"><b>Idea principal.</b> La nube ofrece herramientas para que los recursos cumplan tus estándares y normativas, y también para protegerlos. La seguridad protege. La gobernanza establece las reglas. Se complementan, pero son cosas distintas.</p>
+<div class="shieldrow">
+  <div class="sh fig" style="padding:8px"><svg viewBox="0 0 300 260" role="img" aria-label="Escudo con tres capas: gobernanza con plantillas y estándares, cumplimiento con auditoría y mitigación, y seguridad con DDoS, parches y controles.">
+    <path class="shape" d="M150 10 L270 40 V130 C270 190 210 225 150 245 C90 225 30 190 30 130 V40 Z"/>
+    <rect class="b1" x="45" y="62" width="210" height="40" rx="8"/><text class="bt" x="150" y="80" text-anchor="middle">Gobernanza</text><text class="bs" x="150" y="94" text-anchor="middle">Plantillas y estándares</text>
+    <rect class="b2" x="60" y="108" width="180" height="40" rx="8"/><text class="bt" x="150" y="126" text-anchor="middle">Cumplimiento</text><text class="bs" x="150" y="140" text-anchor="middle">Auditoría y mitigación</text>
+    <rect class="b3" x="75" y="154" width="150" height="40" rx="8"/><text class="bt" x="150" y="172" text-anchor="middle">Seguridad</text><text class="bs" x="150" y="186" text-anchor="middle">DDoS, parches, controles</text>
+  </svg></div>
+  <div class="split">
+    <div class="box ms"><h4>Establecer estándares a gran escala</h4><p>Las plantillas aseguran que los recursos desplegados cumplan tus estándares técnicos y requisitos normativos.</p></div>
+    <div class="box ms"><h4>Actualizar a gran escala</h4><p>Cuando cambian los estándares, puedes actualizar los recursos ya desplegados de forma masiva.</p></div>
+    <div class="box ms"><h4>Auditar y corregir</h4><p>La auditoría en la nube señala los recursos que no cumplen tu línea base y propone cómo mitigarlo.</p></div>
+    <div class="box cl"><h4>Parches y mantenimiento</h4><p>Según el modelo, los parches y actualizaciones pueden aplicarse solos. Ayuda a la gobernanza y a la seguridad.</p></div>
+    <div class="box cl"><h4>Adaptarse a tus necesidades</h4><p>IaaS: máximo control. PaaS y SaaS: parches y mantenimiento automáticos.</p></div>
+    <div class="box cl"><h4>Protecciones integradas</h4><p>Los proveedores cloud están bien preparados contra ataques DDoS y refuerzan la red.</p></div>
+  </div>
+</div>
+<p style="margin-top:12px"><b>Establece la gobernanza desde el principio</b> para mantener un entorno cloud actualizado, seguro y bien administrado.</p>
+<h3>Seguridad frente a gobernanza</h3>
+<div class="tablebox"><table><thead><tr><th>Concepto</th><th>Seguridad</th><th>Gobernanza</th></tr></thead><tbody>
+<tr><td>Objetivo</td><td>Proteger los recursos</td><td>Establecer normas y comprobar que se cumplen</td></tr>
+<tr><td>Se enfoca en</td><td>Amenazas, ataques y accesos no autorizados</td><td>Estándares, políticas y cumplimiento</td></tr>
+<tr><td>Ejemplo</td><td>Protección frente a DDoS, parches</td><td>Plantillas, auditorías, Azure Policy</td></tr>
+<tr><td>Pregunta que responde</td><td>¿Está protegido?</td><td>¿Cumple las normas?</td></tr></tbody></table></div>
+<p style="margin-top:12px">Regla rápida: si el enunciado habla de protección, piensa en seguridad. Si habla de normas, políticas o estándares, piensa en gobernanza.</p>
+<h3>Quién se encarga de los parches</h3>
+<div class="tablebox"><table><thead><tr><th>Modelo</th><th>Control de seguridad</th><th>Parches y mantenimiento</th></tr></thead><tbody>
+<tr><td>IaaS</td><td>Máximo: tú gestionas el sistema operativo y el software instalado</td><td>Los haces tú</td></tr>
+<tr><td>PaaS y SaaS</td><td>Menor, con más automatización</td><td>Se aplican de forma automática</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">Enlaza con la responsabilidad compartida del Módulo 1.</p>
+<p style="margin-top:12px">Ejemplo ilustrativo: con 500 máquinas virtuales, la gobernanza obliga a que todas tengan copia de seguridad, etiquetas y región autorizada. La seguridad hace que todas reciban actualizaciones y tengan controles de acceso.</p>
+<div class="asir"><h4>Traducción ASIR</h4>
+<ul><li><b>Seguridad:</b> firewall, antivirus, IDS/IPS, parches y <i>hardening</i>. Azure incorpora y automatiza parte de eso.</li><li><b>Gobernanza:</b> procedimientos, normativas, auditorías e inventario. Azure permite aplicarlos de forma automática.</li></ul></div>
+<h3>Frases de examen</h3>
+<p class="quote">La gobernanza ayuda a garantizar el cumplimiento de estándares y normativas.</p>
+<p class="quote">La seguridad protege los recursos frente a amenazas y vulnerabilidades.</p>
+<p class="quote">La auditoría detecta los recursos que no cumplen la línea base.</p>
+<p class="quote">PaaS y SaaS requieren menos mantenimiento de seguridad que IaaS.</p>
+<p>Azure no elimina tus responsabilidades de seguridad: sigue vigente la responsabilidad compartida.</p></section>
+
+<section id="u5"><div class="unit"><span class="n">UNIDAD 5/8</span></div>
+<h2>Manejabilidad en la nube</h2>
+<p class="idea"><b>Idea principal.</b> La manejabilidad tiene dos caras. Lo que la nube gestiona por ti y las herramientas que usas tú para gestionar tus recursos.</p>
+<h3>Administración propia de la nube</h3>
+<p>Cómo la nube administra tus recursos.</p>
+<div class="split">
+  <div class="box tool ms"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18V6M7 6L4 9M7 6l3 3M17 6v12M17 18l-3-3M17 18l3-3"/></svg></div><h4>Escalado automático</h4><p>Escala los recursos según la necesidad.</p><p class="eq">En Azure: Azure Monitor autoscale.</p></div>
+  <div class="box tool ms"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><h4>Plantillas</h4><p>Despliegues repetibles sin configurar a mano.</p><p class="eq">En Azure: plantillas ARM, infraestructura como código.</p></div>
+  <div class="box tool ms"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></div><h4>Monitor de estado</h4><p>Vigila la salud de los recursos y sustituye los que fallan.</p><p class="eq">En Azure: Service Health y Resource Health.</p></div>
+  <div class="box tool ms"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg></div><h4>Alertas</h4><p>Avisos automáticos según métricas, para conocer el rendimiento en tiempo real.</p><p class="eq">En Azure: alertas de Azure Monitor.</p></div>
+</div>
+<h3>Herramientas de administración en la nube</h3>
+<p>Cómo gestionas tú tu entorno y tus recursos.</p>
+<div class="split">
+  <div class="box tool cl"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg></div><h4>Portal web</h4><p>Interfaz gráfica de administración.</p></div>
+  <div class="box tool cl"><div class="ico">&gt;_</div><h4>CLI</h4><p>Interfaz de línea de comandos.</p></div>
+  <div class="box tool cl"><div class="ico">{ }</div><h4>API</h4><p>Acceso mediante programación.</p></div>
+  <div class="box tool cl"><div class="ico">PS</div><h4>PowerShell</h4><p>Automatización mediante scripts.</p></div>
+</div>
+<p>Ejemplo: un equipo de operaciones despliega recursos desde plantillas, vigila su salud en el portal y automatiza tareas repetitivas con scripts de CLI o PowerShell. Menos trabajo manual y configuraciones más coherentes.</p>
+<h3>CLI frente a PowerShell</h3>
+<div class="tablebox"><table><thead><tr><th></th><th>Azure CLI</th><th>Azure PowerShell</th></tr></thead><tbody>
+<tr><td>Qué es</td><td>Herramienta de línea de comandos</td><td>Módulo de PowerShell con cmdlets</td></tr>
+<tr><td>Sistemas</td><td>Windows, macOS y Linux</td><td>Windows, macOS y Linux</td></tr>
+<tr><td>Ejemplo</td><td><code>az group create</code></td><td><code>New-AzResourceGroup</code></td></tr>
+<tr><td>Se siente natural si</td><td>Vienes de Bash y Linux</td><td>Vienes de PowerShell y Windows</td></tr></tbody></table></div>
+<p style="margin-top:12px"><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Azure Cloud Shell es una consola alojada en el navegador que ofrece Bash con CLI y PowerShell con Azure PowerShell.</p>
+<div class="asir"><h4>Traducción ASIR</h4>
+<ul><li><b>Herramientas en la nube:</b> consola de VMware, Hyper-V Manager, SSH y scripts de Bash o PowerShell. Azure no elimina la administración, la hace más automatizable.</li><li><b>Administración propia de la nube:</b> lo que en un CPD vigilas a mano, Azure lo detecta y lo corrige.</li></ul></div>
+<h3>Frases de examen</h3>
+<p class="quote">Azure se administra con portal, CLI, PowerShell y API.</p>
+<p class="quote">Las plantillas permiten despliegues repetibles y coherentes.</p>
+<p class="quote">El escalado automático ajusta los recursos a la demanda.</p>
+<p class="quote">Las alertas permiten conocer métricas en tiempo real.</p>
+<p>Portal para ver, CLI para escribir comandos, PowerShell para automatizar y API para programar.</p></section>
+
+<section id="u6"><div class="unit"><span class="n">UNIDAD 6/8</span></div>
+<h2>Consideraciones de sostenibilidad en la nube</h2>
+<p class="idea"><b>Idea principal.</b> La nube puede apoyar objetivos de sostenibilidad cuando los equipos optimizan activamente cómo despliegan y usan los recursos. Desplegar en la nube no garantiza nada por sí solo.</p>
+<div class="fig cyc"><svg viewBox="0 0 480 380" role="img" aria-label="Ciclo de cuatro pasos en el sentido de las agujas del reloj: ajustar tamaño, automatizar, optimizar y monitorizar, que vuelve a ajustar tamaño.">
+  <defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="head" d="M0 0L10 5L0 10z"/></marker></defs>
+  <path class="ring" d="M 297 73.2 A 130 130 0 0 1 356.8 133" marker-end="url(#ah2)"/>
+  <path class="ring" d="M 356.8 247 A 130 130 0 0 1 297 306.8" marker-end="url(#ah2)"/>
+  <path class="ring" d="M 183 306.8 A 130 130 0 0 1 123.2 247" marker-end="url(#ah2)"/>
+  <path class="ring" d="M 123.2 133 A 130 130 0 0 1 183 73.2" marker-end="url(#ah2)"/>
+  <circle class="nd" cx="240" cy="60" r="40"/><text class="nt" x="240" y="57">Ajustar</text><text class="nt" x="240" y="72">tamaño</text>
+  <circle class="nd" cx="370" cy="190" r="40"/><text class="nt" x="370" y="194">Automatizar</text>
+  <circle class="nd" cx="240" cy="320" r="40"/><text class="nt" x="240" y="324">Optimizar</text>
+  <circle class="nd" cx="110" cy="190" r="40"/><text class="nt" x="110" y="194">Monitorizar</text>
+</svg></div>
+<div class="split" style="margin-top:12px">
+  <div class="box ms"><h4>Ajustar tamaño (<i>right-size</i>)</h4><p>Adaptar los recursos a la demanda real.</p></div>
+  <div class="box ms"><h4>Automatizar (<i>automate</i>)</h4><p>Reducir recursos o apagar los que no se usan.</p></div>
+  <div class="box ms"><h4>Optimizar (<i>optimize</i>)</h4><p>Elegir servicios y configuraciones eficientes.</p></div>
+  <div class="box ms"><h4>Monitorizar (<i>monitor</i>)</h4><p>Seguir el uso de los recursos y el gasto.</p></div>
+</div>
+<h3>Por qué la nube puede ser más eficiente</h3>
+<p>Los proveedores operan a gran escala, lo que puede mejorar el aprovechamiento de los recursos frente a muchos entornos locales aislados. Además, en Azure puedes evitar el desperdicio ajustando lo desplegado a la demanda real.</p>
+<h3>Prácticas que apoyan la sostenibilidad</h3>
+<ul><li>Reducir los recursos cuando baja la demanda.</li><li>Apagar o desasignar los recursos que no se usan.</li><li>Elegir servicios y configuraciones eficientes para no sobredimensionar.</li><li>Usar gobernanza y supervisión para seguir tendencias de uso y optimizar con el tiempo.</li></ul>
+<div class="split">
+  <div class="box"><h4>Sin optimizar</h4><p>Entorno de desarrollo encendido 24 horas al día, 7 días a la semana, aunque solo se use en horario de oficina.</p></div>
+  <div class="box ms"><h4>Con Azure</h4><p>Se apaga automáticamente por la noche y los fines de semana. Menos consumo y menos coste, con el mismo servicio para el equipo.</p></div>
+</div>
+<p class="pc">Ejemplo basado en el de Microsoft Learn. Las horas concretas son ilustrativas.</p>
+<p><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Sostenibilidad y ahorro de costes van de la mano, pero no son lo mismo. Una carga de trabajo puede salir barata y aun así ser poco eficiente para el medio ambiente. El proveedor se ocupa de la eficiencia de sus centros de datos. Tú, de cómo usas los recursos.</p>
+<div class="asir"><h4>Traducción ASIR</h4><p>Usar solo lo que necesitas, durante el tiempo que lo necesitas y pagando únicamente por ello. Es lo contrario de dejar las VM del aula encendidas todo el fin de semana.</p></div>
+<h3>Frases de examen</h3>
+<p class="quote">Reducir recursos cuando baja la demanda favorece la sostenibilidad.</p>
+<p class="quote">Apagar los recursos que no se usan reduce el consumo y el coste.</p>
+<p class="quote">Ajustar tamaño, automatizar, optimizar y monitorizar son las cuatro prácticas clave.</p>
+<p>El sobredimensionamiento es una mala práctica, y la monitorización es lo que permite detectar el desperdicio.</p></section>
+
+<section id="u7"><div class="unit"><span class="n">UNIDAD 7/8</span></div>
+<h2>Comprobación de conocimientos</h2>
+<p class="idea"><b>Idea principal.</b> Tres preguntas que cubren el módulo. Intenta responder antes de abrir cada una.</p>
+<details><summary>¿Qué tipo de escalado añade o quita recursos, como máquinas virtuales o contenedores, para atender la demanda?</summary><p>Escalado horizontal.</p></details>
+<details><summary>¿Cómo se llama la capacidad de un sistema de recuperarse de los errores y seguir funcionando?</summary><p>Fiabilidad. En la versión en español de Learn aparece como "confiabilidad".</p></details>
+<details><summary>¿Qué práctica apoya más directamente la sostenibilidad al reducir el uso innecesario de recursos?</summary><p>La reducción automática de recursos cuando baja la demanda.</p></details></section>
+
+<section id="u8"><div class="unit"><span class="n">UNIDAD 8/8</span></div>
+<h2>Resumen</h2>
+<p class="idea"><b>Idea principal.</b> Has visto las ventajas de operar en la nube. La alta disponibilidad y la fiabilidad mantienen las aplicaciones en marcha. La nube puede ofrecer un entorno más seguro y apoyar objetivos de sostenibilidad. Y es un entorno muy manejable para tus recursos.</p>
+<h3>Ahora deberías poder</h3>
+<ul><li>Describir las ventajas de la alta disponibilidad y la escalabilidad en la nube.</li><li>Describir las ventajas de la fiabilidad y la previsibilidad en la nube.</li><li>Describir las ventajas de la seguridad y la gobernanza en la nube.</li><li>Describir las ventajas de la manejabilidad en la nube.</li><li>Describir las consideraciones y ventajas de sostenibilidad en la nube.</li></ul></section>
+
+<section id="repaso"><h2>Repaso final</h2>
+<h3>Los 7 conceptos que sí o sí</h3>
+<div class="mnemo">
+  <div><b>1</b>Alta disponibilidad y SLA</div><div><b>2</b>Escalado vertical y horizontal</div><div><b>3</b>Fiabilidad</div><div><b>4</b>Previsibilidad</div><div><b>5</b>Seguridad y gobernanza</div><div><b>6</b>Administración de y en la nube</div><div><b>7</b>Sostenibilidad</div>
+</div>
+<h3>Trucos para memorizar</h3>
+<div class="mnemo"><div><b>Vertical</b>Torre que crece: más CPU y RAM</div><div><b>Horizontal</b>Fila de servidores: más instancias</div><div><b>SLA</b>Más nueves, menos caídas</div><div><b>Seguridad</b>Escudo: protege</div><div><b>Gobernanza</b>Reglamento: ordena</div><div><b>Portal</b>Ver</div><div><b>CLI</b>Escribir comandos</div><div><b>PowerShell</b>Automatizar</div><div><b>API</b>Programar</div><div><b>Sostenibilidad</b>Ajustar, automatizar, optimizar, monitorizar</div></div>
+<h3>Preguntas de repaso</h3>
+<details><summary>¿Qué escalado da más CPU o RAM a una máquina virtual sin añadir otra?</summary><p>Escalado vertical.</p></details>
+<details><summary>¿Qué escalado añade más instancias para soportar la carga?</summary><p>Escalado horizontal.</p></details>
+<details><summary>¿Qué indica un SLA del 99,99 %?</summary><p>El porcentaje de disponibilidad garantizado para el servicio, unos 52,6 minutos de inactividad máxima al año.</p></details>
+<details><summary>Una aplicación sigue funcionando desde otra región cuando una falla. ¿Qué ventaja se está usando?</summary><p>Fiabilidad.</p></details>
+<details><summary>¿Qué herramienta estima el coste de una solución antes de desplegarla?</summary><p>La Calculadora de precios de Azure.</p></details>
+<details><summary>¿Qué característica ayuda a mantener el rendimiento cuando sube la demanda?</summary><p>El escalado automático.</p></details>
+<details><summary>Una empresa quiere que todas sus VM se creen con las mismas normas. ¿Qué concepto la ayuda?</summary><p>Gobernanza.</p></details>
+<details><summary>¿Quién ofrece protección integrada frente a ataques DDoS?</summary><p>El proveedor cloud.</p></details>
+<details><summary>¿Qué modelo da más control de seguridad, IaaS o SaaS?</summary><p>IaaS.</p></details>
+<details><summary>¿Qué permite desplegar siempre la misma infraestructura reduciendo errores humanos?</summary><p>Las plantillas.</p></details>
+<details><summary>¿Qué herramienta funciona en Windows, macOS y Linux, Azure CLI o Azure PowerShell?</summary><p>Las dos.</p></details>
+<details><summary>Una empresa apaga sus VM fuera del horario laboral para reducir consumo. ¿Qué consideración aplica?</summary><p>Sostenibilidad: ajustar los recursos al uso real.</p></details>
+</section>
+
+<section id="learn"><h2>Contraste con Microsoft Learn</h2>
+<p>Revisé estos apuntes con la documentación oficial el 15 de octubre de 2026. La mayor parte coincide. Estos son los matices y las correcciones que hice.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>Resultado</th></tr></thead><tbody>
+<tr><td>Estructura del módulo</td><td>El módulo "Describe the benefits of using cloud services" tiene 8 unidades: introducción, cuatro ventajas, sostenibilidad, evaluación y resumen. Coincide con este manual.</td></tr>
+<tr><td>Sostenibilidad en el examen</td><td>La guía de estudio (habilidades medidas desde el 20 de julio de 2026) lista solo cuatro habilidades en este bloque y no menciona la sostenibilidad. Sí aparece en el módulo de Learn, y la guía avisa de que pueden evaluarse temas relacionados.</td></tr>
+<tr><td>Cifras de SLA</td><td>Los tres primeros niveles coinciden con la infografía de Learn. El 99,999 % no sale en ella: son 5,26 minutos al año, y el texto de los apuntes ("imperceptible") era impreciso.</td></tr>
+<tr><td>Escalado</td><td>Coincide con Learn. Los ejemplos de GB de RAM, vCPU y servidores son ilustrativos. Learn y la documentación de arquitectura recomiendan favorecer el escalado horizontal en la nube.</td></tr>
+<tr><td>Well-Architected Framework</td><td>Los apuntes de Copilot decían que fiabilidad y previsibilidad son pilares. Según Learn, solo la fiabilidad es un pilar. La previsibilidad está muy influida por el marco.</td></tr>
+<tr><td>Fiabilidad y alta disponibilidad</td><td>Learn las trata como ventajas distintas. La diferencia de los apuntes es correcta.</td></tr>
+<tr><td>Seguridad y gobernanza</td><td>Learn las presenta juntas pero como piezas diferentes. Corregí la idea de los apuntes de que la gobernanza "incluye" la seguridad: se complementan. Además, Azure Security Center hoy se llama Microsoft Defender for Cloud.</td></tr>
+<tr><td>CLI y PowerShell</td><td>Los apuntes decían que la CLI es multiplataforma y PowerShell no. Learn indica que las dos se instalan en Windows, macOS y Linux. La diferencia es el estilo: comandos <code>az</code> frente a cmdlets.</td></tr>
+<tr><td>Monitor de estado</td><td>En Azure, el estado de los recursos se ve en Service Health, que incluye Resource Health. La sustitución automática de recursos la hacen servicios concretos, como Virtual Machine Scale Sets o App Service.</td></tr>
+<tr><td>Conexión con AZ-104</td><td>Pricing Calculator, Azure Policy, bloqueos, etiquetas, Cloud Shell, CLI, PowerShell, ARM, Azure Advisor, Azure Monitor y Service Health ya están en la guía del AZ-900. Por eso este manual los sitúa en el propio AZ-900.</td></tr>
+<tr><td>Pregunta de sostenibilidad</td><td>La pregunta de Copilot la llamaba "ventaja de la nube". En Learn es una consideración que se logra optimizando el despliegue y el uso. Reformulé el enunciado.</td></tr>
+<tr><td>Terminología</td><td>La comprobación de conocimientos en español de Learn usa "confiabilidad" donde los apuntes usan "fiabilidad". Conviene reconocer las dos.</td></tr>
+<tr><td>Ejemplos y analogías</td><td>Los 500 servidores, las horas de apagado y las analogías del avión, el instituto y la comunidad de vecinos son recursos didácticos de los apuntes, no datos de Microsoft.</td></tr></tbody></table></div>
+<p class="src" style="margin-top:14px">Fuentes:
+<a href="https://learn.microsoft.com/training/modules/describe-benefits-use-cloud-services/">Módulo Describe the benefits of using cloud services</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-benefits-use-cloud-services/2-high-availability-scalability-cloud">Alta disponibilidad y escalabilidad</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-benefits-use-cloud-services/3-reliability-predictability-cloud">Fiabilidad y previsibilidad</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-benefits-use-cloud-services/4-security-governance-cloud">Seguridad y gobernanza</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-benefits-use-cloud-services/5-manageability-cloud">Manejabilidad</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-benefits-use-cloud-services/5a-describe-sustainability-cloud">Sostenibilidad</a> ·
+<a href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900">Guía de estudio AZ-900</a> ·
+<a href="https://learn.microsoft.com/cli/azure/choose-the-right-azure-command-line-tool">Elegir la herramienta de línea de comandos</a> ·
+<a href="https://learn.microsoft.com/azure/service-health/resource-health-overview">Resource Health</a> ·
+<a href="https://learn.microsoft.com/azure/well-architected/what-is-well-architected-framework">Azure Well-Architected Framework</a> ·
+<a href="https://learn.microsoft.com/azure/well-architected/sustainability/overview">Sostenibilidad en cargas de trabajo</a> ·
+<a href="https://learn.microsoft.com/azure/migration/migrate-from-on-premises-fundamentals">Azure para expertos en entornos locales</a></p></section>
+
+</main></div>
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+<script>
+(function(){var KEY='az900-m2-check',boxes=document.querySelectorAll('#checklist input');
+try{var s=JSON.parse(localStorage.getItem(KEY)||'[]');boxes.forEach(function(b,i){b.checked=!!s[i]})}catch(e){}
+boxes.forEach(function(b){b.addEventListener('change',function(){try{localStorage.setItem(KEY,JSON.stringify([].map.call(boxes,function(x){return x.checked})))}catch(e){}})})})();
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Manual AZ-900</title>
+<meta name="description" content="Apuntes de Microsoft Azure Fundamentals (AZ-900), módulo a módulo, con ejemplos desde ASIR y contrastados con Microsoft Learn.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>
+/* Layout: cabecera azul Azure como en los manuales, tarjetas de módulo en rejilla con barra de progreso y un mapa del examen debajo */
+:root{
+  color-scheme:light;
+  --bg:#f3f7fc; --surface:#ffffff; --surface2:#e8f1fb; --fg:#0b1b2e; --muted:#47607c;
+  --azure:#0078d4; --azure-deep:#004e8c; --azure-soft:#cfe5f8; --violet:#6b4fd8; --violet-soft:#e4defa; --line:#c9d9ea;
+  --hero1:#005ba1; --hero2:#0078d4; --on-hero:#ffffff;
+  --display:'Sora',system-ui,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:16px}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+.hero{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:56px max(16px,env(safe-area-inset-left,0px)) 48px;background:radial-gradient(1200px 420px at 85% -10%,rgba(160,139,255,.45),transparent 60%),linear-gradient(135deg,var(--hero1),var(--hero2));color:var(--on-hero)}
+.hero-in{max-width:1100px;margin:0 auto}
+.tag{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+h1{font:800 clamp(34px,6vw,60px)/1.05 var(--display);margin:14px 0 14px;text-wrap:balance;letter-spacing:-.02em}
+.lead{max-width:62ch;font-size:18px;opacity:.95;margin:0 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 12px var(--mono);padding:6px 12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(255,255,255,.1)}
+main{max-width:1100px;margin:0 auto;padding-block:40px 64px;display:flex;flex-direction:column;gap:48px}
+section{min-width:0}
+h2{font:700 26px/1.2 var(--display);margin:0 0 6px;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:0 0 20px;max-width:62ch}
+h3{font:600 17px var(--display);margin:0 0 6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.card{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;min-width:0}
+.card .num{font:700 12px var(--mono);letter-spacing:.08em;color:var(--azure);border:1px solid var(--azure);border-radius:6px;padding:3px 8px;align-self:flex-start;white-space:nowrap}
+.card p{margin:0;font-size:15px}
+.card .meta{font-size:14px;color:var(--muted)}
+.card ul{margin:0;padding-left:18px;font-size:15px}
+.card li{margin-bottom:2px}
+.open{display:inline-block;align-self:flex-start;margin-top:auto;background:var(--azure-deep);color:#fff;text-decoration:none;font:600 14px var(--display);padding:10px 18px;border-radius:8px}
+.open:hover,.open:focus-visible{background:var(--azure);outline:2px solid var(--azure-deep);outline-offset:2px}
+.card.soon{background:transparent;border-style:dashed}
+.card.soon .num{color:var(--muted);border-color:var(--muted)}
+.soonlabel{display:inline-block;align-self:flex-start;margin-top:auto;font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.prog{margin-top:4px}
+.prog .bar{height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+.prog .bar i{display:block;height:100%;width:0;background:var(--azure);border-radius:999px}
+.prog .txt{font-size:13px;color:var(--muted);margin-top:6px}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th{background:var(--azure-deep);color:#fff;text-align:left;font:600 13px var(--display);padding:10px 14px;letter-spacing:.02em}
+td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600;color:var(--azure)}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.how div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:15px;min-width:0}
+.how b{display:block;color:var(--azure);font:600 15px var(--display);margin-bottom:2px}
+.asir{background:var(--violet-soft);border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:10px;padding:14px 18px;max-width:72ch}
+.asir h3{font:600 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--violet);margin:0 0 6px}
+.asir p{margin:0;font-size:15px}
+.src{font-size:14px;color:var(--muted)}
+.src a{color:var(--azure)}
+footer{text-align:center;color:var(--muted);font:500 13px var(--mono);padding:24px 0 8px;border-top:1px solid var(--line);max-width:1100px;margin:0 auto}
+a:focus-visible{outline:2px solid var(--azure);outline-offset:2px}
+@media(prefers-reduced-motion:no-preference){.open,.prog .bar i{transition:background .15s,width .3s}}
+</style>
+</head>
+<body>
+
+<header class="hero"><div class="hero-in">
+  <div class="tag">Microsoft Azure Fundamentals · Examen AZ-900</div>
+  <h1>Manual AZ-900</h1>
+  <p class="lead">Apuntes módulo a módulo, explicados con ejemplos de administración de sistemas, con lo que cae en el examen y contrastados con Microsoft Learn.</p>
+  <div class="chips"><span class="chip">Gema San</span><span class="chip">Contrastado con Microsoft Learn</span><span class="chip">Sueña. Aprende. Crece.</span></div>
+</div></header>
+
+<main>
+
+<section id="modulos">
+  <h2>Módulos</h2>
+  <p class="sub">Cada manual se abre en su propia página. La barra de cada tarjeta muestra cuántos conceptos clave has marcado como repasados.</p>
+  <div class="grid">
+    <article class="card">
+      <span class="num">MÓDULO 1</span>
+      <h3>Descripción de la informática en la nube</h3>
+      <p>Qué es Azure, qué es la nube, quién protege qué, qué modelos de nube existen y cómo se paga.</p>
+      <ul><li>Responsabilidad compartida</li><li>Nube pública, privada, híbrida y multinube</li><li>CapEx frente a OpEx</li></ul>
+      <p class="meta">Unidades 1 a 6 · Repaso final · Contraste con Learn</p>
+      <div class="prog" data-key="az900-m1-check" data-total="7"><div class="bar"><i></i></div><div class="txt">0 de 7 conceptos repasados</div></div>
+      <a class="open" href="modulo-1.html">Abrir el manual</a>
+    </article>
+    <article class="card">
+      <span class="num">MÓDULO 2</span>
+      <h3>Ventajas de usar servicios en la nube</h3>
+      <p>Disponibilidad, escalabilidad, fiabilidad, previsibilidad, seguridad, gobernanza, manejabilidad y sostenibilidad.</p>
+      <ul><li>SLA y niveles de disponibilidad</li><li>Escalado vertical y horizontal</li><li>CLI, PowerShell, plantillas y alertas</li></ul>
+      <p class="meta">Las 8 unidades · Repaso final · Contraste con Learn</p>
+      <div class="prog" data-key="az900-m2-check" data-total="7"><div class="bar"><i></i></div><div class="txt">0 de 7 conceptos repasados</div></div>
+      <a class="open" href="modulo-2.html">Abrir el manual</a>
+    </article>
+    <article class="card soon">
+      <span class="num">MÓDULO 3</span>
+      <h3>Tipos de servicio en la nube</h3>
+      <p>IaaS, PaaS y SaaS, con sus casos de uso y ventajas.</p>
+      <span class="soonlabel">Próximamente</span>
+    </article>
+  </div>
+</section>
+
+<section id="examen">
+  <h2>Mapa del examen</h2>
+  <p class="sub">Los tres primeros módulos forman la ruta "Describir los conceptos de la nube", que corresponde al primer bloque del examen.</p>
+  <div class="tablebox"><table><thead><tr><th>Bloque del examen</th><th>Peso</th><th>Estado</th></tr></thead><tbody>
+    <tr><td>Conceptos cloud</td><td>25–30 %</td><td>Módulos 1 y 2 hechos. Módulo 3 pendiente</td></tr>
+    <tr><td>Arquitectura y servicios de Azure</td><td>35–40 %</td><td>Pendiente</td></tr>
+    <tr><td>Administración y gobierno</td><td>30–35 %</td><td>Pendiente</td></tr></tbody></table></div>
+  <p class="src" style="margin-top:10px">Pesos según la <a href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900">guía de estudio del AZ-900</a> (habilidades medidas desde el 20 de julio de 2026).</p>
+</section>
+
+<section id="como">
+  <h2>Cómo está hecho cada manual</h2>
+  <p class="sub">Todos siguen la misma estructura para que sea fácil repasar.</p>
+  <div class="how">
+    <div><b>Idea principal</b>Qué hay que entender de la unidad, en pocas líneas.</div>
+    <div><b>Tablas y esquemas</b>Comparativas y dibujos para ver las diferencias de un vistazo.</div>
+    <div><b>Traducción ASIR</b>El mismo concepto explicado con servidores, redes y máquinas virtuales del aula.</div>
+    <div><b>Frases de examen</b>Lo que suele preguntarse, con trucos para recordarlo.</div>
+    <div><b>Repaso final</b>Conceptos clave y preguntas desplegables.</div>
+    <div><b>Contraste con Learn</b>Qué coincide con la documentación oficial y qué se corrigió.</div>
+  </div>
+</section>
+
+<section id="asir">
+  <div class="asir"><h3>Traducción ASIR</h3><p>Una máquina virtual que antes alojabas en Proxmox, VMware o Hyper-V, gestionados por ti, ahora se ejecuta en Azure. Los manuales parten siempre de esa idea.</p></div>
+</section>
+
+</main>
+
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+
+<script>
+(function(){
+  var bars=document.querySelectorAll('.prog');
+  Array.prototype.forEach.call(bars,function(el){
+    var total=parseInt(el.getAttribute('data-total'),10)||0,done=0;
+    try{
+      var s=JSON.parse(localStorage.getItem(el.getAttribute('data-key'))||'[]');
+      done=s.filter(Boolean).length;
+    }catch(e){}
+    if(done>total){done=total}
+    el.querySelector('i').style.width=(total?Math.round(done*100/total):0)+'%';
+    el.querySelector('.txt').textContent=done+' de '+total+' conceptos repasados';
+  });
+})();
+</script>
+</body>
+</html>

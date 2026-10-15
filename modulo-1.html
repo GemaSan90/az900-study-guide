@@ -1,0 +1,352 @@
+<!doctype html><html lang="es"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Manual AZ-900 Módulo 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>
+/* Layout: cabecera azul Azure, índice lateral fijo con las unidades, una sección ancha por unidad con tablas desplazables y un gráfico de capacidad en la unidad 6 */
+:root{
+  --bg:#f3f7fc; --surface:#ffffff; --surface2:#e8f1fb; --fg:#0b1b2e; --muted:#47607c;
+  --azure:#0078d4; --azure-deep:#004e8c; --azure-soft:#cfe5f8; --violet:#6b4fd8; --violet-soft:#e4defa; --line:#c9d9ea;
+  --hero1:#005ba1; --hero2:#0078d4; --on-hero:#ffffff;
+  --display:'Sora',system-ui,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+.hero{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:56px max(16px,env(safe-area-inset-left,0px)) 48px;background:radial-gradient(1200px 420px at 85% -10%,rgba(160,139,255,.45),transparent 60%),linear-gradient(135deg,var(--hero1),var(--hero2));color:var(--on-hero)}
+.hero-in{max-width:1100px;margin:0 auto}
+.tag{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+h1{font:800 clamp(30px,5.4vw,54px)/1.08 var(--display);margin:14px 0 14px;text-wrap:balance;letter-spacing:-.02em}
+.lead{max-width:60ch;font-size:18px;opacity:.95;margin:0 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 12px var(--mono);padding:6px 12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(255,255,255,.1)}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:210px minmax(0,1fr);gap:40px;padding-block:36px 72px}
+nav{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line)}
+nav a:hover,nav a:focus-visible{color:var(--azure);border-left-color:var(--azure);outline:none}
+nav .sep{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
+main{min-width:0;display:flex;flex-direction:column;gap:52px}
+section{scroll-margin-top:24px}
+.unit{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.unit .n{font:700 12px var(--mono);letter-spacing:.08em;color:var(--azure);border:1px solid var(--azure);border-radius:6px;padding:3px 8px;white-space:nowrap}
+h2{font:700 26px/1.2 var(--display);margin:0 0 14px;letter-spacing:-.01em;text-wrap:balance}
+h3{font:600 17px var(--display);margin:26px 0 8px;color:var(--azure)}
+p{margin:0 0 12px;max-width:70ch}
+.idea{background:linear-gradient(135deg,var(--azure-soft),var(--surface2));border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch;margin-bottom:16px}
+.idea b{color:var(--azure)}
+.callout{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch}
+.callout b{color:var(--azure)}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th{background:var(--azure-deep);color:#fff;text-align:left;font:600 13px var(--display);padding:10px 14px;letter-spacing:.02em}
+td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600;color:var(--azure)}
+tr:hover td{background:var(--surface2)}
+ul{margin:0 0 12px;padding-left:20px}li{margin-bottom:4px}
+.check{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.check label{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer}
+.check input{accent-color:var(--azure);width:18px;height:18px;margin-top:3px;flex:none}
+.check input:checked+span{text-decoration:line-through;color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 16px}
+.node{padding:8px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-weight:600}
+.node.az{background:var(--azure);color:#fff;border-color:var(--azure)}
+.arrow{color:var(--azure);font-weight:700}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.box h4{margin:0 0 6px;font:600 14px var(--display)}
+.box.ms{border-top:3px solid var(--azure)}.box.cl{border-top:3px solid var(--violet)}.box.dep{border-top:3px dashed var(--muted)}
+.box p{margin:0;font-size:15px}
+.box ul{margin:0;font-size:15px}
+.pc{font-size:14px;color:var(--muted);margin-top:8px}
+.asir{background:var(--violet-soft);border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:10px;padding:14px 18px;max-width:72ch;margin:16px 0}
+.asir h4{margin:0 0 6px;font:600 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+.asir p,.asir ul{margin:0 0 6px;font-size:15px}
+.badge{display:inline-block;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--violet);border:1px solid var(--violet);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle}
+.quote{border-left:3px solid var(--azure);padding:4px 0 4px 14px;margin:0 0 10px;font-weight:500}
+.mnemo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.mnemo div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px}
+.mnemo b{display:block;color:var(--azure);font:600 15px var(--display)}
+.m{text-align:center;font-weight:600;font-size:14px;white-space:nowrap}
+.m.c{background:var(--azure-deep);color:#fff}
+.m.s{background:var(--violet-soft);color:var(--violet)}
+.m.ms{background:var(--surface2);color:var(--fg)}
+td.m:first-child{color:inherit}
+tr:hover td.m.c{background:var(--azure-deep)}tr:hover td.m.s{background:var(--violet-soft)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+details p{margin:8px 0 0;color:var(--azure);font-weight:500}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;max-width:640px}
+.chart svg{display:block;width:100%;height:auto}
+.chart .ax{stroke:var(--line);stroke-width:1}
+.chart .tx{fill:var(--muted);font:500 12px var(--body)}
+.chart .bar{fill:var(--azure-soft);stroke:var(--azure);stroke-width:1}
+.chart .fix{stroke:var(--violet);stroke-width:2.5;stroke-dasharray:7 5;fill:none}
+.chart .cl{stroke:var(--azure);stroke-width:2.5;fill:none}
+.chart .dot{fill:var(--azure)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;margin:10px 0 0;color:var(--muted)}
+.legend i{display:inline-block;width:18px;height:10px;margin-right:6px;vertical-align:middle;border-radius:2px}
+.legend .a{background:var(--azure-soft);border:1px solid var(--azure)}.legend .b{border-top:3px dashed var(--violet);height:0}.legend .c{border-top:3px solid var(--azure);height:0}
+.src{font-size:14px;color:var(--muted)}
+.src a{color:var(--azure)}
+footer{text-align:center;color:var(--muted);font:500 13px var(--mono);padding:24px 0 8px;border-top:1px solid var(--line);max-width:1100px;margin:0 auto}
+@media(max-width:820px){.wrap{grid-template-columns:1fr;gap:20px}nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}nav a{border:1px solid var(--line);border-radius:999px;padding:4px 12px}nav .sep{display:none}}
+@media(prefers-reduced-motion:no-preference){a,tr td{transition:background .15s,color .15s}}
+</style>
+
+<header class="hero"><div class="hero-in">
+  <div class="tag">AZ-900 · Microsoft Azure Fundamentals</div>
+  <h1>Módulo 1: Descripción de la informática en la nube</h1>
+  <p class="lead">Manual de las unidades 1 a 6: qué es Azure, qué es la nube, quién protege qué, qué modelos existen y cómo se paga. Cada unidad cierra con lo que cae en el examen.</p>
+  <div class="chips"><span class="chip">Gema San</span><span class="chip">Contrastado con Microsoft Learn</span><span class="chip">Sueña. Aprende. Crece.</span></div>
+</div></header>
+
+<div class="wrap">
+<nav aria-label="Índice">
+  <a href="index.html">← Todos los módulos</a>
+  <a href="#examen">Mapa del examen</a>
+  <div class="sep">Unidades</div>
+  <a href="#u1">1 · Aspectos básicos de Azure</a><a href="#u2">2 · Introducción a la nube</a><a href="#u3">3 · Qué es la nube</a><a href="#u4">4 · Responsabilidad compartida</a><a href="#u5">5 · Modelos de nube</a><a href="#u6">6 · Modelo de consumo</a>
+  <div class="sep">Cierre</div>
+  <a href="#repaso">Repaso final</a><a href="#learn">Contraste con Learn</a>
+</nav>
+<main>
+
+<section id="examen"><h2>Dónde encaja este módulo</h2>
+<p>El AZ-900 es un examen conceptual: entender la filosofía cloud, conocer qué servicios existen y saber cuándo usarlos. La administración avanzada llega después, con el AZ-104.</p>
+<div class="tablebox"><table><thead><tr><th>Bloque del examen</th><th>Peso</th><th>Incluye</th></tr></thead><tbody>
+<tr><td>Conceptos cloud</td><td>25–30 %</td><td>Qué es la nube, tipos de nube, responsabilidad compartida, ventajas, IaaS/PaaS/SaaS. Es este módulo.</td></tr>
+<tr><td>Arquitectura y servicios de Azure</td><td>35–40 %</td><td>Máquinas virtuales, redes, almacenamiento, bases de datos, identidad y seguridad</td></tr>
+<tr><td>Administración y gobierno</td><td>30–35 %</td><td>Costes, cumplimiento, supervisión, gobierno de recursos</td></tr></tbody></table></div>
+<h3>AZ-900 frente a AZ-104</h3>
+<div class="tablebox"><table><thead><tr><th></th><th>AZ-900</th><th>AZ-104</th></tr></thead><tbody>
+<tr><td>Nivel</td><td>Conceptual</td><td>Administrador de Azure</td></tr>
+<tr><td>Preguntas tipo</td><td>¿Qué es una VM? ¿Qué es Azure? ¿Qué ventajas tiene? ¿Cuánto cuesta?</td><td>Crear y administrar VM, copias de seguridad, redes, identidades, seguridad</td></tr></tbody></table></div>
+<h3>Lo que debo saber de este módulo</h3>
+<ul class="check" id="checklist">
+  <li><label><input type="checkbox"><span>Cloud computing</span></label></li>
+  <li><label><input type="checkbox"><span>Responsabilidad compartida</span></label></li>
+  <li><label><input type="checkbox"><span>Nube pública, privada e híbrida</span></label></li>
+  <li><label><input type="checkbox"><span>IaaS, PaaS y SaaS</span></label></li>
+  <li><label><input type="checkbox"><span>CapEx frente a OpEx</span></label></li>
+  <li><label><input type="checkbox"><span>Pago por consumo</span></label></li>
+  <li><label><input type="checkbox"><span>Escalabilidad y elasticidad</span></label></li>
+</ul></section>
+
+<section id="u1"><div class="unit"><span class="n">UNIDAD 1/8</span></div>
+<h2>Introducción a los aspectos básicos de Microsoft Azure</h2>
+<p class="idea"><b>Idea principal.</b> Azure es la plataforma cloud de Microsoft. Permite usar recursos informáticos por Internet sin comprar ni mantener la infraestructura física.</p>
+<h3>Qué ofrece Azure</h3>
+<div class="tablebox"><table><thead><tr><th>Área</th><th>Qué incluye</th></tr></thead><tbody>
+<tr><td>Computación</td><td>Máquinas virtuales</td></tr>
+<tr><td>Redes</td><td>Conectividad y comunicación</td></tr>
+<tr><td>Almacenamiento</td><td>Archivos, discos y copias</td></tr>
+<tr><td>Bases de datos</td><td>SQL y otros motores</td></tr>
+<tr><td>IA y Machine Learning</td><td>Servicios inteligentes</td></tr>
+<tr><td>IoT</td><td>Dispositivos conectados</td></tr></tbody></table></div>
+<h3>Antes y ahora</h3>
+<div class="split">
+  <div class="box"><h4>Antes: la empresa lo compra todo</h4><ul><li>Servidores y discos</li><li>Switches</li><li>Instala los sistemas</li><li>Mantiene el hardware</li></ul></div>
+  <div class="box ms"><h4>Ahora: contrata Azure</h4><ul><li>Microsoft pone servidores, red física, centros de datos e infraestructura</li><li>La empresa se centra en administrar servicios, no hardware</li></ul></div>
+</div>
+<p class="callout"><b>Frase de examen.</b> Microsoft Azure es una plataforma de computación en la nube que proporciona servicios informáticos bajo demanda a través de Internet.</p>
+<h3>Resumen exprés</h3>
+<p>Azure = cloud de Microsoft · Ofrece computación, redes, almacenamiento, bases de datos e IA · Objetivo: entender la nube antes de administrarla.</p></section>
+
+<section id="u2"><div class="unit"><span class="n">UNIDAD 2/8</span></div>
+<h2>Introducción a la informática en la nube</h2>
+<p class="idea"><b>Idea principal.</b> Este módulo fija los fundamentos del cloud computing. Lo importante de esta unidad no es memorizar texto, sino saber qué objetivos debes cumplir.</p>
+<div class="flow"><span class="node">Qué es la nube</span><span class="arrow">→</span><span class="node">Quién es responsable de qué</span><span class="arrow">→</span><span class="node">Qué tipos de nube hay</span><span class="arrow">→</span><span class="node az">Cómo se paga en Azure</span></div>
+<h3>Objetivos del módulo</h3>
+<ul><li>Definir la informática en la nube.</li><li>Entender la responsabilidad compartida.</li><li>Conocer los modelos de nube: pública, privada e híbrida.</li><li>Identificar casos de uso de cada modelo.</li><li>Comprender el pago por consumo.</li></ul>
+<div class="asir"><h4>Traducción ASIR</h4><p>Una máquina virtual que antes alojabas en Proxmox, VMware o Hyper-V, gestionados por ti, ahora se ejecuta en Azure.</p></div></section>
+
+<section id="u3"><div class="unit"><span class="n">UNIDAD 3/8</span></div>
+<h2>¿Qué es la informática en la nube?</h2>
+<p class="idea"><b>Idea principal.</b> Es obtener recursos informáticos a través de Internet en lugar de comprar y administrar infraestructura física propia. Cloud computing = servicios informáticos + Internet.</p>
+<div class="split">
+  <div class="box"><h4>Modelo tradicional</h4><ul><li>Servidor físico, switch, firewall, SAI</li><li>Sala de CPD propia</li><li>Hay que comprar todo</li></ul></div>
+  <div class="box ms"><h4>Modelo cloud</h4><ul><li>Azure aporta hardware, servidores, redes, almacenamiento y seguridad</li><li>Tú consumes el servicio</li></ul></div>
+</div>
+<h3>Por qué existe la nube</h3>
+<p>Una empresa usa 10 servidores, pero en Navidad necesita 50. Con infraestructura tradicional tendría que comprar los 50. En la nube pasa de 10 en enero a 50 en Navidad y vuelve a 10 en febrero, sin comprar hardware. Es un ejemplo ilustrativo, no un dato de Microsoft.</p>
+<h3>Ideas clave</h3>
+<div class="tablebox"><table><thead><tr><th>Concepto</th><th>Qué significa</th><th>Ejemplo</th></tr></thead><tbody>
+<tr><td>Escalabilidad</td><td>Aumentar o reducir recursos según las necesidades</td><td>Una tienda online pasa de 100 usuarios a 20.000 en el Black Friday</td></tr>
+<tr><td>Aprovisionamiento bajo demanda</td><td>Obtener recursos cuando los necesitas</td><td>Una VM: antes pedido, entrega y montaje durante semanas; ahora disponible en minutos</td></tr>
+<tr><td>Alcance global</td><td>Desplegar servicios en distintas regiones del mundo</td><td>Región Europa y región USA sin construir centros de datos propios</td></tr></tbody></table></div>
+<p style="margin-top:12px">Cambio de mentalidad: antes se planificaba, compraba, instalaba y esperaba. Ahora se solicita, usa, escala y paga.</p>
+<h3>Ventajas de la nube <span class="badge">Ampliación</span></h3>
+<div class="tablebox"><table><thead><tr><th>Ventaja</th><th>Significado</th></tr></thead><tbody>
+<tr><td>Alta disponibilidad</td><td>El servicio sigue funcionando aunque haya fallos</td></tr>
+<tr><td>Escalabilidad</td><td>Aumentar o reducir recursos según la carga</td></tr>
+<tr><td>Elasticidad</td><td>Ajuste automático de recursos a la demanda</td></tr>
+<tr><td>Fiabilidad</td><td>Recuperación ante fallos gracias a la distribución global</td></tr>
+<tr><td>Previsibilidad</td><td>Rendimiento y costes estimables</td></tr>
+<tr><td>Seguridad y gobernanza</td><td>Protección, cumplimiento normativo y políticas aplicables a los recursos</td></tr>
+<tr><td>Manejabilidad</td><td>Gestión y automatización desde portal, CLI o API</td></tr></tbody></table></div>
+<p style="margin-top:12px">Escalar de forma vertical es dar más potencia a un recurso (más CPU o RAM). De forma horizontal es añadir más instancias.</p>
+<div class="asir"><h4>Traducción ASIR</h4>
+<p><b>Infraestructura clásica:</b> administras servidor físico, RAID, fuentes, RAM, discos y switches.</p>
+<p><b>Azure:</b> administras usuarios, servicios, máquinas virtuales, permisos, red lógica y aplicaciones. Azure administra hardware, edificio, electricidad, discos físicos y red física.</p></div>
+<p class="callout"><b>Frase de examen.</b> La informática en la nube proporciona recursos informáticos bajo demanda a través de Internet, permitiendo escalabilidad, flexibilidad y pago según el uso.</p></section>
+
+<section id="u4"><div class="unit"><span class="n">UNIDAD 4/8</span></div>
+<h2>Modelo de responsabilidad compartida</h2>
+<p class="idea"><b>Idea principal.</b> En la nube no todo es del cliente ni todo es de Microsoft. La responsabilidad se comparte. Esta es una de las ideas que más se preguntan en el AZ-900.</p>
+<p class="callout"><b>Microsoft protege la nube. El cliente protege lo que pone en ella.</b> Seguridad DE la nube frente a seguridad EN la nube.</p><br>
+<div class="split">
+  <div class="box ms"><h4>Siempre Microsoft</h4><ul><li>Centro de datos físico</li><li>Red física</li><li>Hosts físicos</li><li>Energía y refrigeración</li></ul></div>
+  <div class="box cl"><h4>Siempre del cliente</h4><ul><li>Datos e información almacenada</li><li>Usuarios, cuentas e identidades</li><li>Dispositivos conectados</li><li>Permisos, accesos y configuración</li></ul></div>
+  <div class="box dep"><h4>Depende del servicio</h4><p>Sistema operativo, controles de red y aplicaciones.</p></div>
+</div>
+<p>Si una contraseña es débil, es responsabilidad del cliente. Si se rompe un disco físico, es responsabilidad de Microsoft.</p>
+<h3>Quién se encarga de qué</h3>
+<div class="tablebox"><table><thead><tr><th>Área</th><th>Local</th><th>IaaS</th><th>PaaS</th><th>SaaS</th></tr></thead><tbody>
+<tr><td>Datos</td><td class="m c">Cliente</td><td class="m c">Cliente</td><td class="m c">Cliente</td><td class="m c">Cliente</td></tr>
+<tr><td>Configuración</td><td class="m c">Cliente</td><td class="m c">Cliente</td><td class="m c">Cliente</td><td class="m c">Cliente</td></tr>
+<tr><td>Identidades y usuarios</td><td class="m c">Cliente</td><td class="m c">Cliente</td><td class="m c">Cliente</td><td class="m c">Cliente</td></tr>
+<tr><td>Dispositivos cliente</td><td class="m c">Cliente</td><td class="m c">Cliente</td><td class="m c">Cliente</td><td class="m s">Compartido</td></tr>
+<tr><td>Aplicaciones</td><td class="m c">Cliente</td><td class="m c">Cliente</td><td class="m s">Compartido</td><td class="m s">Compartido</td></tr>
+<tr><td>Controles de red</td><td class="m c">Cliente</td><td class="m c">Cliente</td><td class="m s">Compartido</td><td class="m ms">Microsoft</td></tr>
+<tr><td>Sistema operativo</td><td class="m c">Cliente</td><td class="m c">Cliente</td><td class="m ms">Microsoft</td><td class="m ms">Microsoft</td></tr>
+<tr><td>Hosts físicos</td><td class="m c">Cliente</td><td class="m ms">Microsoft</td><td class="m ms">Microsoft</td><td class="m ms">Microsoft</td></tr>
+<tr><td>Red física</td><td class="m c">Cliente</td><td class="m ms">Microsoft</td><td class="m ms">Microsoft</td><td class="m ms">Microsoft</td></tr>
+<tr><td>Centro de datos</td><td class="m c">Cliente</td><td class="m ms">Microsoft</td><td class="m ms">Microsoft</td><td class="m ms">Microsoft</td></tr></tbody></table></div>
+<p class="pc">Tabla basada en la matriz de responsabilidad de Microsoft Learn.</p>
+<h3>IaaS, PaaS y SaaS</h3>
+<div class="tablebox"><table><thead><tr><th>Servicio</th><th>Responsabilidad</th><th>Ejemplos</th><th>Truco</th></tr></thead><tbody>
+<tr><td>On-premises</td><td>Todo del cliente</td><td>Tu propio CPD</td><td>Todo tuyo</td></tr>
+<tr><td>IaaS</td><td>Mayor del cliente</td><td>Máquina virtual de Azure</td><td>Mucho tuyo</td></tr>
+<tr><td>PaaS</td><td>Compartida</td><td>Azure SQL Database, Azure App Service</td><td>Mitad y mitad</td></tr>
+<tr><td>SaaS</td><td>Mayor del proveedor</td><td>Microsoft 365, Outlook Online, Teams, OneDrive</td><td>Casi todo Microsoft</td></tr></tbody></table></div>
+<p style="margin-top:12px"><span class="badge" style="margin:0 8px 0 0">Ampliación</span>También existe la informática sin servidor (<i>serverless</i>): solo aportas el código y el proveedor gestiona los servidores, por ejemplo Azure Functions.</p>
+<h3>Ejemplo con una VM de Windows en Azure</h3>
+<div class="split">
+  <div class="box ms"><h4>Microsoft mantiene</h4><p>Edificio, electricidad, servidor físico, discos físicos y cableado.</p></div>
+  <div class="box cl"><h4>Tú mantienes</h4><p>Usuarios, contraseñas, permisos, firewall de Windows, datos, aplicaciones instaladas y actualizaciones del servidor.</p></div>
+</div>
+<div class="asir"><h4>Traducción ASIR</h4>
+<ul><li>VM en VirtualBox: administras todo.</li><li>VM en Azure: Microsoft administra el hardware y tú el sistema.</li><li>Outlook Online: Microsoft administra casi todo; tú, usuarios y datos.</li></ul></div>
+<h3>Frases de examen</h3>
+<p class="quote">En la nube, la responsabilidad se comparte entre el proveedor y el cliente.</p>
+<p class="quote">Los datos almacenados siguen siendo responsabilidad del cliente.</p>
+<p class="quote">En SaaS el proveedor asume más responsabilidades que en IaaS.</p>
+<p class="quote">En un entorno on-premises el cliente es responsable de toda la infraestructura.</p>
+<p>Si una pregunta habla de datos, usuarios, identidades o permisos, piensa primero en responsabilidad del cliente.</p></section>
+
+<section id="u5"><div class="unit"><span class="n">UNIDAD 5/8</span></div>
+<h2>Definición de modelos en la nube</h2>
+<p class="idea"><b>Idea principal.</b> Los modelos de nube definen dónde se ejecutan los recursos y quién los administra. Hay tres principales (pública, privada e híbrida) y uno cada vez más usado, la multinube.</p>
+<div class="split">
+  <div class="box"><h4>Pública</h4><p>Infraestructura del proveedor (Azure, AWS, Google Cloud), compartida entre clientes con entornos aislados.</p><p class="pc">+ Sin inversión inicial elevada, escalabilidad instantánea, pago por uso, alcance global<br>− Menor control, dependencia del proveedor</p></div>
+  <div class="box"><h4>Privada</h4><p>Infraestructura exclusiva de una organización, propia o dedicada.</p><p class="pc">+ Recursos dedicados, más control y personalización, datos no compartidos<br>− Más cara, más mantenimiento, menor elasticidad</p></div>
+  <div class="box"><h4>Híbrida</h4><p>Privada más pública, conectadas entre sí.</p><p class="pc">+ Máxima flexibilidad, migraciones graduales, mejor cumplimiento normativo, escalado temporal</p></div>
+  <div class="box"><h4>Multinube</h4><p>Dos o más proveedores cloud a la vez, como Azure + AWS o Azure + Google Cloud.</p><p class="pc">+ Evita depender de un proveedor, aprovecha lo mejor de cada nube, más resiliencia<br>− Administración más compleja</p></div>
+</div>
+<h3>Cuándo usar cada modelo</h3>
+<div class="tablebox"><table><thead><tr><th>Modelo</th><th>Idea clave</th><th>Casos de uso</th><th>Gestionada por</th></tr></thead><tbody>
+<tr><td>Pública</td><td>Compartida</td><td>Startups, pequeñas empresas, aplicaciones web, una tienda online que lanza una web nueva</td><td>Proveedor cloud</td></tr>
+<tr><td>Privada</td><td>Exclusiva</td><td>Información crítica, normativas estrictas, control total, un banco</td><td>Tú o un tercero</td></tr>
+<tr><td>Híbrida</td><td>Mezcla</td><td>Migración gradual, infraestructura ya existente, picos de trabajo</td><td>Cliente + proveedor</td></tr>
+<tr><td>Multinube</td><td>Varios proveedores</td><td>Servicios específicos de cada nube, migraciones</td><td>Cliente + proveedores</td></tr></tbody></table></div>
+<p style="margin-top:12px">Caso híbrido real: una empresa con Active Directory local y aplicaciones en Azure. Otro: en un día normal usa su infraestructura local y en un pico Azure aporta capacidad extra.</p>
+<h3>Azure Arc y Azure VMware Solution</h3>
+<div class="split">
+  <div class="box"><h4>Azure Arc</h4><p>Extiende las herramientas de gestión, seguridad y gobierno de Azure a recursos que no están físicamente en Azure: servidores locales, otras nubes y más.</p></div>
+  <div class="box"><h4>Azure VMware Solution</h4><p>Ejecuta entornos VMware directamente en Azure. Las empresas que ya usan VMware migran sin rediseñar toda su infraestructura.</p></div>
+</div>
+<div class="asir"><h4>Traducción ASIR</h4><ul><li>Servidor en el aula = nube privada</li><li>Azure = nube pública</li><li>Servidor local + Azure = nube híbrida</li><li>Azure + AWS = multinube</li></ul></div></section>
+
+<section id="u6"><div class="unit"><span class="n">UNIDAD 6/8</span></div>
+<h2>Modelo basado en el consumo</h2>
+<p class="idea"><b>Idea principal.</b> La nube funciona con pago por uso. No compras ni mantienes la infraestructura y no pagas capacidad que no usas.</p>
+<div class="split">
+  <div class="box"><h4>Centro de datos tradicional</h4><p>Hay que comprar servidores, almacenamiento, equipos de red, alimentación, refrigeración y espacio físico, aunque parte quede sin usar.</p></div>
+  <div class="box ms"><h4>Azure</h4><p>Proporciona CPU, RAM, discos, red y servicios cloud, y pagas solo por lo que consumes.</p></div>
+</div>
+<h3>CapEx frente a OpEx</h3>
+<div class="tablebox"><table><thead><tr><th></th><th>CapEx</th><th>OpEx</th></tr></thead><tbody>
+<tr><td>Significa</td><td>Gasto de capital</td><td>Gasto operativo</td></tr>
+<tr><td>En qué se gasta</td><td>Compra de servidores, hardware y equipos de red; construcción del CPD</td><td>Costes continuos: suscripciones cloud, Azure, electricidad, Internet, licencias por suscripción</td></tr>
+<tr><td>Ejemplo</td><td>Comprar 5 servidores y 2 cabinas de almacenamiento</td><td>Pagar Azure según el uso</td></tr>
+<tr><td>Truco</td><td>Comprar</td><td>Utilizar</td></tr></tbody></table></div>
+<h3>Planificación de capacidad</h3>
+<p>En un centro de datos tradicional la capacidad es fija, así que hay que adivinar el futuro. Si compras de más, pagas servidores vacíos. Si compras de menos, hay problemas de rendimiento, usuarios afectados y servicios lentos. En la nube la capacidad se adapta: sube cuando sube la demanda y baja cuando baja.</p>
+<div class="chart">
+<svg viewBox="0 0 560 270" role="img" aria-label="Gráfico esquemático por trimestres: la demanda real es baja en T1 y T3, muy alta en T2 y T4 y similar a la capacidad en T5. La capacidad fija del centro de datos es alta y constante. La capacidad en la nube sigue la demanda.">
+  <line class="ax" x1="70" y1="220" x2="545" y2="220"/>
+  <line class="ax" x1="70" y1="40" x2="70" y2="220"/>
+  <text class="tx" x="62" y="164" text-anchor="end">Baja</text>
+  <text class="tx" x="62" y="104" text-anchor="end">Alta</text>
+  <text class="tx" x="62" y="56" text-anchor="end">Muy alta</text>
+  <rect class="bar" x="89" y="160" width="56" height="60"/><rect class="bar" x="183" y="52" width="56" height="168"/><rect class="bar" x="277" y="160" width="56" height="60"/><rect class="bar" x="371" y="52" width="56" height="168"/><rect class="bar" x="465" y="100" width="56" height="120"/>
+  <line class="fix" x1="70" y1="100" x2="545" y2="100"/>
+  <polyline class="cl" points="117,160 211,52 305,160 399,52 493,100"/>
+  <circle class="dot" cx="117" cy="160" r="4"/><circle class="dot" cx="211" cy="52" r="4"/><circle class="dot" cx="305" cy="160" r="4"/><circle class="dot" cx="399" cy="52" r="4"/><circle class="dot" cx="493" cy="100" r="4"/>
+  <text class="tx" x="117" y="240" text-anchor="middle">T1</text><text class="tx" x="211" y="240" text-anchor="middle">T2</text><text class="tx" x="305" y="240" text-anchor="middle">T3</text><text class="tx" x="399" y="240" text-anchor="middle">T4</text><text class="tx" x="493" y="240" text-anchor="middle">T5</text>
+</svg>
+<div class="legend"><span><i class="a"></i>Demanda real</span><span><i class="b"></i>Capacidad fija del CPD</span><span><i class="c"></i>Capacidad en la nube</span></div>
+</div>
+<p class="pc">Gráfico esquemático con los niveles cualitativos de los apuntes (baja, alta, muy alta). No representa cifras reales.</p>
+<h3>Ejemplo: la tienda online en el Black Friday</h3>
+<div class="split">
+  <div class="box"><h4>Infraestructura tradicional</h4><p>Compras 50 servidores para el Black Friday y el resto del año usas 10. Mucho dinero inmovilizado.</p></div>
+  <div class="box ms"><h4>Azure</h4><p>10 servidores en enero, 50 en el Black Friday, 10 en febrero. Mucho más eficiente.</p></div>
+</div>
+<h3>Pay as you go</h3>
+<p>La nube usa precios de pago según uso. Permite controlar mejor el gasto, tener más flexibilidad, escalar según la demanda y reducir costes de infraestructura. Beneficios del modelo: sin inversión inicial elevada, escalabilidad, flexibilidad, optimización económica y aprovisionamiento en minutos. La elasticidad es la capacidad de crecer y reducir recursos automáticamente.</p>
+<div class="asir"><h4>Traducción ASIR</h4><p>Un servidor de prácticas: antes lo comprabas, instalabas, mantenías, actualizabas y sustituías. En Azure solicitas recursos, los usas, los eliminas y pagas solo el tiempo usado.</p></div></section>
+
+<section id="repaso"><h2>Repaso final</h2>
+<h3>Los 7 conceptos que sí o sí</h3>
+<div class="mnemo">
+  <div><b>1</b>Cloud computing</div><div><b>2</b>Responsabilidad compartida</div><div><b>3</b>Pública, privada, híbrida</div><div><b>4</b>IaaS, PaaS, SaaS</div><div><b>5</b>CapEx frente a OpEx</div><div><b>6</b>Pago por consumo</div><div><b>7</b>Escalabilidad y elasticidad</div>
+</div>
+<h3>Trucos para memorizar</h3>
+<div class="mnemo"><div><b>Pública</b>Compartida</div><div><b>Privada</b>Exclusiva</div><div><b>Híbrida</b>Mezcla</div><div><b>Multinube</b>Varios proveedores</div><div><b>CapEx</b>Comprar</div><div><b>OpEx</b>Utilizar</div></div>
+<h3>Preguntas de repaso</h3>
+<details><summary>¿Quién es responsable de la seguridad física de los centros de datos de Azure?</summary><p>Microsoft.</p></details>
+<details><summary>¿Qué tipo de nube combina recursos locales y recursos en la nube?</summary><p>Híbrida.</p></details>
+<details><summary>¿Qué característica define el modelo de pago por uso?</summary><p>Pago según consumo.</p></details>
+<details><summary>¿Quién es siempre responsable de los datos?</summary><p>El cliente.</p></details>
+<details><summary>¿Qué modelo ofrece recursos dedicados a una única organización?</summary><p>Nube privada.</p></details>
+<details><summary>¿Qué modelo utiliza varios proveedores de nube?</summary><p>Multinube.</p></details>
+<details><summary>¿Qué modelo permite pagar únicamente por los recursos consumidos?</summary><p>Nube pública.</p></details>
+<details><summary>¿Qué tipo de gasto representa Azure normalmente?</summary><p>OpEx.</p></details>
+<details><summary>¿Qué modelo de servicio deja más responsabilidad al cliente?</summary><p>IaaS.</p></details>
+<details><summary>¿Cuál es la ventaja principal de la elasticidad?</summary><p>Ajustar los recursos a la demanda real.</p></details>
+<details><summary>¿Qué permite Azure VMware Solution?</summary><p>Ejecutar entornos VMware en Azure para migrar sin rediseñar toda la infraestructura.</p></details>
+</section>
+
+<section id="learn"><h2>Contraste con Microsoft Learn</h2>
+<p>Revisé estos apuntes con la documentación oficial el 15 de octubre de 2026. Casi todo coincide. Estos son los matices.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>Resultado</th></tr></thead><tbody>
+<tr><td>Pesos del examen</td><td>Coinciden con la guía de estudio de Microsoft (habilidades medidas desde el 20 de julio de 2026): 25–30 %, 35–40 % y 30–35 %.</td></tr>
+<tr><td>Estructura del módulo</td><td>El módulo de Learn "Describir la informática en la nube" tiene 8 unidades. Las unidades 1 a 6 coinciden con tus apuntes. La 7 es el cuestionario del módulo y la 8 el resumen.</td></tr>
+<tr><td>Responsabilidad compartida</td><td>Coincide en lo esencial. En SaaS, Learn marca como compartidos las aplicaciones y los dispositivos cliente. Los apuntes de Copilot ponen la aplicación entera del lado de Microsoft. Algunos diagramas de Learn también muestran la infraestructura de identidad como compartida, pero la tabla actual trata identidades y usuarios como siempre del cliente. Para el examen: datos e identidades, siempre del cliente.</td></tr>
+<tr><td>Azure Arc</td><td>"Gestionar desde una única consola" es una simplificación. Arc extiende la gestión, seguridad y gobierno de Azure a recursos fuera de Azure.</td></tr>
+<tr><td>CapEx y OpEx</td><td>Coincide con Learn: CapEx es inversión inicial en hardware; OpEx son costes continuos según el uso.</td></tr>
+<tr><td>Ejemplos con cifras</td><td>El 10 a 50 servidores y los 100 a 20.000 usuarios son ejemplos ilustrativos de los apuntes, no datos de Microsoft.</td></tr></tbody></table></div>
+<p class="src" style="margin-top:14px">Fuentes:
+<a href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900">Guía de estudio AZ-900</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-cloud-compute/">Módulo Describe cloud computing</a> ·
+<a href="https://learn.microsoft.com/azure/security/fundamentals/shared-responsibility">Shared responsibility in the cloud</a> ·
+<a href="https://learn.microsoft.com/azure/azure-arc/overview">Azure Arc overview</a> ·
+<a href="https://learn.microsoft.com/azure/cloud-adoption-framework/strategy/inform/cost-efficiency">CapEx y OpEx en Cloud Adoption Framework</a></p></section>
+
+</main></div>
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+<script>
+(function(){var KEY='az900-m1-check',boxes=document.querySelectorAll('#checklist input');
+try{var s=JSON.parse(localStorage.getItem(KEY)||'[]');boxes.forEach(function(b,i){b.checked=!!s[i]})}catch(e){}
+boxes.forEach(function(b){b.addEventListener('change',function(){try{localStorage.setItem(KEY,JSON.stringify([].map.call(boxes,function(x){return x.checked})))}catch(e){}})})})();
+</script>
+
+</body></html>
