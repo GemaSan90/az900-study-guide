@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Manual del Módulo 3 del AZ-900: IaaS, PaaS y SaaS, con esquemas en español, preguntas explicadas y contraste con Microsoft Learn.">
+<title>Manual AZ-900 Módulo 3</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>html{scroll-padding-top:0}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>
+/* Layout: cabecera azul Azure, índice lateral fijo con las 6 unidades, mapa de responsabilidades tú/proveedor, un esquema de pila por tipo de servicio con escenarios, y preguntas explicadas en desplegables */
+:root{
+  --bg:#f3f7fc; --surface:#ffffff; --surface2:#e8f1fb; --fg:#0b1b2e; --muted:#47607c;
+  --azure:#0078d4; --azure-deep:#004e8c; --azure-soft:#cfe5f8; --violet:#6b4fd8; --violet-soft:#e4defa; --line:#c9d9ea;
+  --bad:#c4314b; --hero1:#005ba1; --hero2:#0078d4; --on-hero:#ffffff;
+  --display:'Sora',system-ui,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --bad:#ff7a90; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --bad:#ff7a90; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+.hero{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:56px max(16px,env(safe-area-inset-left,0px)) 48px;background:radial-gradient(1200px 420px at 85% -10%,rgba(160,139,255,.45),transparent 60%),linear-gradient(135deg,var(--hero1),var(--hero2));color:var(--on-hero)}
+.hero-in{max-width:1100px;margin:0 auto}
+.tag{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+h1{font:800 clamp(30px,5.4vw,54px)/1.08 var(--display);margin:14px 0 14px;text-wrap:balance;letter-spacing:-.02em}
+.lead{max-width:60ch;font-size:18px;opacity:.95;margin:0 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 12px var(--mono);padding:6px 12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(255,255,255,.1)}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:210px minmax(0,1fr);gap:40px;padding-block:36px 72px}
+nav{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line)}
+nav a:hover,nav a:focus-visible{color:var(--azure);border-left-color:var(--azure);outline:none}
+nav .sep{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
+main{min-width:0;display:flex;flex-direction:column;gap:52px}
+section{scroll-margin-top:24px;min-width:0}
+.unit{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.unit .n{font:700 12px var(--mono);letter-spacing:.08em;color:var(--azure);border:1px solid var(--azure);border-radius:6px;padding:3px 8px;white-space:nowrap}
+h2{font:700 26px/1.2 var(--display);margin:0 0 14px;letter-spacing:-.01em;text-wrap:balance}
+h3{font:600 17px var(--display);margin:26px 0 8px;color:var(--azure)}
+p{margin:0 0 12px;max-width:70ch}
+.idea{background:linear-gradient(135deg,var(--azure-soft),var(--surface2));border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch;margin-bottom:16px}
+.idea b{color:var(--azure)}
+.callout{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch}
+.callout b{color:var(--azure)}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th{background:var(--azure-deep);color:#fff;text-align:left;font:600 13px var(--display);padding:10px 14px;letter-spacing:.02em}
+td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600;color:var(--azure)}
+tr:hover td{background:var(--surface2)}
+ul{margin:0 0 12px;padding-left:20px}li{margin-bottom:4px}
+.check{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.check label{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer}
+.check input{accent-color:var(--azure);width:18px;height:18px;margin-top:3px;flex:none}
+.check input:checked+span{text-decoration:line-through;color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 16px}
+.node{padding:8px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-weight:600}
+.node.az{background:var(--azure);color:#fff;border-color:var(--azure)}
+.arrow{color:var(--azure);font-weight:700}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.box h4{margin:0 0 6px;font:600 14px var(--display)}
+.box.ms{border-top:3px solid var(--azure)}.box.cl{border-top:3px solid var(--violet)}.box.dep{border-top:3px dashed var(--muted)}
+.box p{margin:0;font-size:15px}
+.box ul{margin:0;font-size:15px}
+.pc{font-size:14px;color:var(--muted);margin-top:8px}
+.asir{background:var(--violet-soft);border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:10px;padding:14px 18px;max-width:72ch;margin:16px 0}
+.asir h4{margin:0 0 6px;font:600 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+.asir p,.asir ul{margin:0 0 6px;font-size:15px}
+.badge{display:inline-block;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--violet);border:1px solid var(--violet);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle}
+.quote{border-left:3px solid var(--azure);padding:4px 0 4px 14px;margin:0 0 10px;font-weight:500}
+.mnemo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.mnemo div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px}
+.mnemo b{display:block;color:var(--azure);font:600 15px var(--display)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+details p{margin:8px 0 0;color:var(--azure);font-weight:500}
+.src{font-size:14px;color:var(--muted)}
+.src a{color:var(--azure)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;max-width:640px;min-width:0}
+.fig svg{display:block;width:100%;height:auto}
+.fig .ax{stroke:var(--line);stroke-width:1}
+.fig .tx{fill:var(--muted);font:500 12px var(--body)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;margin:10px 0 0;color:var(--muted)}
+.legend i{display:inline-block;width:18px;height:10px;margin-right:6px;vertical-align:middle;border-radius:2px}
+.legend .a{border-top:3px solid var(--azure);height:0}.legend .b{border-top:3px dashed var(--violet);height:0}
+.legend .r{background:var(--azure);border-radius:50%;width:12px;height:12px}
+.legend .f{background:var(--surface);border:2px solid var(--bad);border-radius:50%;width:12px;height:12px}
+.legend .p{border-top:3px dashed var(--violet);height:0}
+.gauge{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
+.gauge .dial{flex:0 1 280px;min-width:0}
+.gauge svg{display:block;width:100%;height:auto}
+.gauge .track{stroke:var(--line);stroke-width:18;fill:none;stroke-linecap:round}
+.gauge .val{stroke:var(--azure);stroke-width:18;fill:none;stroke-linecap:round}
+.gauge .big{fill:var(--fg);font:800 34px var(--display)}
+.gauge .sub{fill:var(--muted);font:500 12px var(--body)}
+.sla{flex:1 1 300px;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;min-width:0}
+.sla div{background:var(--azure-deep);color:#fff;border-radius:8px;padding:10px 12px;text-align:center;font-size:14px}
+.sla b{display:block;font:700 18px var(--display)}
+.vmrow{display:flex;align-items:flex-end;justify-content:center;gap:10px;min-height:96px;margin:6px 0 10px}
+.vm{background:var(--azure-deep);color:#fff;border-radius:6px;font:600 12px var(--mono);display:flex;align-items:center;justify-content:center}
+.vm.old{background:var(--muted)}
+.vmrow .go{color:var(--azure);font:700 22px var(--display);align-self:center}
+.ico{width:36px;height:36px;border-radius:8px;background:var(--azure-soft);color:var(--azure);display:grid;place-items:center;font:700 13px var(--mono);margin-bottom:8px}
+.ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tool .eq{font-size:13px;color:var(--muted);margin-top:6px}
+.shieldrow{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center}
+.shieldrow .sh{flex:0 1 260px;min-width:0}
+.shieldrow svg{display:block;width:100%;height:auto}
+.shieldrow .split{flex:1 1 360px;margin:0}
+.sh .shape{fill:var(--surface2);stroke:var(--azure-deep);stroke-width:3}
+.sh .b1{fill:var(--azure-deep)}.sh .b2{fill:var(--azure)}.sh .b3{fill:var(--violet)}
+.sh .bt{fill:#fff;font:700 13px var(--display)}.sh .bs{fill:#fff;font:500 11px var(--body)}
+.cyc .ring{fill:none;stroke:var(--azure);stroke-width:3}
+.cyc .head{fill:var(--azure)}
+.cyc .nd{fill:var(--azure-deep)}
+.cyc .nt{fill:#fff;font:700 12px var(--display);text-anchor:middle}
+.glb .sphere{fill:var(--surface2);stroke:var(--azure-deep);stroke-width:3}
+.glb .lat{fill:none;stroke:var(--line);stroke-width:1.5}
+.glb .reg{fill:var(--azure)}
+.glb .rt{fill:#fff;font:700 12px var(--display);text-anchor:middle}
+.glb .failed{fill:var(--surface);stroke:var(--bad);stroke-width:3}
+.glb .x{stroke:var(--bad);stroke-width:3.5;stroke-linecap:round}
+.glb .path{fill:none;stroke:var(--violet);stroke-width:3;stroke-dasharray:7 5}
+.glb .head{fill:var(--violet)}
+.glbrow{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
+.glbrow svg{flex:0 1 340px;min-width:0;width:100%;height:auto}
+.pillar{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:12px}
+.pillar div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px;font-weight:600}
+.pillar div.on{background:var(--azure-deep);color:#fff;border-color:var(--azure-deep)}
+.pillar div.part{border:2px dashed var(--violet);color:var(--violet)}
+footer{text-align:center;color:var(--muted);font:500 13px var(--mono);padding:24px 0 8px;border-top:1px solid var(--line);max-width:1100px;margin:0 auto}
+@media(max-width:820px){.wrap{grid-template-columns:1fr;gap:20px}nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}nav a{border:1px solid var(--line);border-radius:999px;padding:4px 12px}nav .sep{display:none}}
+@media(prefers-reduced-motion:no-preference){a,tr td{transition:background .15s,color .15s}}
+
+/* Módulo 3: mapa de responsabilidades (tú / proveedor / compartido) y esquema de pila por tipo de servicio */
+:root{--you:#0a3f73; --prov:#5f6f84}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--you:#0a5cb0; --prov:#3e5068}}
+:root[data-theme="dark"]{--you:#0a5cb0; --prov:#3e5068}
+.resp{min-width:560px}
+.resp th{text-align:center}
+.resp th:first-child{text-align:left}
+.resp th small{display:block;font:500 11px var(--body);opacity:.85;letter-spacing:0;margin-top:2px}
+.resp td.y,.resp td.p,.resp td.s{text-align:center;font-weight:600;font-size:14px;border-top:2px solid var(--surface);border-left:2px solid var(--surface)}
+.resp td.y{background:var(--you);color:#fff}
+.resp td.p{background:var(--prov);color:#fff}
+.resp td.s{background:var(--violet-soft);color:var(--fg);outline:2px dashed var(--violet);outline-offset:-5px}
+.legend .lg-y,.legend .lg-p,.legend .lg-s{width:14px;height:14px;border-radius:3px}
+.legend .lg-y{background:var(--you)}
+.legend .lg-p{background:var(--prov)}
+.legend .lg-s{background:var(--violet-soft);border:2px dashed var(--violet)}
+.svc{max-width:820px;display:flex;flex-wrap:wrap;gap:18px 28px;align-items:flex-start}
+.svc-head{flex:1 1 100%;display:flex;flex-direction:column;gap:2px}
+.svc-head b{font:700 17px var(--display)}
+.svc-head span{color:var(--muted);font-size:14px}
+.svc-stack{flex:1 1 260px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.svc-side{flex:1 1 260px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.svc-side h4.t{margin:0;font:600 14px var(--display)}
+.svc-lab{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:8px 0 2px}
+.svc-lab:first-child{margin-top:0}
+.svc-div{border-top:2px dashed var(--line);margin:6px 0 0}
+.ly{padding:10px 14px;border-radius:8px;text-align:center;font:600 14px var(--body);color:#fff}
+.ly.you{background:var(--you)}
+.ly.prov{background:var(--prov)}
+details .ex{margin-top:8px}
+details .ex p{margin:8px 0 0;color:var(--fg);font-weight:400}
+details .ex p b{color:var(--azure)}
+details .ex ul{margin:8px 0 0}
+.qa td:first-child{white-space:normal}
+.mnemo.wide{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+</style>
+</head>
+<body>
+<header class="hero"><div class="hero-in">
+  <div class="tag">AZ-900 · Microsoft Azure Fundamentals</div>
+  <h1>Módulo 3: Tipos de servicio en la nube</h1>
+  <p class="lead">Manual del módulo completo: infraestructura como servicio, plataforma como servicio y software como servicio. Cada unidad cierra con lo que cae en el examen y con las preguntas explicadas.</p>
+  <div class="chips"><span class="chip">Gema San</span><span class="chip">Contrastado con Microsoft Learn</span><span class="chip">Sueña. Aprende. Crece.</span></div>
+</div></header>
+
+<div class="wrap">
+<nav aria-label="Índice">
+  <a href="index.html">← Guía AZ-900</a>
+  <a href="#examen">Mapa del examen</a>
+  <div class="sep">Unidades</div>
+  <a href="#u1">1 · Introducción</a><a href="#u2">2 · IaaS</a><a href="#u3">3 · PaaS</a><a href="#u4">4 · SaaS</a><a href="#u5">5 · Comprobación</a><a href="#u6">6 · Resumen</a>
+  <div class="sep">Cierre</div>
+  <a href="#repaso">Repaso final</a><a href="#learn">Contraste con Learn</a>
+</nav>
+<main>
+
+<section id="examen"><h2>Dónde encaja este módulo</h2>
+<p>Es el módulo 3 de 3 de la ruta "Describir los conceptos de la nube" y cierra el bloque de conceptos cloud, que pesa entre el 25 y el 30 % del examen. Aquí no se configura nada. Se trata de reconocer cada tipo de servicio, saber qué gestionas en cada uno y elegir el adecuado para un escenario.</p>
+<div class="tablebox"><table><thead><tr><th>Módulo de la ruta</th><th>Tema</th><th>Manual</th></tr></thead><tbody>
+<tr><td>1</td><td>Informática en la nube, responsabilidad compartida, modelos de nube y consumo</td><td>Manual del Módulo 1</td></tr>
+<tr><td>2</td><td>Ventajas de usar servicios en la nube</td><td>Manual del Módulo 2</td></tr>
+<tr><td>3</td><td>Tipos de servicio en la nube: IaaS, PaaS y SaaS</td><td>Este manual</td></tr></tbody></table></div>
+<h3>Dónde vuelve cada tipo en el AZ-900</h3>
+<p>Este módulo es la base de lo que viene después. En el resto del examen aparecen los servicios concretos, y la configuración detallada llega con el AZ-104.</p>
+<div class="tablebox"><table><thead><tr><th>Tema de este módulo</th><th>Dónde vuelve en el examen</th></tr></thead><tbody>
+<tr><td>Responsabilidad compartida</td><td>Módulo 1 de esta ruta. Aquí se aplica a cada tipo de servicio.</td></tr>
+<tr><td>IaaS</td><td>Opciones de máquinas virtuales (Virtual Machines, Virtual Machine Scale Sets, conjuntos de disponibilidad) y redes virtuales, en el bloque de arquitectura y servicios.</td></tr>
+<tr><td>PaaS</td><td>Opciones de hospedaje de aplicaciones (aplicaciones web, contenedores y máquinas virtuales) y tipos de proceso, entre ellos las funciones.</td></tr>
+<tr><td>SaaS</td><td>La guía no lista servicios SaaS concretos. Se evalúa como tipo de servicio y por sus casos de uso, con Microsoft 365 como ejemplo habitual.</td></tr>
+<tr><td>Informática sin servidor</td><td>La guía la incluye en "Describir la informática en la nube" (Módulo 1). Azure Functions aparece como PaaS en la documentación de Microsoft.</td></tr></tbody></table></div>
+<h3>Lo que debo saber de este módulo</h3>
+<ul class="check" id="checklist">
+  <li><label><input type="checkbox"><span>Qué gestiona cada parte en IaaS</span></label></li>
+  <li><label><input type="checkbox"><span>Qué gestiona cada parte en PaaS</span></label></li>
+  <li><label><input type="checkbox"><span>Qué gestiona cada parte en SaaS</span></label></li>
+  <li><label><input type="checkbox"><span>Lo que siempre gestiono yo: datos, cuentas y accesos</span></label></li>
+  <li><label><input type="checkbox"><span>Casos de IaaS: lift-and-shift y pruebas y desarrollo</span></label></li>
+  <li><label><input type="checkbox"><span>Casos de PaaS: marco de desarrollo y análisis de datos</span></label></li>
+  <li><label><input type="checkbox"><span>Casos de SaaS: correo, productividad y finanzas</span></label></li>
+  <li><label><input type="checkbox"><span>Elegir el tipo de servicio ante un escenario</span></label></li>
+</ul></section>
+
+<section id="u1"><div class="unit"><span class="n">UNIDAD 1/6</span></div>
+<h2>Introducción a los tipos de servicio</h2>
+<p class="idea"><b>Idea principal.</b> Cada tipo de servicio decide cuánta flexibilidad tienes y cuánta administración te toca. Cuanto más control quieres, más responsabilidad asumes. Este módulo aplica el modelo de responsabilidad compartida del Módulo 1 a tres formas de contratar la nube.</p>
+<div class="flow"><span class="node">IaaS · máximo control</span><span class="arrow">→</span><span class="node">PaaS · punto medio</span><span class="arrow">→</span><span class="node az">SaaS · mínima administración</span></div>
+<h3>Objetivos del módulo</h3>
+<ul><li>Describir la infraestructura como servicio (IaaS).</li><li>Describir la plataforma como servicio (PaaS).</li><li>Describir el software como servicio (SaaS).</li><li>Identificar los casos de uso adecuados para cada tipo de servicio.</li></ul>
+<h3>Mapa de responsabilidades</h3>
+<p>Es el diagrama comparativo del módulo de Learn, traducido. Cada capa indica si la gestionas tú o la gestiona el proveedor de la nube.</p>
+<div class="tablebox"><table class="resp"><thead><tr><th>Capa</th><th>IaaS<small>Máximo control</small></th><th>PaaS<small>Equilibrado</small></th><th>SaaS<small>Mínimo control</small></th></tr></thead><tbody>
+<tr><td>Aplicaciones</td><td class="y">Tú</td><td class="y">Tú</td><td class="p">Proveedor</td></tr>
+<tr><td>Datos</td><td class="y">Tú</td><td class="y">Tú</td><td class="y">Tú</td></tr>
+<tr><td>Entorno de ejecución</td><td class="y">Tú</td><td class="p">Proveedor</td><td class="p">Proveedor</td></tr>
+<tr><td>Middleware</td><td class="y">Tú</td><td class="p">Proveedor</td><td class="p">Proveedor</td></tr>
+<tr><td>Sistema operativo</td><td class="y">Tú</td><td class="p">Proveedor</td><td class="p">Proveedor</td></tr>
+<tr><td>Servidores</td><td class="p">Proveedor</td><td class="p">Proveedor</td><td class="p">Proveedor</td></tr>
+<tr><td>Almacenamiento</td><td class="p">Proveedor</td><td class="p">Proveedor</td><td class="p">Proveedor</td></tr>
+<tr><td>Redes</td><td class="p">Proveedor</td><td class="p">Proveedor</td><td class="p">Proveedor</td></tr></tbody></table></div>
+<div class="legend"><span><i class="lg-y"></i>Lo gestionas tú</span><span><i class="lg-p"></i>Lo gestiona el proveedor de la nube</span></div>
+<p class="pc" style="margin-top:8px">El entorno de ejecución (<i>runtime</i>) es lo que ejecuta tu código. El middleware es el software intermedio, como los servidores web o de aplicaciones. Los diagramas originales de Learn están en inglés.</p>
+<h3>Cada tipo responde a una pregunta</h3>
+<div class="tablebox"><table><thead><tr><th>Tipo</th><th>Qué alquilas</th><th>Qué haces tú</th></tr></thead><tbody>
+<tr><td>IaaS</td><td>Infraestructura</td><td>Administras el sistema operativo y todo lo que hay encima.</td></tr>
+<tr><td>PaaS</td><td>Una plataforma</td><td>Desarrollas y despliegas tu aplicación y gestionas tus datos.</td></tr>
+<tr><td>SaaS</td><td>Una aplicación</td><td>La usas y gestionas tus usuarios y tus datos.</td></tr></tbody></table></div>
+<h3>El matiz de la responsabilidad compartida</h3>
+<p><span class="badge" style="margin:0 8px 0 0">Ampliación</span>El mapa de arriba reparte las capas entre tú y el proveedor. La matriz completa de responsabilidad compartida de Microsoft añade el término <b>compartido</b>: en PaaS y SaaS el proveedor mantiene la aplicación, pero la configuración, el código que añadas y los accesos siguen siendo tuyos.</p>
+<div class="tablebox"><table class="resp"><thead><tr><th>Área</th><th>IaaS</th><th>PaaS</th><th>SaaS</th></tr></thead><tbody>
+<tr><td>Datos</td><td class="y">Cliente</td><td class="y">Cliente</td><td class="y">Cliente</td></tr>
+<tr><td>Configuraciones y ajustes</td><td class="y">Cliente</td><td class="y">Cliente</td><td class="y">Cliente</td></tr>
+<tr><td>Identidades y usuarios</td><td class="y">Cliente</td><td class="y">Cliente</td><td class="y">Cliente</td></tr>
+<tr><td>Dispositivos cliente</td><td class="y">Cliente</td><td class="y">Cliente</td><td class="s">Compartido</td></tr>
+<tr><td>Aplicaciones</td><td class="y">Cliente</td><td class="s">Compartido</td><td class="s">Compartido</td></tr>
+<tr><td>Controles de red</td><td class="y">Cliente</td><td class="s">Compartido</td><td class="p">Microsoft</td></tr>
+<tr><td>Sistema operativo</td><td class="y">Cliente</td><td class="p">Microsoft</td><td class="p">Microsoft</td></tr>
+<tr><td>Servidores, red y centro de datos físicos</td><td class="p">Microsoft</td><td class="p">Microsoft</td><td class="p">Microsoft</td></tr></tbody></table></div>
+<div class="legend"><span><i class="lg-y"></i>Cliente</span><span><i class="lg-s"></i>Compartido</span><span><i class="lg-p"></i>Microsoft</span></div>
+<div class="callout" style="margin-top:12px"><b>Lo que siempre es tuyo.</b> En los tres tipos de servicio conservas la responsabilidad sobre tus datos, tus cuentas y tus accesos, y sobre proteger los dispositivos desde los que te conectas.</div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Tres formas de dar un servicio en el aula. Montar tú la máquina virtual con su sistema y su software (IaaS). Usar un hosting que ya trae servidor web y entorno de ejecución, y subir solo tu aplicación (PaaS). Contratar el servicio ya hecho y crear solo los usuarios (SaaS). Cuanto más contratas, menos montas.</p></div></section>
+
+<section id="u2"><div class="unit"><span class="n">UNIDAD 2/6</span></div>
+<h2>Infraestructura como servicio (IaaS)</h2>
+<p class="idea"><b>Idea principal.</b> IaaS es la categoría más flexible de los servicios en la nube y da el máximo control sobre los recursos. El proveedor mantiene el hardware, la conectividad de red a Internet y la seguridad física. Tú te encargas de todo lo demás.</p>
+<p class="quote">En IaaS alquilas el hardware en un centro de datos, pero lo que hagas con él depende de ti.</p>
+<h3>Quién gestiona qué</h3>
+<div class="split">
+  <div class="box ms"><h4>Lo gestionas tú</h4><ul><li>Instalación, configuración y mantenimiento del sistema operativo.</li><li>Aplicaciones y bases de datos.</li><li>Configuración de la red del sistema.</li><li>Configuración del almacenamiento.</li><li>Usuarios y permisos.</li><li>Actualizaciones y parches del sistema operativo.</li><li>Protección de los datos.</li></ul></div>
+  <div class="box dep"><h4>Lo gestiona el proveedor</h4><ul><li>Hardware físico.</li><li>Almacenamiento físico.</li><li>Redes físicas.</li><li>Conectividad a Internet.</li><li>Seguridad física de los centros de datos.</li></ul></div>
+</div>
+<div class="fig svc">
+  <div class="svc-head"><b>Infraestructura como servicio (IaaS)</b><span>Máximo control: tú gestionas la pila de la carga de trabajo.</span></div>
+  <div class="svc-stack">
+    <div class="svc-lab">Lo gestionas tú</div>
+    <div class="ly you">Aplicaciones</div><div class="ly you">Datos</div><div class="ly you">Entorno de ejecución</div><div class="ly you">Middleware</div><div class="ly you">Sistema operativo</div>
+    <div class="svc-div"></div>
+    <div class="svc-lab">Lo gestiona el proveedor</div>
+    <div class="ly prov">Servidores</div><div class="ly prov">Almacenamiento</div><div class="ly prov">Redes</div>
+  </div>
+  <div class="svc-side">
+    <h4 class="t">Escenarios habituales</h4>
+    <div class="box ms"><h4>Migración lift-and-shift</h4><p>Configuras recursos en la nube parecidos a los de tu centro de datos local y después trasladas las cargas de trabajo a la infraestructura IaaS.</p></div>
+    <div class="box ms"><h4>Pruebas y desarrollo</h4><p>Replicas rápidamente entornos de desarrollo y pruebas. Puedes encender o apagar entornos con control total.</p></div>
+    <div class="callout"><b>Idea clave.</b> Alquilas hardware. Lo que hagas con él depende de ti.</div>
+  </div>
+</div>
+<p class="pc" style="margin-top:8px">Diagrama de Learn traducido al español.</p>
+<h3>Ejemplo: un Windows Server de la oficina a Azure</h3>
+<p>Una empresa tiene un Windows Server 2022 en sus instalaciones con una aplicación interna. Quiere llevarlo a Azure sin modificar la aplicación.</p>
+<div class="flow"><span class="node">Servidor Windows local</span><span class="arrow">→</span><span class="node">Migración</span><span class="arrow">→</span><span class="node az">Máquina virtual de Azure</span></div>
+<p>Microsoft mantiene el hardware. La empresa sigue administrando Windows Server, Active Directory, DNS, los usuarios y las aplicaciones instaladas. Esto es <b>lift-and-shift</b>: se traslada el servidor tal cual, sin rediseñar la aplicación.</p>
+<p><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Llevar una aplicación web existente a Azure App Service también es posible y suele pedir pocos cambios. Pero entonces ya no mueves un servidor, usas una plataforma gestionada (PaaS). En el examen, mover el servidor tal cual apunta a IaaS.</p>
+<p><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Microsoft cita como ejemplos de IaaS las máquinas virtuales de Azure, Azure Disk Storage y las redes virtuales.</p>
+<div class="asir"><h4>Traducción ASIR</h4>
+<p>Piensa en una máquina virtual de VMware ESXi, Hyper-V o Proxmox. La diferencia es que el host físico no está en tu empresa, está en un centro de datos de Microsoft. Si sabes instalar Windows Server, Ubuntu Server, Active Directory, DHCP o DNS, ya entiendes casi todo IaaS: antes administrabas un servidor en tu empresa y ahora administras uno alojado en Azure.</p>
+<div class="tablebox" style="margin-top:8px"><table><thead><tr><th>Mundo ASIR</th><th>Azure IaaS</th></tr></thead><tbody>
+<tr><td>Servidor físico</td><td>Máquina virtual de Azure</td></tr>
+<tr><td>Rack del CPD</td><td>Centro de datos de Azure</td></tr>
+<tr><td>Disco duro del servidor</td><td>Azure Disk Storage</td></tr>
+<tr><td>Switch físico</td><td>Red virtual (VNet)</td></tr>
+<tr><td>Administrador de sistemas</td><td>Tú</td></tr>
+<tr><td>Hardware del servidor</td><td>Microsoft</td></tr></tbody></table></div></div>
+<h3>Frases de examen</h3>
+<p class="quote">La empresa necesita el máximo control.</p>
+<p class="quote">Se requiere administrar el sistema operativo.</p>
+<p class="quote">Se desea migrar servidores existentes.</p>
+<p class="quote">Los administradores quieren instalar software personalizado.</p>
+<p class="quote">La organización necesita una migración lift-and-shift.</p>
+<p class="quote">¿Qué modelo ofrece la mayor responsabilidad al cliente?</p>
+<p>Si el enunciado habla de control total, del sistema operativo o de mover servidores tal cual, la respuesta es IaaS.</p>
+<h3>Lo que más se pregunta</h3>
+<div class="tablebox"><table class="qa"><thead><tr><th>Pregunta</th><th>Respuesta</th></tr></thead><tbody>
+<tr><td>¿Quién administra el sistema operativo?</td><td>IaaS: el cliente. PaaS y SaaS: el proveedor.</td></tr>
+<tr><td>¿Qué modelo da más control?</td><td>IaaS</td></tr>
+<tr><td>¿Qué modelo da más responsabilidad al cliente?</td><td>IaaS</td></tr>
+<tr><td>¿Qué modelo se parece más a un servidor tradicional?</td><td>IaaS</td></tr>
+<tr><td>¿Qué modelo suele usarse en un lift-and-shift?</td><td>IaaS</td></tr></tbody></table></div>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Pensar que Azure actualiza Windows automáticamente</td><td>En IaaS los parches del sistema operativo son tuyos.</td></tr>
+<tr><td>Pensar que Microsoft administra la máquina virtual completa</td><td>Microsoft mantiene el hardware donde se ejecuta. La configuración interna sigue siendo tuya.</td></tr>
+<tr><td>Confundir IaaS con PaaS</td><td>En IaaS administras el sistema operativo. En PaaS no.</td></tr>
+<tr><td>Creer que IaaS elimina el trabajo del administrador</td><td>Sigues aplicando parches, gestionando usuarios, configurando aplicaciones, monitorizando y haciendo copias de seguridad.</td></tr></tbody></table></div>
+<h3>Truco para memorizar</h3>
+<div class="callout"><b>Infraestructura alquilada, administración propia.</b> Es como alquilar un local vacío para montar una cocina: el propietario pone el edificio y los suministros, y tú decides qué instalas y cómo lo organizas.</div>
+<p class="pc" style="margin-top:8px">Para el AZ-104: administrarás máquinas virtuales, discos administrados, redes virtuales, direcciones IP públicas, grupos de seguridad de red y balanceadores de carga.</p>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Por qué IaaS ofrece más flexibilidad que PaaS?</summary><div class="ex"><p><b>Porque eliges y configuras más capas.</b></p><p>En IaaS decides el sistema operativo, la configuración de red y almacenamiento y el software que instalas encima, incluidos el entorno de ejecución y el middleware. En PaaS esas capas vienen decididas y mantenidas por el proveedor. Más capas bajo tu control significan más flexibilidad, y también más trabajo.</p></div></details>
+<details><summary>¿Qué responsabilidades mantiene una empresa al usar una máquina virtual de Azure?</summary><div class="ex"><p><b>Todo lo que hay dentro de la máquina virtual.</b></p><ul><li>El sistema operativo: instalación, configuración y parches.</li><li>Las aplicaciones, las bases de datos y el software intermedio.</li><li>La configuración de red y de almacenamiento del sistema.</li><li>Los usuarios y los permisos.</li><li>Los datos, con sus copias de seguridad.</li></ul><p>Azure solo mantiene el hardware, la conectividad a Internet y la seguridad física del centro de datos.</p></div></details>
+<details><summary>¿Por qué lift-and-shift suele asociarse con IaaS?</summary><div class="ex"><p><b>Porque una máquina virtual reproduce el servidor local tal cual.</b></p><p>Lift-and-shift significa trasladar la carga de trabajo sin rediseñarla. Con IaaS creas recursos parecidos a los de tu centro de datos y mueves ahí el servidor con su sistema operativo y su software. PaaS obligaría a adaptar la aplicación a la plataforma, y SaaS la sustituiría por otro producto.</p></div></details>
+<details><summary>¿Qué recursos de AZ-104 están basados principalmente en IaaS?</summary><div class="ex"><p><b>Los bloques con los que se construye una máquina virtual.</b></p><p>Máquinas virtuales, discos administrados, redes virtuales, direcciones IP públicas, grupos de seguridad de red y balanceadores de carga. En todos ellos eres tú quien los configura y los mantiene.</p></div></details>
+<details><summary>Si una máquina virtual deja de funcionar por una mala configuración de Windows, ¿es responsabilidad de Azure o del cliente?</summary><div class="ex"><p><b>Del cliente.</b></p><p>La configuración interna del sistema operativo es tuya en IaaS. Azure respondería si el fallo fuera del hardware o de la infraestructura física donde se ejecuta la máquina, porque eso sí lo mantiene el proveedor.</p></div></details></section>
+
+<section id="u3"><div class="unit"><span class="n">UNIDAD 3/6</span></div>
+<h2>Plataforma como servicio (PaaS)</h2>
+<p class="idea"><b>Idea principal.</b> PaaS es un punto intermedio entre alquilar espacio en un centro de datos (IaaS) y pagar por una solución completa ya desplegada (SaaS). El proveedor mantiene la infraestructura y la plataforma: sistemas operativos, middleware, herramientas de desarrollo y servicios de análisis. Tú te centras en tu aplicación.</p>
+<p class="quote">En PaaS no administras servidores. Te centras en desarrollar y usar la aplicación.</p>
+<p>En PaaS no tienes que preocuparte por las licencias ni por los parches del sistema operativo y de las bases de datos. Es ideal para disponer de un entorno de desarrollo completo sin el esfuerzo de mantener toda su infraestructura.</p>
+<h3>Quién gestiona qué</h3>
+<div class="split">
+  <div class="box ms"><h4>Lo gestionas tú</h4><ul><li>El código de tu aplicación.</li><li>Tus datos.</li><li>Los controles de acceso.</li></ul><p class="pc">Según el servicio, también se comparten algunos ajustes de red y de seguridad de la aplicación.</p></div>
+  <div class="box dep"><h4>Lo gestiona el proveedor</h4><ul><li>Hardware, red y almacenamiento.</li><li>Sistema operativo, middleware y entorno de ejecución.</li><li>Actualizaciones y parches de seguridad.</li><li>Licencias y parches del sistema operativo y de las bases de datos.</li></ul></div>
+</div>
+<div class="fig svc">
+  <div class="svc-head"><b>Plataforma como servicio (PaaS)</b><span>Equilibrado: te centras en tu aplicación y tus datos.</span></div>
+  <div class="svc-stack">
+    <div class="svc-lab">Lo gestionas tú</div>
+    <div class="ly you">Aplicaciones</div><div class="ly you">Datos</div>
+    <div class="svc-div"></div>
+    <div class="svc-lab">Lo gestiona el proveedor</div>
+    <div class="ly prov">Entorno de ejecución</div><div class="ly prov">Middleware</div><div class="ly prov">Sistema operativo</div><div class="ly prov">Servidores</div><div class="ly prov">Almacenamiento</div><div class="ly prov">Redes</div>
+  </div>
+  <div class="svc-side">
+    <h4 class="t">Escenarios habituales</h4>
+    <div class="box ms"><h4>Marco de desarrollo</h4><p>Creas aplicaciones en la nube con componentes integrados. La escalabilidad y la alta disponibilidad vienen incluidas, así que programas menos infraestructura.</p></div>
+    <div class="box ms"><h4>Análisis e inteligencia empresarial</h4><p>Analizas y exploras tus datos, encuentras patrones y predices resultados con las herramientas de la plataforma.</p></div>
+    <div class="callout"><b>Idea clave.</b> Construyes sobre la plataforma, sin quebraderos de cabeza de infraestructura.</div>
+  </div>
+</div>
+<p class="pc" style="margin-top:8px">Diagrama de Learn traducido al español.</p>
+<h3>Ejemplo: una web de reservas</h3>
+<p>Una empresa desarrolla una aplicación web para gestionar reservas. Compara los dos caminos.</p>
+<div class="split">
+  <div class="box cl"><h4>Con IaaS</h4><ul><li>Crear una máquina virtual.</li><li>Instalar Windows o Linux.</li><li>Instalar IIS o Apache.</li><li>Configurar la seguridad.</li><li>Aplicar actualizaciones.</li></ul></div>
+  <div class="box ms"><h4>Con PaaS</h4><p>Publica la aplicación en Azure App Service y Azure se encarga del resto. El equipo solo programa, corrige errores y mejora funcionalidades.</p></div>
+</div>
+<p>Otro ejemplo, de análisis: una cadena de supermercados quiere anticipar qué productos venderá más el mes que viene. Usa herramientas de análisis de Azure para procesar grandes volúmenes de datos sin preocuparse por los servidores.</p>
+<p><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Microsoft cita como ejemplos de PaaS Azure App Service, Azure Functions, Azure SQL Database y Azure Storage. Azure SQL Database se ocupa de las actualizaciones, los parches, las copias de seguridad y la supervisión sin que intervengas.</p>
+<div class="asir"><h4>Traducción ASIR</h4>
+<p>En ASIR para montar un servidor web harías todo esto a mano.</p>
+<div class="flow"><span class="node">Instalar Ubuntu</span><span class="arrow">→</span><span class="node">Instalar Apache</span><span class="arrow">→</span><span class="node">Configurar PHP</span><span class="arrow">→</span><span class="node">Instalar MySQL</span><span class="arrow">→</span><span class="node">Abrir puertos</span><span class="arrow">→</span><span class="node">Configurar certificados</span><span class="arrow">→</span><span class="node">Actualizar el sistema</span></div>
+<p>Con PaaS casi todo eso desaparece. La plataforma ya está preparada y solo despliegas la aplicación. Apache, Nginx, IIS, PHP o Tomcat eran middleware y entorno de ejecución, y en PaaS los pone Azure.</p>
+<div class="tablebox" style="margin-top:8px"><table><thead><tr><th>Mundo ASIR</th><th>Azure PaaS</th></tr></thead><tbody>
+<tr><td>Servidor web configurado a mano</td><td>Azure App Service</td></tr>
+<tr><td>SQL Server instalado por ti</td><td>Azure SQL Database</td></tr>
+<tr><td>Servidor de desarrollo propio</td><td>Plataforma administrada</td></tr>
+<tr><td>Actualizaciones manuales</td><td>Actualizaciones automáticas</td></tr>
+<tr><td>Administración del sistema operativo</td><td>Azure</td></tr></tbody></table></div></div>
+<h3>PaaS frente a IaaS y frente a SaaS</h3>
+<div class="tablebox"><table><thead><tr><th>Característica</th><th>IaaS</th><th>PaaS</th></tr></thead><tbody>
+<tr><td>Gestionas el sistema operativo</td><td>Sí</td><td>No</td></tr>
+<tr><td>Gestionas los servidores físicos</td><td>No</td><td>No</td></tr>
+<tr><td>Gestionas las aplicaciones</td><td>Sí</td><td>Sí</td></tr>
+<tr><td>Gestionas los datos</td><td>Sí</td><td>Sí</td></tr>
+<tr><td>Tiempo de administración</td><td>Alto</td><td>Bajo</td></tr></tbody></table></div>
+<div class="tablebox" style="margin-top:12px"><table><thead><tr><th>Característica</th><th>PaaS</th><th>SaaS</th></tr></thead><tbody>
+<tr><td>Puedes desarrollar tu propia aplicación</td><td>Sí</td><td>No</td></tr>
+<tr><td>Puedes modificar la aplicación</td><td>Sí</td><td>Normalmente no</td></tr>
+<tr><td>Gestionas los datos</td><td>Sí</td><td>Sí</td></tr>
+<tr><td>Gestionas la infraestructura</td><td>No</td><td>No</td></tr></tbody></table></div>
+<h3>Frases de examen</h3>
+<p class="quote">La empresa quiere centrarse en el desarrollo.</p>
+<p class="quote">No desea administrar sistemas operativos.</p>
+<p class="quote">Quiere minimizar las tareas de mantenimiento.</p>
+<p class="quote">Necesita una plataforma para desplegar aplicaciones.</p>
+<p class="quote">Desea evitar la instalación de middleware.</p>
+<p class="quote">Quiere automatizar las actualizaciones y los parches.</p>
+<p>Si el enunciado combina desarrolladores con menos administración, piensa en PaaS.</p>
+<h3>Lo que más se pregunta</h3>
+<div class="tablebox"><table class="qa"><thead><tr><th>Pregunta</th><th>Respuesta</th></tr></thead><tbody>
+<tr><td>¿Quién administra el sistema operativo?</td><td>IaaS: el cliente. PaaS y SaaS: el proveedor.</td></tr>
+<tr><td>¿Quién administra el middleware?</td><td>IaaS: el cliente. PaaS y SaaS: el proveedor.</td></tr>
+<tr><td>¿Qué administra el cliente en PaaS?</td><td>Las aplicaciones, los datos y los controles de acceso.</td></tr>
+<tr><td>¿Cuál es el principal beneficio de PaaS?</td><td>Menos administración de infraestructura.</td></tr>
+<tr><td>¿Qué tipo de servicio es Azure App Service?</td><td>PaaS</td></tr></tbody></table></div>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Creer que PaaS significa no hacer nada</td><td>Sigues siendo responsable de la aplicación, los datos, los permisos y la calidad del código.</td></tr>
+<tr><td>Pensar que tienes acceso completo al sistema operativo</td><td>En PaaS lo administra Azure. Normalmente no accedes directamente a él.</td></tr>
+<tr><td>Confundir PaaS con SaaS</td><td>En PaaS creas y despliegas aplicaciones. En SaaS usas aplicaciones que ya existen.</td></tr>
+<tr><td>Pensar que PaaS sustituye a los desarrolladores</td><td>Elimina tareas de infraestructura, pero no desarrolla la aplicación por sí solo.</td></tr></tbody></table></div>
+<h3>Truco para memorizar</h3>
+<div class="callout"><b>La plataforma ya está preparada.</b> Es como alquilar una cocina profesional completa y equipada: tú solo tienes que cocinar.</div>
+<p class="pc" style="margin-top:8px">Para el AZ-104: verás servicios gestionados como App Service, SQL Database y Functions. Tendrás que configurar el acceso, supervisar, gestionar el escalado y aplicar seguridad.</p>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Por qué una empresa elegiría PaaS en lugar de IaaS?</summary><div class="ex"><p><b>Para dejar de administrar la infraestructura y dedicar el tiempo a la aplicación.</b></p><p>Con PaaS el proveedor se ocupa del sistema operativo, los parches, el middleware y el entorno de ejecución. Encaja cuando el reto es desarrollar y no mantener servidores. Lo que pierdes es el control sobre el sistema operativo, algo que solo compensa si tu aplicación no lo necesita.</p></div></details>
+<details><summary>¿Qué responsabilidades mantienen los desarrolladores en PaaS?</summary><div class="ex"><p><b>El código, los datos y los controles de acceso.</b></p><p>Según el servicio, también se comparten algunos ajustes de red y de seguridad de la aplicación. PaaS reduce el trabajo de infraestructura, pero la calidad y la seguridad de lo que despliegas siguen siendo tuyas.</p></div></details>
+<details><summary>¿Qué tareas deja de realizar un administrador de sistemas al utilizar PaaS?</summary><div class="ex"><p><b>Las de mantener la plataforma.</b></p><ul><li>Instalar y parchear el sistema operativo.</li><li>Mantener el middleware y el entorno de ejecución.</li><li>Gestionar las licencias del sistema operativo y de las bases de datos.</li><li>Preparar y mantener los servidores.</li></ul><p>No se queda sin trabajo: sigue gestionando accesos, supervisión, escalado y seguridad.</p></div></details>
+<details><summary>¿Por qué App Service es un ejemplo típico de PaaS?</summary><div class="ex"><p><b>Porque subes tu código y la plataforma ya está lista.</b></p><p>App Service ofrece el servidor web, el entorno de ejecución, el sistema operativo y los parches sin que crees ni administres ninguna máquina virtual. Tú te ocupas de la aplicación y de sus datos.</p></div></details>
+<details><summary>¿Cómo ayuda PaaS a acelerar el desarrollo de aplicaciones?</summary><div class="ex"><p><b>Porque la plataforma ya trae lo que habría que montar.</b></p><p>Los componentes integrados incluyen escalabilidad y alta disponibilidad, así que los desarrolladores escriben menos código de infraestructura y despliegan antes. Corrigen errores y mejoran funciones en lugar de configurar servidores.</p></div></details></section>
+
+<section id="u4"><div class="unit"><span class="n">UNIDAD 4/6</span></div>
+<h2>Software como servicio (SaaS)</h2>
+<p class="idea"><b>Idea principal.</b> SaaS es el modelo más completo desde el punto de vista del producto. Alquilas o usas una aplicación totalmente desarrollada. Correo, software financiero, mensajería y herramientas de conectividad son ejemplos habituales. Es el modelo menos flexible, pero también el más fácil de poner en marcha y el que menos conocimientos técnicos exige.</p>
+<p class="quote">En SaaS no administras servidores ni aplicaciones. Solo usas el servicio.</p>
+<h3>Quién gestiona qué</h3>
+<div class="split">
+  <div class="box ms"><h4>Lo gestionas tú</h4><ul><li>Tus datos.</li><li>La configuración de identidad y de acceso: usuarios, licencias y permisos.</li><li>La postura de acceso de los dispositivos.</li><li>El cumplimiento normativo de tu información.</li></ul></div>
+  <div class="box dep"><h4>Lo gestiona el proveedor</h4><ul><li>La aplicación y su mantenimiento.</li><li>Entorno de ejecución, middleware y sistema operativo.</li><li>Servidores, almacenamiento y red.</li><li>Actualizaciones, parches y disponibilidad.</li></ul></div>
+</div>
+<div class="fig svc">
+  <div class="svc-head"><b>Software como servicio (SaaS)</b><span>Mínimo control: usas la aplicación totalmente gestionada.</span></div>
+  <div class="svc-stack">
+    <div class="svc-lab">Lo gestionas tú</div>
+    <div class="ly you">Datos</div>
+    <div class="svc-div"></div>
+    <div class="svc-lab">Lo gestiona el proveedor</div>
+    <div class="ly prov">Aplicaciones</div><div class="ly prov">Entorno de ejecución</div><div class="ly prov">Middleware</div><div class="ly prov">Sistema operativo</div><div class="ly prov">Servidores</div><div class="ly prov">Almacenamiento</div><div class="ly prov">Redes</div>
+  </div>
+  <div class="svc-side">
+    <h4 class="t">Escenarios habituales</h4>
+    <div class="box ms"><h4>Correo y mensajería</h4><p>Microsoft 365, Teams y Outlook.</p></div>
+    <div class="box ms"><h4>Aplicaciones de productividad</h4><p>Word, Excel y PowerPoint en línea.</p></div>
+    <div class="box ms"><h4>Finanzas y seguimiento de gastos</h4><p>Herramientas de gestión financiera basadas en la nube.</p></div>
+    <div class="callout"><b>Idea clave.</b> Usas la aplicación. El proveedor se ocupa de todo lo demás.</div>
+  </div>
+</div>
+<p class="pc" style="margin-top:8px">Diagrama de Learn traducido al español.</p>
+<h3>Ejemplo: Microsoft 365 en una empresa</h3>
+<p>Una empresa usa Microsoft 365 para el correo y sus empleados trabajan a diario con Outlook.</p>
+<div class="split">
+  <div class="box ms"><h4>La empresa</h4><ul><li>Crea los usuarios.</li><li>Asigna las licencias.</li><li>Configura los permisos.</li></ul></div>
+  <div class="box dep"><h4>Microsoft</h4><ul><li>Mantiene Exchange Online.</li><li>Actualiza los servidores.</li><li>Gestiona la disponibilidad.</li><li>Protege la infraestructura.</li></ul></div>
+</div>
+<p>Los usuarios simplemente usan el correo. Un equipo que trabaja con una plataforma de colaboración SaaS se centra en dar de alta usuarios, controlar accesos y gobernar los datos, mientras el proveedor se ocupa de parchear la infraestructura, actualizar la aplicación y garantizar la disponibilidad.</p>
+<h3>Escenarios habituales con ejemplos</h3>
+<div class="tablebox"><table><thead><tr><th>Escenario</th><th>Ejemplos</th><th>Caso</th></tr></thead><tbody>
+<tr><td>Correo y mensajería</td><td>Microsoft 365, Outlook, Exchange Online, Teams</td><td>Una empresa de 50 empleados necesita correo corporativo. Contrata Microsoft 365 y no instala ningún servidor de correo.</td></tr>
+<tr><td>Productividad</td><td>Word, Excel y PowerPoint en línea</td><td>Los usuarios solo acceden y trabajan.</td></tr>
+<tr><td>Finanzas y gastos</td><td>Facturación en línea, ERP en la nube, gestión empresarial web</td><td>Muchas aplicaciones financieras modernas se ofrecen como SaaS.</td></tr></tbody></table></div>
+<div class="asir"><h4>Traducción ASIR</h4>
+<p>Imagina que tienes que dar correo electrónico a una empresa. La solución tradicional:</p>
+<div class="flow"><span class="node">Comprar el servidor</span><span class="arrow">→</span><span class="node">Instalar Windows Server</span><span class="arrow">→</span><span class="node">Instalar Exchange</span><span class="arrow">→</span><span class="node">Configurar DNS</span><span class="arrow">→</span><span class="node">Aplicar parches</span><span class="arrow">→</span><span class="node">Copias de seguridad</span><span class="arrow">→</span><span class="node">Monitorizar</span></div>
+<p>La solución SaaS:</p>
+<div class="flow"><span class="node">Contratar Microsoft 365</span><span class="arrow">→</span><span class="node">Crear usuarios</span><span class="arrow">→</span><span class="node az">Empezar a trabajar</span></div>
+<p>Toda la complejidad desaparece para el administrador. Outlook.com, Gmail, Teams u OneDrive los usas cada día sin pensar en el servidor, el sistema operativo ni los parches. Eso es SaaS.</p>
+<div class="tablebox" style="margin-top:8px"><table><thead><tr><th>Mundo ASIR</th><th>SaaS</th></tr></thead><tbody>
+<tr><td>Exchange Server local</td><td>Exchange Online</td></tr>
+<tr><td>Office instalado en cada equipo</td><td>Microsoft 365</td></tr>
+<tr><td>Servidor de mensajería propio</td><td>Teams</td></tr>
+<tr><td>ERP instalado en un servidor</td><td>ERP en la nube</td></tr>
+<tr><td>Aplicación local</td><td>Aplicación web SaaS</td></tr></tbody></table></div></div>
+<h3>Los tres tipos de un vistazo</h3>
+<div class="tablebox"><table><thead><tr><th>Característica</th><th>IaaS</th><th>PaaS</th><th>SaaS</th></tr></thead><tbody>
+<tr><td>Control</td><td>Alto</td><td>Medio</td><td>Bajo</td></tr>
+<tr><td>Flexibilidad</td><td>Muy alta</td><td>Alta</td><td>Limitada</td></tr>
+<tr><td>Servidores físicos</td><td>Proveedor</td><td>Proveedor</td><td>Proveedor</td></tr>
+<tr><td>Sistema operativo</td><td>Cliente</td><td>Proveedor</td><td>Proveedor</td></tr>
+<tr><td>Aplicación</td><td>Cliente</td><td>Cliente</td><td>Proveedor</td></tr>
+<tr><td>Datos</td><td>Cliente</td><td>Cliente</td><td>Cliente</td></tr>
+<tr><td>Listo para usar</td><td>No</td><td>Parcialmente</td><td>Sí</td></tr></tbody></table></div>
+<p style="margin-top:12px">Qué haces en cada modelo: en IaaS administras el servidor, en PaaS administras la aplicación y en SaaS usas la aplicación.</p>
+<h3>Frases de examen</h3>
+<p class="quote">La empresa desea una solución lista para usar.</p>
+<p class="quote">No quiere administrar infraestructura.</p>
+<p class="quote">Necesita correo electrónico corporativo.</p>
+<p class="quote">Quiere minimizar la carga administrativa.</p>
+<p class="quote">Busca una aplicación accesible desde Internet.</p>
+<p class="quote">Necesita una herramienta de colaboración para los usuarios.</p>
+<p>Si el enunciado pide algo que se usa tal cual, sin instalar ni desarrollar, la respuesta es SaaS.</p>
+<h3>Lo que más se pregunta</h3>
+<div class="tablebox"><table class="qa"><thead><tr><th>Pregunta</th><th>Respuesta</th></tr></thead><tbody>
+<tr><td>¿Qué modelo exige menos conocimientos técnicos?</td><td>SaaS</td></tr>
+<tr><td>¿Qué modelo tiene menos responsabilidad operativa?</td><td>SaaS</td></tr>
+<tr><td>¿Quién mantiene y actualiza la aplicación en SaaS?</td><td>El proveedor</td></tr>
+<tr><td>¿Cuál es el ejemplo más típico?</td><td>Microsoft 365</td></tr>
+<tr><td>¿Quién administra los servidores y el sistema operativo?</td><td>El proveedor</td></tr></tbody></table></div>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Pensar que en SaaS no hay infraestructura</td><td>Existe, pero la administra el proveedor.</td></tr>
+<tr><td>Creer que SaaS siempre es gratis</td><td>Normalmente funciona con suscripciones mensuales o anuales, o con licencias por usuario.</td></tr>
+<tr><td>Confundir SaaS con PaaS</td><td>En SaaS usas una aplicación ya creada. En PaaS desarrollas la tuya.</td></tr>
+<tr><td>Pensar que no tienes responsabilidades</td><td>Gestionas usuarios, permisos, accesos, datos y el cumplimiento normativo.</td></tr></tbody></table></div>
+<h3>Truco para memorizar</h3>
+<div class="callout"><b>Software listo para usar.</b> Es como sentarte a la mesa y que te sirvan la comida ya hecha: no hay cocina que montar ni receta que preparar.</div>
+<p class="pc" style="margin-top:8px">Para el AZ-104 y el trabajo diario con Azure: con SaaS la administración se centra más en usuarios, accesos, políticas y seguridad que en infraestructura.</p>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Por qué SaaS requiere menos conocimientos técnicos que IaaS?</summary><div class="ex"><p><b>Porque no instalas, parcheas ni configuras nada de la pila.</b></p><p>La aplicación ya está desarrollada y mantenida por el proveedor. Tú solo la usas y administras tus usuarios y tus datos. En IaaS tendrías que instalar y mantener el sistema operativo, el software y la red.</p></div></details>
+<details><summary>¿Qué responsabilidades mantiene una empresa cuando utiliza Microsoft 365?</summary><div class="ex"><p><b>Las de la identidad, los accesos y los datos.</b></p><ul><li>Crear y dar de baja usuarios y asignar licencias.</li><li>Configurar permisos y accesos.</li><li>Proteger los datos que guarda en el servicio.</li><li>Cuidar la postura de acceso de los dispositivos desde los que se conectan.</li><li>Cumplir las normas que le apliquen.</li></ul><p>Microsoft mantiene Exchange Online, los servidores, las actualizaciones y la disponibilidad.</p></div></details>
+<details><summary>¿Por qué SaaS tiene menos flexibilidad que PaaS?</summary><div class="ex"><p><b>Porque usas la aplicación tal como la ofrece el proveedor.</b></p><p>Solo puedes cambiar lo que su configuración permite. No puedes modificar el código ni elegir la plataforma. En PaaS desarrollas tu propia aplicación y decides cómo se comporta.</p></div></details>
+<details><summary>¿Qué ventajas ofrece SaaS para una pequeña empresa?</summary><div class="ex"><p><b>Empezar rápido sin montar infraestructura ni contratar técnicos de sistemas.</b></p><ul><li>Se pone en marcha enseguida.</li><li>El proveedor se ocupa de actualizaciones, parches y disponibilidad.</li><li>Suele funcionar por suscripción, con un coste por usuario fácil de estimar.</li><li>Se accede desde cualquier lugar con conexión a Internet.</li></ul></div></details>
+<details><summary>¿Qué diferencia fundamental existe entre usar Teams y desplegar una aplicación en Azure App Service?</summary><div class="ex"><p><b>Teams es una aplicación terminada. App Service es una plataforma para tu propia aplicación.</b></p><p>Con Teams (SaaS) solo la usas y el proveedor mantiene todo. Con App Service (PaaS) tú desarrollas la aplicación, la despliegas y respondes de su código, sus datos y sus accesos, mientras Azure mantiene la plataforma.</p></div></details></section>
+
+<section id="u5"><div class="unit"><span class="n">UNIDAD 5/6</span></div>
+<h2>Comprobación de conocimientos</h2>
+<p class="idea"><b>Idea principal.</b> La evaluación del módulo en Learn tiene dos preguntas. Aquí tienes cada una explicada: por qué la respuesta es correcta y por qué las otras no lo son. Intenta responder antes de abrirlas.</p>
+<details><summary>1. ¿Qué tipo de servicio en la nube es más adecuado para una migración lift-and-shift de un centro de datos local a una implementación en la nube?</summary><div class="ex"><p><b>Infraestructura como servicio (IaaS).</b></p>
+<p><b>Por qué es IaaS.</b> Lift-and-shift significa trasladar la carga de trabajo tal cual, sin rediseñarla. Con IaaS configuras recursos en la nube parecidos a los de tu centro de datos local y mueves ahí tus servidores, con su sistema operativo y su software.</p>
+<p><b>Por qué no PaaS.</b> La plataforma pone el sistema operativo, el middleware y el entorno de ejecución. La aplicación tendría que adaptarse a ella, y eso ya es modernizar, no mover tal cual.</p>
+<p><b>Por qué no SaaS.</b> SaaS sustituye tu aplicación por otra ya hecha. No traslada la que tienes.</p>
+<p><b>Cómo reconocerlo.</b> Palabras como "tal cual", "sin modificar", "servidor existente" o "centro de datos local" apuntan a IaaS.</p></div></details>
+<details><summary>2. ¿En qué tipo de servicio en la nube se encuentra normalmente una solución de seguimiento de finanzas y gastos?</summary><div class="ex"><p><b>Software como servicio (SaaS).</b></p>
+<p><b>Por qué es SaaS.</b> El seguimiento de finanzas y gastos es uno de los escenarios típicos de SaaS que cita Learn, junto con el correo y las aplicaciones de productividad. Es una aplicación terminada que contratas y usas, y el proveedor la mantiene.</p>
+<p><b>Por qué no IaaS.</b> Alquilar infraestructura te da servidores, no una herramienta de gastos lista para usar.</p>
+<p><b>Por qué no PaaS.</b> PaaS te da una plataforma para construir tu propia aplicación.</p>
+<p><b>Un matiz.</b> Si tu empresa desarrollara su propia herramienta de gastos sobre Azure App Service, esa aplicación sería tuya y viviría sobre PaaS. La pregunta habla de una solución que "normalmente" se contrata ya hecha, y eso es SaaS.</p></div></details>
+<h3>Cómo razonar cualquier pregunta de este tipo</h3>
+<p>Pregúntate qué necesita hacer la empresa y elige según la respuesta.</p>
+<div class="flow"><span class="node">¿Qué quiere hacer?</span><span class="arrow">→</span><span class="node">Controlar el servidor o moverlo tal cual</span><span class="arrow">→</span><span class="node az">IaaS</span></div>
+<div class="flow"><span class="node">¿Qué quiere hacer?</span><span class="arrow">→</span><span class="node">Desarrollar su aplicación sin administrar servidores</span><span class="arrow">→</span><span class="node az">PaaS</span></div>
+<div class="flow"><span class="node">¿Qué quiere hacer?</span><span class="arrow">→</span><span class="node">Usar una aplicación que ya existe</span><span class="arrow">→</span><span class="node az">SaaS</span></div></section>
+
+<section id="u6"><div class="unit"><span class="n">UNIDAD 6/6</span></div>
+<h2>Resumen</h2>
+<p class="idea"><b>Idea principal.</b> Has visto los tres tipos de servicio en la nube y algunos escenarios habituales de cada uno. También has reforzado cómo el modelo de responsabilidad compartida determina lo que te toca en cada tipo. IaaS da el máximo control, PaaS el equilibrio y SaaS la menor carga operativa.</p>
+<h3>Ahora deberías poder</h3>
+<ul><li>Describir la infraestructura como servicio (IaaS).</li><li>Describir la plataforma como servicio (PaaS).</li><li>Describir el software como servicio (SaaS).</li><li>Identificar los casos de uso adecuados para cada tipo de servicio.</li></ul></section>
+
+<section id="repaso"><h2>Repaso final</h2>
+<h3>Los 7 conceptos que sí o sí</h3>
+<div class="mnemo">
+  <div><b>1</b>IaaS</div><div><b>2</b>PaaS</div><div><b>3</b>SaaS</div><div><b>4</b>Responsabilidad compartida por tipo</div><div><b>5</b>Lo que siempre es tuyo</div><div><b>6</b>Casos de uso de cada tipo</div><div><b>7</b>Elegir el tipo ante un escenario</div>
+</div>
+<h3>Cómo decidir en el examen</h3>
+<div class="tablebox"><table><thead><tr><th>Si el enunciado dice</th><th>Piensa en</th></tr></thead><tbody>
+<tr><td>Máximo control, administrar el sistema operativo, mover servidores tal cual, entornos de prueba replicables</td><td>IaaS</td></tr>
+<tr><td>Centrarse en el desarrollo, no administrar servidores ni parches, desplegar aplicaciones, analizar datos con herramientas de la plataforma</td><td>PaaS</td></tr>
+<tr><td>Solución lista para usar, correo, productividad, finanzas y gastos, mínima carga administrativa</td><td>SaaS</td></tr></tbody></table></div>
+<h3>Una analogía para cada tipo</h3>
+<div class="tablebox"><table><thead><tr><th></th><th>IaaS</th><th>PaaS</th><th>SaaS</th></tr></thead><tbody>
+<tr><td>Cocina</td><td>Te alquilan el local vacío</td><td>Te alquilan una cocina completa y equipada</td><td>Te sirven la comida ya hecha</td></tr>
+<tr><td>Transporte</td><td>Te alquilan un coche y tú conduces</td><td>Te alquilan un coche con conductor y tú decides el destino</td><td>Te subes a un autobús</td></tr></tbody></table></div>
+<h3>Trucos para memorizar</h3>
+<div class="mnemo wide"><div><b>IaaS</b>Infraestructura alquilada, administración propia</div><div><b>PaaS</b>La plataforma ya está preparada</div><div><b>SaaS</b>Software listo para usar</div><div><b>Más control</b>IaaS</div><div><b>Control equilibrado</b>PaaS</div><div><b>Menos control</b>SaaS</div><div><b>Servidor</b>IaaS</div><div><b>Aplicación propia</b>PaaS</div><div><b>Aplicación ya hecha</b>SaaS</div><div><b>Siempre tuyo</b>Datos, cuentas, accesos y dispositivos</div></div>
+<h3>Preguntas de repaso</h3>
+<details><summary>¿Quién administra el sistema operativo en IaaS?</summary><p>El cliente.</p></details>
+<details><summary>¿Qué modelo ofrece el mayor nivel de control?</summary><p>IaaS.</p></details>
+<details><summary>¿Qué responsabilidad tiene Microsoft en IaaS?</summary><p>El hardware físico, la conectividad a Internet y la seguridad física.</p></details>
+<details><summary>¿Qué escenario es típico de IaaS?</summary><p>Lift-and-shift.</p></details>
+<details><summary>¿Qué administra el cliente en PaaS?</summary><p>Las aplicaciones, los datos y los controles de acceso.</p></details>
+<details><summary>¿Quién administra el middleware en PaaS?</summary><p>Azure, el proveedor.</p></details>
+<details><summary>¿Qué escenario encaja mejor con PaaS?</summary><p>Crear una aplicación web sin administrar servidores.</p></details>
+<details><summary>¿Qué servicio suele considerarse PaaS?</summary><p>Azure App Service.</p></details>
+<details><summary>¿Qué ventaja principal ofrece PaaS?</summary><p>Menos tareas de infraestructura.</p></details>
+<details><summary>¿Qué administra el usuario en SaaS?</summary><p>Sus datos, y los usuarios y accesos.</p></details>
+<details><summary>¿Qué modelo requiere menos administración?</summary><p>SaaS.</p></details>
+<details><summary>¿Cuál es un ejemplo típico de SaaS?</summary><p>Microsoft 365.</p></details>
+<details><summary>¿Quién actualiza la aplicación en SaaS?</summary><p>El proveedor.</p></details>
+<details><summary>¿Qué escenario encaja mejor con SaaS?</summary><p>Usar Teams para colaborar.</p></details>
+<h3>Escenarios para practicar</h3>
+<p class="pc">Ejercicios propios para entrenar los casos de uso. No son preguntas de Microsoft.</p>
+<details><summary>Una empresa quiere mover 20 servidores Windows de su centro de datos a Azure sin cambiar las aplicaciones.</summary><div class="ex"><p><b>IaaS.</b></p><p>Mueve los servidores tal cual: es un lift-and-shift con máquinas virtuales.</p></div></details>
+<details><summary>Un equipo de desarrollo quiere publicar una web sin instalar ni parchear servidores.</summary><div class="ex"><p><b>PaaS.</b></p><p>Despliega su aplicación en una plataforma gestionada, como Azure App Service.</p></div></details>
+<details><summary>Una pyme necesita correo corporativo y videollamadas para 50 empleados, sin técnicos de sistemas.</summary><div class="ex"><p><b>SaaS.</b></p><p>Son aplicaciones ya hechas, como Microsoft 365 y Teams. Solo hay que crear usuarios.</p></div></details>
+<details><summary>Un equipo de pruebas necesita crear y destruir entornos idénticos con control total del sistema operativo.</summary><div class="ex"><p><b>IaaS.</b></p><p>Es el escenario de pruebas y desarrollo: replicar configuraciones y encender o apagar entornos con control completo.</p></div></details>
+<details><summary>Una empresa quiere analizar datos de ventas y predecir la demanda sin gestionar servidores.</summary><div class="ex"><p><b>PaaS.</b></p><p>Es el escenario de análisis e inteligencia empresarial con herramientas de la plataforma.</p></div></details>
+<details><summary>El departamento financiero quiere una herramienta en línea de facturación y gastos que no haya que instalar.</summary><div class="ex"><p><b>SaaS.</b></p><p>Finanzas y seguimiento de gastos es un escenario típico de aplicación terminada.</p></div></details>
+</section>
+
+<section id="learn"><h2>Contraste con Microsoft Learn</h2>
+<p>Revisé estos apuntes con la documentación oficial el 16 de octubre de 2026. La mayor parte coincide. Estos son los matices y las correcciones que hice.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>Resultado</th></tr></thead><tbody>
+<tr><td>Estructura del módulo</td><td>El módulo "Describe cloud service types" tiene 6 unidades: introducción, IaaS, PaaS, SaaS, evaluación del módulo y resumen. Este manual sigue esas 6. El mapa del examen, las analogías y el repaso son material de apoyo.</td></tr>
+<tr><td>Comprobación de conocimientos</td><td>La evaluación de Learn tiene solo 2 preguntas (lift-and-shift y finanzas y gastos), las mismas de las capturas. Los tests rápidos y las preguntas de comprensión de los apuntes de Copilot son ejercicios de apoyo, no preguntas de Microsoft.</td></tr>
+<tr><td>Servidores en IaaS</td><td>La tabla comparativa de los apuntes decía que los servidores los gestiona el cliente en IaaS. Es incorrecto: en los tres tipos el proveedor mantiene los servidores físicos. En IaaS el cliente gestiona el sistema operativo de sus máquinas virtuales. Corregido.</td></tr>
+<tr><td>Qué gestionas en IaaS</td><td>Learn lo resume en instalación y mantenimiento del sistema operativo, configuración de red y configuración de bases de datos y almacenamiento. Coincide con los apuntes.</td></tr>
+<tr><td>Alcance de PaaS</td><td>Los apuntes decían que en PaaS solo administras aplicaciones y datos. Learn añade los controles de acceso y avisa de que, según el servicio, se comparten algunos ajustes de red y de seguridad de la aplicación. También menciona que no te ocupas de las licencias ni de los parches del sistema operativo y de las bases de datos. Añadido.</td></tr>
+<tr><td>Aplicaciones y red "compartidas"</td><td>El diagrama del módulo reparte las capas entre cliente y proveedor. La matriz de responsabilidad compartida de Microsoft marca como compartidas las aplicaciones en PaaS y SaaS y los controles de red en PaaS. Está en la unidad 1 como ampliación.</td></tr>
+<tr><td>Qué gestionas en SaaS</td><td>Learn indica datos, configuración de identidad y acceso, y postura de acceso de los dispositivos. Los apuntes hablaban de usuarios, datos, identidades, permisos y accesos. Añadí los dispositivos.</td></tr>
+<tr><td>Pregunta sobre quién administra la aplicación</td><td>La pregunta "¿Qué modelo administra la aplicación?" de los apuntes de SaaS era ambigua. La reformulé como quién mantiene y actualiza la aplicación: el proveedor.</td></tr>
+<tr><td>Tabla IaaS frente a PaaS</td><td>Quité la fila "tiempo de desarrollo (menor / mayor)" de los apuntes, porque no se entendía y Learn no la plantea. Sí recoge que PaaS reduce la cantidad de código de infraestructura que escriben los desarrolladores.</td></tr>
+<tr><td>Ejemplos de servicios</td><td>El artículo de Microsoft sobre responsabilidad compartida cita máquinas virtuales, Azure Disk Storage y redes virtuales como IaaS. Cita App Service, Functions, SQL Database y Azure Storage como PaaS, y Microsoft 365 y Dynamics 365 como SaaS. Los apuntes equiparaban el disco del servidor con Azure Storage, así que lo precisé como Azure Disk Storage. Logic Apps y Container Apps, que citaban los apuntes de PaaS, no aparecen en ese artículo, por lo que no los uso como ejemplos.</td></tr>
+<tr><td>Entra ID e Intune como SaaS</td><td>Los apuntes los citaban entre los servicios SaaS. Learn no los usa como ejemplos en este módulo, donde el diagrama de SaaS cita Microsoft 365, Teams y Outlook. Los dejé fuera de los ejemplos.</td></tr>
+<tr><td>Lift-and-shift y App Service</td><td>Microsoft indica que una aplicación web existente puede moverse a App Service con pocos cambios. Es una migración a una plataforma gestionada. En el examen, lift-and-shift apunta a IaaS. Lo aclaré como ampliación.</td></tr>
+<tr><td>Informática sin servidor</td><td>La guía de estudio incluye "Describir la informática sin servidor" en el bloque de informática en la nube (Módulo 1), no en el de tipos de servicio.</td></tr>
+<tr><td>Control y flexibilidad</td><td>Coincide con Learn: IaaS es la categoría más flexible, PaaS un punto intermedio y SaaS la menos flexible pero la más fácil de poner en marcha.</td></tr>
+<tr><td>Diagramas y terminología</td><td>Los diagramas de Learn están en inglés y los traduje a mano. <i>Runtime</i> aparece como entorno de ejecución, como en el texto en español de Learn.</td></tr>
+<tr><td>Ejemplos y analogías</td><td>Las analogías de la cocina y del transporte, los escenarios para practicar y los ejemplos de la web de reservas, los supermercados y los 50 empleados son recursos didácticos de los apuntes, no datos de Microsoft.</td></tr></tbody></table></div>
+<p class="src" style="margin-top:14px">Fuentes:
+<a href="https://learn.microsoft.com/training/modules/describe-cloud-service-types/">Módulo Describe cloud service types</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-cloud-service-types/2-describe-infrastructure-service">Infraestructura como servicio</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-cloud-service-types/3-describe-platform-service">Plataforma como servicio</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-cloud-service-types/4-describe-software-service">Software como servicio</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-cloud-service-types/5-knowledge-check">Evaluación del módulo</a> ·
+<a href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900">Guía de estudio AZ-900</a> ·
+<a href="https://learn.microsoft.com/azure/security/fundamentals/shared-responsibility">Responsabilidad compartida en la nube</a> ·
+<a href="https://learn.microsoft.com/azure/app-service/overview">Información general de App Service</a> ·
+<a href="https://learn.microsoft.com/azure/azure-sql/database/sql-database-paas-overview">Azure SQL Database</a> ·
+<a href="https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure/azure-hosting-recommendations-for-asp-net-web-apps">Recomendaciones de hospedaje de aplicaciones web</a></p></section>
+
+</main></div>
+<footer>Gema San · Sueña. Aprende. Crece. · <a href="index.html" style="color:inherit">Volver a la guía</a></footer>
+<script>
+(function(){var KEY='az900-m3-check',boxes=document.querySelectorAll('#checklist input');
+try{var s=JSON.parse(localStorage.getItem(KEY)||'[]');boxes.forEach(function(b,i){b.checked=!!s[i]})}catch(e){}
+boxes.forEach(function(b){b.addEventListener('change',function(){try{localStorage.setItem(KEY,JSON.stringify([].map.call(boxes,function(x){return x.checked})))}catch(e){}})})})();
+</script>
+</body>
+</html>
