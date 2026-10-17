@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Manual AZ-900 Módulo 4</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>
+/* Layout: cabecera azul Azure, índice lateral fijo, una sección ancha por unidad con tablas desplazables y cinco esquemas propios en español (categorías de servicios, jerarquía de cuenta, infraestructura física, zonas de disponibilidad y pares de regiones) */
+:root{
+  --bg:#f3f7fc; --surface:#ffffff; --surface2:#e8f1fb; --fg:#0b1b2e; --muted:#47607c;
+  --azure:#0078d4; --azure-deep:#004e8c; --azure-soft:#cfe5f8; --violet:#6b4fd8; --violet-soft:#e4defa; --line:#c9d9ea;
+  --teal:#0f766e; --ok:#15803d; --hero1:#005ba1; --hero2:#0078d4; --on-hero:#ffffff;
+  --display:'Sora',system-ui,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --teal:#2dd4bf; --ok:#4ade80; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --teal:#2dd4bf; --ok:#4ade80; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.hero{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:56px max(16px,env(safe-area-inset-left,0px)) 48px;background:radial-gradient(1200px 420px at 85% -10%,rgba(160,139,255,.45),transparent 60%),linear-gradient(135deg,var(--hero1),var(--hero2));color:var(--on-hero)}
+.hero-in{max-width:1100px;margin:0 auto}
+.tag{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+h1{font:800 clamp(30px,5.4vw,54px)/1.08 var(--display);margin:14px 0 14px;text-wrap:balance;letter-spacing:-.02em}
+.lead{max-width:60ch;font-size:18px;opacity:.95;margin:0 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 12px var(--mono);padding:6px 12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(255,255,255,.1)}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:210px minmax(0,1fr);gap:40px;padding-block:36px 72px}
+nav{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line)}
+nav a:hover,nav a:focus-visible{color:var(--azure);border-left-color:var(--azure);outline:none}
+nav .sep{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
+main{min-width:0;display:flex;flex-direction:column;gap:52px}
+section{scroll-margin-top:24px;min-width:0}
+.unit{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.unit .n{font:700 12px var(--mono);letter-spacing:.08em;color:var(--azure);border:1px solid var(--azure);border-radius:6px;padding:3px 8px;white-space:nowrap}
+h2{font:700 26px/1.2 var(--display);margin:0 0 14px;letter-spacing:-.01em;text-wrap:balance}
+h3{font:600 17px var(--display);margin:26px 0 8px;color:var(--azure)}
+p{margin:0 0 12px;max-width:70ch}
+.idea{background:linear-gradient(135deg,var(--azure-soft),var(--surface2));border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch;margin-bottom:16px}
+.idea b{color:var(--azure)}
+.callout{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch}
+.callout b{color:var(--azure)}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th{background:var(--azure-deep);color:#fff;text-align:left;font:600 13px var(--display);padding:10px 14px;letter-spacing:.02em}
+td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600;color:var(--azure)}
+tr:hover td{background:var(--surface2)}
+ul{margin:0 0 12px;padding-left:20px}li{margin-bottom:4px}
+.check{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.check label{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer}
+.check input{accent-color:var(--azure);width:18px;height:18px;margin-top:3px;flex:none}
+.check input:checked+span{text-decoration:line-through;color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 16px}
+.node{padding:8px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-weight:600}
+.node.az{background:var(--azure);color:#fff;border-color:var(--azure)}
+.arrow{color:var(--azure);font-weight:700}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.box h4{margin:0 0 6px;font:600 14px var(--display)}
+.box.ms{border-top:3px solid var(--azure)}.box.cl{border-top:3px solid var(--violet)}.box.tl{border-top:3px solid var(--teal)}.box.dep{border-top:3px dashed var(--muted)}
+.box p{margin:0;font-size:15px}
+.box ul{margin:0;font-size:15px}
+.pc{font-size:14px;color:var(--muted);margin-top:8px}
+.asir{background:var(--violet-soft);border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:10px;padding:14px 18px;max-width:72ch;margin:16px 0}
+.asir h4{margin:0 0 6px;font:600 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+.asir p,.asir ul{margin:0 0 6px;font-size:15px}
+.badge{display:inline-block;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--violet);border:1px solid var(--violet);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle}
+.quote{border-left:3px solid var(--azure);padding:4px 0 4px 14px;margin:0 0 10px;font-weight:500}
+.mnemo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.mnemo div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px}
+.mnemo b{display:block;color:var(--azure);font:600 15px var(--display)}
+.mnemo.wide{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+details{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+details p{margin:8px 0 0;color:var(--azure);font-weight:500}
+details .ex{margin-top:8px}
+details .ex p{margin:8px 0 0;color:var(--fg);font-weight:400}
+details .ex p b{color:var(--azure)}
+.src{font-size:14px;color:var(--muted)}
+.src a{color:var(--azure)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;max-width:820px;min-width:0}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;margin:10px 0 0;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;margin-right:6px;vertical-align:middle;border-radius:3px}
+.legend .l-acc{background:var(--azure-deep)}.legend .l-sub{background:#0f766e}.legend .l-grp{border:2px dashed var(--azure)}.legend .l-res{background:var(--azure-soft);border:1px solid var(--azure)}
+.fig-title{font:700 17px var(--display);margin:0 0 2px}
+.fig-sub{color:var(--muted);font-size:14px;margin:0 0 12px}
+.fig-foot{color:var(--muted);font-size:14px;margin:12px 0 0;text-align:center}
+footer{text-align:center;color:var(--muted);font:500 13px var(--mono);padding:24px 0 8px;border-top:1px solid var(--line);max-width:1100px;margin:0 auto}
+
+/* Módulo 4: categorías de servicios */
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.cat{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0}
+.cat h4{margin:0;padding:8px 10px;color:#fff;font:600 13px var(--display);text-align:center}
+.cat ul{list-style:none;margin:0;padding:10px 12px;font-size:13.5px;color:var(--muted)}
+.cat li{margin:0 0 3px}
+.k1{background:#1e40af}.k2{background:#047857}.k3{background:#0f766e}.k4{background:#6d28d9}.k5{background:#b45309}.k6{background:#475569}
+
+/* Módulo 4: jerarquía de cuenta */
+.acct{display:flex;flex-direction:column;align-items:center}
+.acct .top{background:var(--azure-deep);color:#fff;border-radius:10px;padding:10px 24px;font:700 15px var(--display)}
+.acct .stem{width:2px;height:16px;background:var(--muted)}
+.acct .subs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;width:100%}
+.acct .sub{border:1px solid var(--line);border-radius:10px;background:var(--surface2);padding:10px;min-width:0}
+.acct .sub>b{display:block;background:#0f766e;color:#fff;border-radius:8px;padding:6px 10px;font:600 14px var(--display);text-align:center;margin-bottom:8px}
+.acct .grp{border:2px dashed var(--azure);border-radius:8px;padding:8px;margin-top:8px;background:var(--surface)}
+.acct .grp>span{display:block;font:600 12px var(--mono);color:var(--azure);margin-bottom:6px}
+.res{display:inline-block;font-size:12.5px;padding:2px 8px;border-radius:6px;background:var(--azure-soft);border:1px solid var(--azure);margin:0 4px 4px 0}
+
+/* Módulo 4: infraestructura física */
+.hier{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.hier .lv{flex:1 1 160px;min-width:0;border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.hier .lv h4{margin:0;padding:8px 10px;color:#fff;font:600 14px var(--display);text-align:center}
+.hier .lv p{margin:0;padding:10px 12px 4px;font-size:14px}
+.hier .lv .eg{padding:0 12px 10px;font-size:12.5px;color:var(--muted);font-style:italic}
+.hier .ct{align-self:center;color:var(--muted);font:500 11px var(--mono);text-align:center}
+.l1{background:#475569}.l2{background:#1e40af}.l3{background:#0f766e}.l4{background:#9a3412}
+
+/* Módulo 4: zonas de disponibilidad */
+.rgn{border:2px solid var(--azure);border-radius:12px;overflow:hidden;background:var(--surface2)}
+.rgn>h4{margin:0;padding:8px 12px;background:var(--azure-deep);color:#fff;font:600 14px var(--display);text-align:center}
+.zs{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;padding:12px}
+.zone{background:var(--surface);border:2px solid #0f766e;border-radius:10px;overflow:hidden;min-width:0;text-align:center}
+.zone h5{margin:0;padding:6px 8px;background:#0f766e;color:#fff;font:600 13px var(--display)}
+.zone .srv{display:block;width:34px;height:40px;margin:10px auto 4px;border:2px solid var(--muted);border-radius:5px;background:repeating-linear-gradient(to bottom,transparent 0 9px,var(--muted) 9px 11px)}
+.zone .dc{font-size:13px;color:var(--muted);margin:0 0 6px}
+.zone ul{list-style:none;margin:0;padding:0 10px 10px;text-align:left;font-size:13px}
+.zone li{margin:0 0 2px;padding-left:14px;position:relative}
+.zone li::before{content:"";position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:50%;background:var(--azure)}
+.zone li:nth-child(1)::before{background:#d97706}.zone li:nth-child(3)::before{background:var(--teal)}
+.fiber{border-top:3px dashed var(--teal);margin:0 24px}
+.fl{text-align:center;color:var(--teal);font:600 13px var(--body);padding:6px 12px 2px}
+.fs{text-align:center;color:var(--muted);font-size:13px;padding:0 12px 12px}
+.zstack{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.zi{border-radius:6px;padding:5px 8px;font:600 12.5px var(--body);text-align:center;border:1px solid var(--line);background:var(--surface2);color:var(--muted)}
+.zi.on{background:var(--azure);color:#fff;border-color:var(--azure)}
+.zi.rep{background:#0f766e;color:#fff;border-color:#0f766e}
+.zi.dash{border-style:dashed;background:transparent}
+
+/* Módulo 4: pares de regiones */
+.pair{border:2px dashed var(--muted);border-radius:12px;padding:12px;background:var(--surface)}
+.pair .gl{font:600 13px var(--mono);color:var(--muted);margin-bottom:10px}
+.pair .row{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.pair .rgx{flex:1 1 230px;min-width:0;border:2px solid var(--azure);border-radius:10px;overflow:hidden;background:var(--surface2)}
+.pair .rgx>h4{margin:0;padding:8px 10px;background:var(--azure-deep);color:#fff;font:600 14px var(--display);text-align:center}
+.pair .mini{display:flex;gap:6px;padding:10px 10px 4px}
+.pair .mini span{flex:1;background:var(--surface);border:1px solid #0f766e;border-radius:6px;text-align:center;font:600 12px var(--body);color:var(--teal);padding:4px 2px}
+.pair .st{padding:4px 12px 12px;font-size:14px}
+.pair .st b{display:inline-block;font:600 12px var(--mono);border-radius:999px;padding:1px 10px;margin-right:6px;color:#fff}
+.pair .st b.on{background:#15803d;color:#fff}
+.pair .st b.off{background:var(--azure);color:#fff}
+.pair .mid{flex:0 1 150px;align-self:center;text-align:center;font-size:13px;color:var(--muted)}
+.pair .mid b{display:block;color:var(--azure);font:600 13px var(--display);margin:2px 0}
+.pair .mid .ar{font:700 20px var(--display);color:var(--azure)}
+.pair .adv{margin-top:12px}
+
+/* Módulo 4: grupos de recursos, suscripciones y jerarquía de administración */
+:root{--bad:#c4314b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bad:#ff7a90}}
+:root[data-theme="dark"]{--bad:#ff7a90}
+.box.or{border-top:3px solid #d97706}
+.rgr{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chipg{background:#15803d;color:#fff;border-radius:6px;padding:4px 10px;font:600 12.5px var(--body)}
+.chipn{border:2px dashed var(--bad);color:var(--bad);border-radius:6px;padding:2px 10px;font:600 12.5px var(--body)}
+.chipv{border:2px solid var(--azure);background:var(--azure-soft);border-radius:6px;padding:2px 10px;font:600 12.5px var(--body)}
+.xx{color:var(--bad);font-weight:800}
+.ar2{color:#15803d;font-weight:800}
+.nest{border:2px dashed #d97706;background:rgba(217,119,6,.12);border-radius:8px;padding:8px;text-align:center;font-size:13px;color:var(--muted);margin:8px 0}
+.nest .in{border:2px dashed #d97706;border-radius:6px;padding:8px;margin-top:6px;position:relative}
+.nest .in::after{content:"✕";position:absolute;inset:0;display:grid;place-items:center;color:var(--bad);font:800 30px sans-serif}
+.rgbox{border:2px solid #0f766e;background:rgba(15,118,110,.1);border-radius:8px;padding:8px;margin:8px 0}
+.rgbox>b{display:block;text-align:center;color:var(--teal);font:700 13px var(--display);margin-bottom:6px}
+.rgbox .items{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.danger{color:var(--bad);font-weight:700;text-align:center;margin:8px 0 4px;font-size:14px}
+.bn{display:flex;flex-direction:column;align-items:center;gap:6px}
+.bn .nd{border-radius:8px;padding:6px 14px;font:600 13px var(--body);text-align:center;color:#fff}
+.nd.dk{background:#004e8c}.nd.bl{background:#2563eb}.nd.gr{background:#0f766e}.nd.pu{background:#6d28d9}
+.bn .row2{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%}
+.bn .col{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1 1 120px;min-width:0}
+.bn .st1{width:2px;height:12px;background:var(--muted)}
+.tag2{border:1.5px solid;border-radius:6px;padding:3px 8px;font-size:12.5px;text-align:center;width:100%}
+.tag2.g{border-color:#0f766e;color:var(--teal);background:rgba(15,118,110,.1)}
+.tag2.p{border-color:var(--violet);color:var(--violet);background:var(--violet-soft)}
+.tag2.b{border-color:var(--azure);color:var(--azure);background:var(--azure-soft)}
+.mg,.mg ul{list-style:none;margin:0;padding:0}
+.mg ul{margin-left:18px;padding-left:16px;border-left:2px solid var(--line)}
+.mg li{margin:8px 0;position:relative}
+.mg ul>li::before{content:"";position:absolute;left:-16px;top:20px;width:16px;border-top:2px solid var(--line)}
+.mg .n{display:inline-block;border-radius:8px;padding:5px 12px;color:#fff;font:600 13.5px/1.25 var(--body)}
+.mg .n small{display:block;font:500 11px var(--body);opacity:.85}
+.n.root{background:#1e3a5f}.n.mgn{background:#1e40af}.n.mgn2{background:#2563eb}.n.sb{background:#0f766e}.n.rgn2{background:#b45309}
+.n.rs{background:#fef3c7;color:#92400e;border:1px solid #d97706}
+.inh{display:flex;align-items:center;gap:8px;color:var(--azure);font:600 13px var(--body);margin:0 0 10px}
+@media(max-width:820px){.wrap{grid-template-columns:1fr;gap:20px}nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}nav a{border:1px solid var(--line);border-radius:999px;padding:4px 12px}nav .sep{display:none}}
+@media(prefers-reduced-motion:no-preference){a,tr td{transition:background .15s,color .15s}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="hero-in">
+  <div class="tag">AZ-900 · Microsoft Azure Fundamentals</div>
+  <h1>Módulo 4: Componentes arquitectónicos principales de Azure</h1>
+  <p class="lead">Manual del módulo completo: qué es Azure, cuentas, la infraestructura física con sus regiones, zonas y pares de regiones, y la infraestructura de administración con recursos, grupos de recursos, suscripciones y grupos de administración. Cada unidad cierra con lo que cae en el examen.</p>
+  <div class="chips"><span class="chip">Gema San</span><span class="chip">Contrastado con Microsoft Learn</span><span class="chip">Sueña. Aprende. Crece.</span></div>
+</div></header>
+
+<div class="wrap">
+<nav aria-label="Índice">
+  <a href="index.html">← Todos los módulos</a>
+  <a href="#examen">Mapa del examen</a>
+  <div class="sep">Unidades</div>
+  <a href="#u1">1 · Introducción</a><a href="#u2">2 · Qué es Azure</a><a href="#u3">3 · Cuentas de Azure</a><a href="#u4">4 · Infraestructura física</a><a href="#u5">5 · Infraestructura de administración</a><a href="#u6">6 · Comprobación</a><a href="#u7">7 · Resumen</a>
+  <div class="sep">Cierre</div>
+  <a href="#repaso">Repaso final</a><a href="#learn">Contraste con Learn</a>
+</nav>
+<main>
+
+<section id="examen"><h2>Dónde encaja este módulo</h2>
+<p>Es el Módulo 4 de este manual y abre el bloque de arquitectura y servicios de Azure, que pesa entre el 35 y el 40 % del examen. Los tres primeros módulos eran conceptos de nube. Aquí empiezan los nombres propios de Azure: dónde viven físicamente los recursos y cómo se organizan. Este manual cubre las 7 unidades del módulo de Learn.</p>
+<h3>Qué habilidad de la guía cubre cada unidad</h3>
+<div class="tablebox"><table><thead><tr><th>Habilidad de la guía de estudio</th><th>Unidad</th><th>Estado</th></tr></thead><tbody>
+<tr><td>Describir regiones, pares de regiones y regiones soberanas</td><td>4</td><td>En este manual</td></tr>
+<tr><td>Describir las zonas de disponibilidad</td><td>4</td><td>En este manual</td></tr>
+<tr><td>Describir los centros de datos de Azure</td><td>4</td><td>En este manual</td></tr>
+<tr><td>Describir los recursos y los grupos de recursos</td><td>3 (adelanto) y 5</td><td>En este manual</td></tr>
+<tr><td>Describir las suscripciones</td><td>3 (adelanto) y 5</td><td>En este manual</td></tr>
+<tr><td>Describir los grupos de administración</td><td>5</td><td>En este manual</td></tr>
+<tr><td>Describir la jerarquía de grupos de recursos, suscripciones y grupos de administración</td><td>5</td><td>En este manual</td></tr></tbody></table></div>
+<h3>Dónde vuelve cada tema en el AZ-900</h3>
+<p>Aquí no se configura nada: se trata de reconocer los conceptos. Más adelante reaparecen con servicios concretos, y la configuración detallada llega con el AZ-104.</p>
+<div class="tablebox"><table><thead><tr><th>Tema de este módulo</th><th>Dónde vuelve en el examen</th></tr></thead><tbody>
+<tr><td>Regiones y zonas de disponibilidad</td><td>Opciones de máquinas virtuales (conjuntos de disponibilidad, Virtual Machine Scale Sets) y opciones de redundancia del almacenamiento</td></tr>
+<tr><td>Cuentas y suscripciones</td><td>Factores que afectan a los costes, Cost Management y control de acceso con RBAC, en el bloque de administración y gobierno</td></tr>
+<tr><td>Grupos de recursos y grupos de administración</td><td>Azure Policy, bloqueos de recursos, etiquetas y RBAC: todo se aplica a estos niveles y se hereda hacia abajo</td></tr>
+<tr><td>Categorías de servicios</td><td>Todo el bloque de arquitectura: computación, redes, almacenamiento, identidad y seguridad</td></tr></tbody></table></div>
+<h3>Lo que debo saber de este módulo</h3>
+<ul class="check" id="checklist">
+  <li><label><input type="checkbox"><span>Qué es Azure y las categorías de servicios</span></label></li>
+  <li><label><input type="checkbox"><span>Cuenta, suscripción, grupo de recursos y recurso</span></label></li>
+  <li><label><input type="checkbox"><span>Cuenta gratuita y cuenta de estudiante gratuita</span></label></li>
+  <li><label><input type="checkbox"><span>Geografía, región, zona y centro de datos</span></label></li>
+  <li><label><input type="checkbox"><span>Zonas de disponibilidad y sus tres tipos de servicio</span></label></li>
+  <li><label><input type="checkbox"><span>Pares de regiones y sus ventajas</span></label></li>
+  <li><label><input type="checkbox"><span>Regiones soberanas</span></label></li>
+  <li><label><input type="checkbox"><span>Servicios globales que no eligen región</span></label></li>
+  <li><label><input type="checkbox"><span>Recurso y grupo de recursos: sus reglas</span></label></li>
+  <li><label><input type="checkbox"><span>Suscripción: límite de facturación y de acceso</span></label></li>
+  <li><label><input type="checkbox"><span>Grupos de administración y grupo raíz del inquilino</span></label></li>
+  <li><label><input type="checkbox"><span>Jerarquía y herencia de directivas y accesos</span></label></li>
+</ul></section>
+
+<section id="u1"><div class="unit"><span class="n">UNIDAD 1/7</span></div>
+<h2>Introducción a los componentes de Azure</h2>
+<p class="idea"><b>Idea principal.</b> Los componentes arquitectónicos de Azure se dividen en dos grupos: la infraestructura física, que dice dónde están los servidores, y la infraestructura de administración, que dice cómo organizas y controlas lo que despliegas.</p>
+<div class="flow"><span class="node">Qué es Azure</span><span class="arrow">→</span><span class="node">Cuentas y suscripciones</span><span class="arrow">→</span><span class="node">Infraestructura física</span><span class="arrow">→</span><span class="node az">Infraestructura de administración</span></div>
+<h3>Objetivos del módulo</h3>
+<ul><li>Describir las regiones de Azure, los pares de regiones y las regiones soberanas.</li><li>Describir las zonas de disponibilidad.</li><li>Describir los centros de datos de Azure.</li><li>Describir los recursos de Azure y los grupos de recursos.</li><li>Describir las suscripciones.</li><li>Describir los grupos de administración.</li><li>Describir la jerarquía de grupos de recursos, suscripciones y grupos de administración.</li></ul>
+<h3>Los dos grupos de componentes</h3>
+<div class="tablebox"><table><thead><tr><th>Grupo</th><th>Qué incluye</th><th>Pregunta que responde</th></tr></thead><tbody>
+<tr><td>Infraestructura física</td><td>Centros de datos, regiones, zonas de disponibilidad, pares de regiones, regiones soberanas</td><td>¿Dónde están físicamente mis recursos y qué pasa si algo falla?</td></tr>
+<tr><td>Infraestructura de administración</td><td>Recursos, grupos de recursos, suscripciones, grupos de administración</td><td>¿Cómo organizo, facturo y controlo lo que despliego?</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">La infraestructura física se explica en la unidad 4 y la de administración en la unidad 5. La unidad 3 adelanta la cadena cuenta, suscripción, grupo de recursos y recurso.</p>
+<div class="asir"><h4>Traducción ASIR</h4><p>Es la diferencia entre el plano de las salas y los racks (dónde está el hardware) y el inventario y la estructura de dominios y departamentos (cómo organizas y das permisos). En Azure las dos cosas existen, pero la primera la construye y la mantiene Microsoft.</p></div></section>
+
+<section id="u2"><div class="unit"><span class="n">UNIDAD 2/7</span></div>
+<h2>¿Qué es Microsoft Azure?</h2>
+<p class="idea"><b>Idea principal.</b> Azure es un conjunto de servicios en la nube en continua expansión que te ayuda a afrontar los retos informáticos actuales y futuros. Permite crear, administrar e implementar aplicaciones en una red global masiva, con las herramientas y los marcos que prefieras.</p>
+<h3>Qué ofrece Azure</h3>
+<div class="split">
+  <div class="box ms"><h4>Dar vida a las ideas</h4><p>Construir sobre una plataforma de confianza con servicios líderes de IA y de nube.</p></div>
+  <div class="box ms"><h4>Unificar sin fisuras</h4><p>Administrar infraestructura, datos, análisis e IA desde una plataforma integrada.</p></div>
+  <div class="box ms"><h4>Innovar con confianza</h4><p>Apoyarte en tecnología de un socio comprometido con la seguridad y la responsabilidad.</p></div>
+</div>
+<h3>Qué puedo hacer con Azure</h3>
+<p>Azure ofrece cientos de servicios. Permiten desde ejecutar aplicaciones existentes en máquinas virtuales hasta explorar paradigmas nuevos, como los bots inteligentes y la inteligencia artificial generativa.</p>
+<div class="fig">
+  <p class="fig-title">Categorías de servicios de Microsoft Azure</p>
+  <p class="fig-sub">Diez categorías con servicios representativos. Los nombres de producto se dejan como en el portal.</p>
+  <div class="cats">
+    <div class="cat"><h4 class="k1">Computación</h4><ul><li>Virtual Machines</li><li>App Service</li><li>Azure Functions</li><li>Container Apps</li><li>Azure Kubernetes Service</li></ul></div>
+    <div class="cat"><h4 class="k2">Redes</h4><ul><li>Virtual Network</li><li>Load Balancer</li><li>VPN Gateway</li><li>ExpressRoute</li><li>Azure DNS</li></ul></div>
+    <div class="cat"><h4 class="k3">Almacenamiento</h4><ul><li>Blob Storage</li><li>Azure Files</li><li>Queue Storage</li><li>Table Storage</li><li>Managed Disks</li></ul></div>
+    <div class="cat"><h4 class="k4">Bases de datos</h4><ul><li>Azure SQL</li><li>Azure Cosmos DB</li><li>PostgreSQL Flex</li><li>MySQL Flex</li><li>Redis Cache</li></ul></div>
+    <div class="cat"><h4 class="k5">IA + ML</h4><ul><li>Azure OpenAI</li><li>AI Services</li><li>Machine Learning</li><li>Bot Service</li><li>AI Search</li></ul></div>
+    <div class="cat"><h4 class="k6">Identidad + Seguridad</h4><ul><li>Microsoft Entra ID</li><li>Key Vault</li><li>Defender for Cloud</li><li>DDoS Protection</li><li>Firewall</li></ul></div>
+    <div class="cat"><h4 class="k1">DevOps + Administración</h4><ul><li>Azure DevOps</li><li>Azure Monitor</li><li>Plantillas ARM</li><li>Azure Policy</li><li>Cost Management</li></ul></div>
+    <div class="cat"><h4 class="k2">IoT</h4><ul><li>IoT Hub</li><li>IoT Central</li><li>Digital Twins</li><li>Stream Analytics</li><li>Event Hubs</li></ul></div>
+    <div class="cat"><h4 class="k3">Análisis</h4><ul><li>Synapse Analytics</li><li>Data Factory</li><li>Databricks</li><li>HDInsight</li><li>Azure Data Explorer</li></ul></div>
+    <div class="cat"><h4 class="k4">Integración</h4><ul><li>Logic Apps</li><li>API Management</li><li>Service Bus</li><li>Event Grid</li><li>Notification Hubs</li></ul></div>
+  </div>
+</div>
+<p class="pc" style="margin-top:8px">Diagrama de Learn rehecho en español. Son ejemplos, no la lista completa de servicios.</p>
+<h3>De mover máquinas virtuales a modernizar</h3>
+<p>Muchos equipos empiezan llevando sus aplicaciones existentes a máquinas virtuales de Azure. Es un buen comienzo, pero la nube es mucho más que otro sitio donde ejecutar máquinas virtuales. Al ganar soltura, se moderniza una carga de trabajo cada vez.</p>
+<div class="flow"><span class="node">Aplicación en un servidor propio</span><span class="arrow">→</span><span class="node">Máquina virtual en Azure</span><span class="arrow">→</span><span class="node az">Servicios administrados</span></div>
+<ul><li>De servidores administrados a mano a bases de datos administradas.</li><li>De aplicaciones web con tamaño fijo a aplicaciones con escalado automático.</li><li>De procesos siempre encendidos a servicios controlados por eventos.</li></ul>
+<p>Es el mismo camino que viste en el Módulo 3: primero lift-and-shift con IaaS y después PaaS.</p>
+<h3>Ejemplo: una aplicación con picos de demanda</h3>
+<p>Una organización tiene una aplicación interna con picos estacionales. En Azure puede alojarla en máquinas virtuales o en servicios de aplicaciones administrados, guardar los datos en bases de datos administradas y vigilar el estado desde un panel centralizado. Cuando sube la demanda escala los recursos, y cuando baja los reduce para no pagar capacidad sin usar todo el año.</p>
+<p>Azure también ofrece servicios de IA para añadir lenguaje, visión, voz e IA generativa a las aplicaciones, además de Azure Machine Learning, servicios de IoT y almacenamiento que crece de forma dinámica para volúmenes masivos de datos.</p>
+<h3>Analogía: la electricidad</h3>
+<div class="split">
+  <div class="box"><h4>Antes</h4><p>Comprabas un generador propio. Con los servidores, igual: comprar, instalar, mantener, renovar y reparar averías.</p></div>
+  <div class="box ms"><h4>Ahora</h4><p>Consumes electricidad cuando la necesitas. En Azure, consumes capacidad informática bajo demanda y pagas por lo que usas.</p></div>
+</div>
+<div class="asir"><h4>Traducción ASIR</h4>
+<p>Imagina Azure como un CPD enorme repartido por todo el mundo y gestionado por Microsoft.</p>
+<div class="tablebox" style="margin-top:8px"><table><thead><tr><th>Infraestructura tradicional</th><th>Azure</th></tr></thead><tbody>
+<tr><td>Servidor físico o Hyper-V</td><td>Azure Virtual Machines</td></tr>
+<tr><td>NAS</td><td>Azure Storage (por ejemplo, Azure Files)</td></tr>
+<tr><td>SQL Server local</td><td>Azure SQL Database</td></tr>
+<tr><td>Directorio de identidades</td><td>Microsoft Entra ID (equivalencia aproximada)</td></tr>
+<tr><td>Firewall físico</td><td>Azure Firewall</td></tr></tbody></table></div>
+<p class="pc">Son equivalencias para orientarte, no iguales uno a uno. Entra ID gestiona identidades y acceso, y no es un Active Directory local alojado en la nube.</p></div>
+<h3>Azure frente a infraestructura local</h3>
+<div class="tablebox"><table><thead><tr><th>Característica</th><th>Local (on-premises)</th><th>Azure</th></tr></thead><tbody>
+<tr><td>Compra de hardware</td><td>Sí</td><td>No</td></tr>
+<tr><td>Escalabilidad</td><td>Limitada por lo que compraste</td><td>Muy alta</td></tr>
+<tr><td>Inversión inicial</td><td>Alta</td><td>Baja</td></tr>
+<tr><td>Mantenimiento físico</td><td>Cliente</td><td>Microsoft</td></tr>
+<tr><td>Pago por uso</td><td>No</td><td>Sí</td></tr></tbody></table></div>
+<h3>Frases de examen</h3>
+<p class="quote">Azure permite ejecutar aplicaciones, crear máquinas virtuales y usar almacenamiento y bases de datos administradas.</p>
+<p class="quote">Azure incluye servicios de inteligencia artificial y Machine Learning.</p>
+<p class="quote">Microsoft administra los centros de datos físicos.</p>
+<p class="quote">Pay-as-you-go: pagas únicamente por lo que consumes.</p>
+<p>Si el enunciado habla de no comprar hardware, pagar por uso, escalar rápido o infraestructura global, piensa en una ventaja de Azure o de la nube.</p>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Creer que Azure son solo máquinas virtuales</td><td>Incluye cientos de servicios: redes, almacenamiento, bases de datos, seguridad, IA, IoT y más.</td></tr>
+<tr><td>Confundir escalabilidad con disponibilidad</td><td>Escalabilidad es poder crecer o reducir recursos. Disponibilidad es seguir funcionando aunque haya un fallo.</td></tr>
+<tr><td>Pensar que Microsoft administra absolutamente todo</td><td>La infraestructura física es de Microsoft, pero tus datos, accesos y configuración siguen siendo tuyos (responsabilidad compartida, Módulo 1).</td></tr>
+<tr><td>Creer que la nube siempre es más barata</td><td>Una mala configuración o recursos olvidados pueden generar costes altos.</td></tr></tbody></table></div>
+<h3>Truco para memorizar</h3>
+<div class="callout"><b>Azure = alquilar en lugar de comprar.</b> Es la idea del consumo del Módulo 1, aplicada a una plataforma con cientos de servicios.</div></section>
+
+<section id="u3"><div class="unit"><span class="n">UNIDAD 3/7</span></div>
+<h2>Introducción a las cuentas de Azure</h2>
+<p class="idea"><b>Idea principal.</b> Para crear y usar servicios de Azure necesitas una suscripción. Al crear una cuenta de Azure se crea una suscripción, y después puedes crear más. Dentro de cada suscripción creas los recursos.</p>
+<p>Un equipo, por ejemplo, puede usar una sola cuenta y suscripciones separadas para desarrollo, pruebas y producción.</p>
+<div class="fig">
+  <p class="fig-title">Niveles de una cuenta de Azure</p>
+  <p class="fig-sub">De la cuenta a los recursos, con un ejemplo de tres suscripciones.</p>
+  <div class="acct">
+    <div class="top">Cuenta de Azure</div><div class="stem"></div>
+    <div class="subs">
+      <div class="sub"><b>Desarrollo y pruebas</b>
+        <div class="grp"><span>Grupo de recursos: Web</span><i class="res">App Service</i><i class="res">VM</i></div>
+        <div class="grp"><span>Grupo de recursos: Datos</span><i class="res">SQL DB</i><i class="res">Cosmos DB</i></div></div>
+      <div class="sub"><b>Producción</b>
+        <div class="grp"><span>Grupo de recursos: Aplicación</span><i class="res">Function</i><i class="res">API</i></div>
+        <div class="grp"><span>Grupo de recursos: Red</span><i class="res">Virtual Network</i><i class="res">NSG</i></div></div>
+      <div class="sub"><b>Sandbox</b>
+        <div class="grp"><span>Grupo de recursos: Pruebas</span><i class="res">VM</i><i class="res">Storage</i></div></div>
+    </div>
+  </div>
+  <div class="legend"><span><i class="l-acc"></i>Cuenta</span><span><i class="l-sub"></i>Suscripciones</span><span><i class="l-grp"></i>Grupos de recursos</span><span><i class="l-res"></i>Recursos</span></div>
+  <div class="callout" style="margin-top:12px"><ul style="margin:0"><li>Las suscripciones separan la facturación y el control de acceso.</li><li>Cada suscripción contiene uno o varios grupos de recursos.</li><li>Cada recurso pertenece exactamente a un grupo de recursos.</li></ul></div>
+</div>
+<p class="pc" style="margin-top:8px">Diagrama de Learn rehecho en español. Los grupos de recursos y las suscripciones se explican a fondo en la unidad 5.</p>
+<h3>Cómo conseguir acceso a Azure</h3>
+<p>Puedes comprar Azure directamente a Microsoft, registrándote en su web o a través de un representante de Microsoft. También puedes hacerlo mediante un socio de Microsoft. Los socios Cloud Solution Provider ofrecen soluciones completas de nube administrada para Azure.</p>
+<h3>Si no conoces Azure</h3>
+<p>Puedes registrarte para obtener una cuenta gratuita y empezar a explorar sin coste. Cuando estés listo, puedes actualizarla, o crear una suscripción nueva para pagar por servicios que superen los límites de la cuenta gratuita.</p>
+<div class="split">
+  <div class="box ms"><h4>Cuenta gratuita de Azure</h4><ul><li>Acceso gratuito a productos populares durante 12 meses.</li><li>Crédito para gastar durante los primeros 30 días.</li><li>Acceso a más de 65 servicios que son siempre gratuitos.</li></ul><p class="pc">Para registrarte necesitas un teléfono, una tarjeta de crédito y una cuenta de Microsoft o de GitHub. La tarjeta solo sirve para verificar tu identidad. No se te cobra nada hasta que pases a una suscripción de pago.</p></div>
+  <div class="box cl"><h4>Cuenta de estudiante gratuita</h4><ul><li>Acceso gratuito a ciertos servicios durante 12 meses.</li><li>Un crédito para usar durante los primeros 12 meses.</li><li>Acceso gratuito a ciertas herramientas de desarrollo.</li></ul><p class="pc">Ofrece 100 USD de crédito y herramientas de desarrollo gratuitas. Puedes registrarte sin tarjeta de crédito.</p></div>
+</div>
+<div class="callout"><b>Al practicar.</b> Supervisa el uso y elimina los recursos que ya no necesites para evitar costes inesperados.</div>
+<div class="asir"><h4>Traducción ASIR</h4>
+<ul><li><b>Cuenta:</b> quien contrata y entra en Azure.</li><li><b>Suscripción:</b> el contrato y la factura. Se puede tener una por entorno.</li><li><b>Grupo de recursos:</b> la carpeta donde reúnes lo que va junto.</li><li><b>Recurso:</b> cada pieza concreta: una VM, un disco, una red.</li></ul>
+<p>Es una analogía para ubicarte. Piensa en el laboratorio de prácticas: separas entornos, agrupas lo que va junto y sabes de quién es cada gasto.</p></div>
+<h3>Frases de examen</h3>
+<p class="quote">Para usar servicios de Azure se necesita una suscripción.</p>
+<p class="quote">Las suscripciones separan la facturación y el control de acceso.</p>
+<p class="quote">Una cuenta puede tener varias suscripciones.</p>
+<p class="quote">La cuenta gratuita incluye crédito los primeros 30 días y más de 65 servicios siempre gratuitos.</p>
+<p>Si el enunciado habla de estudiantes y de registrarse sin tarjeta, piensa en la cuenta de estudiante gratuita.</p>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Pensar que la tarjeta de la cuenta gratuita se cobra al registrarte</td><td>Solo verifica tu identidad. No se cobra hasta actualizar a una suscripción de pago.</td></tr>
+<tr><td>Creer que una cuenta solo puede tener una suscripción</td><td>Puedes crear todas las suscripciones adicionales que necesites.</td></tr>
+<tr><td>Confundir cuenta y suscripción</td><td>La suscripción es lo que te da acceso a crear recursos y es la unidad de facturación.</td></tr>
+<tr><td>Olvidar los recursos creados al practicar</td><td>Pueden generar costes. Hay que supervisar el uso y eliminarlos.</td></tr></tbody></table></div></section>
+
+<section id="u4"><div class="unit"><span class="n">UNIDAD 4/7</span></div>
+<h2>Infraestructura física de Azure</h2>
+<p class="idea"><b>Idea principal.</b> La infraestructura física de Azure empieza en los centros de datos: instalaciones con servidores en bastidores, con energía, refrigeración y red dedicadas, como un CPD local pero a una escala mucho mayor. No interactúas con los centros de datos uno a uno. Se agrupan en regiones y zonas de disponibilidad, que dan resistencia y fiabilidad a tus cargas de trabajo.</p>
+<div class="fig">
+  <p class="fig-title">Infraestructura física de Azure</p>
+  <p class="fig-sub">Cómo organiza Azure los recursos, del ámbito más amplio al más concreto.</p>
+  <div class="hier">
+    <div class="lv"><h4 class="l1">Geografía</h4><p>Límite de residencia de datos y de cumplimiento normativo.</p><p class="eg">Ej.: Estados Unidos, Europa</p></div>
+    <div class="ct">contiene<br>→</div>
+    <div class="lv"><h4 class="l2">Región</h4><p>Uno o varios centros de datos cercanos, unidos por una red de baja latencia.</p><p class="eg">Ej.: East US, West Europe</p></div>
+    <div class="ct">contiene<br>→</div>
+    <div class="lv"><h4 class="l3">Zona de disponibilidad</h4><p>Centros de datos físicamente separados que actúan como límite de aislamiento.</p><p class="eg">3 o más por región con zonas</p></div>
+    <div class="ct">contiene<br>→</div>
+    <div class="lv"><h4 class="l4">Centro de datos</h4><p>Servidores con energía, refrigeración y red dedicadas.</p></div>
+  </div>
+  <p class="fig-foot">Tú despliegas recursos en una región. Azure gestiona la ubicación entre zonas y centros de datos.</p>
+</div>
+<p class="pc" style="margin-top:8px">Diagrama de Learn rehecho en español. En Azure puedes explorar la infraestructura en el sitio interactivo de infraestructura global de Microsoft.</p>
+
+<h3>Regiones</h3>
+<p>Una región es un área geográfica que contiene al menos un centro de datos, y a menudo varios, cercanos entre sí y conectados con una red de baja latencia. Azure asigna y controla de forma inteligente los recursos dentro de cada región para equilibrar las cargas.</p>
+<p>Al desplegar un recurso casi siempre eliges la región. Algunos servicios o características, como ciertos tamaños de máquina virtual o tipos de almacenamiento, solo existen en determinadas regiones.</p>
+<div class="callout"><b>Servicios globales.</b> Algunos servicios no te piden región, como Microsoft Entra ID, Azure Traffic Manager y Azure DNS.</div>
+<p style="margin-top:12px"><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Al elegir región pesan la latencia hacia tus usuarios, la residencia de los datos, que el servicio que necesitas exista allí y tus necesidades de recuperación ante desastres.</p>
+
+<h3>Zonas de disponibilidad</h3>
+<p>Son centros de datos separados físicamente dentro de una región. Cada zona consta de uno o varios centros de datos con alimentación, refrigeración y redes independientes. Una zona es un límite de aislamiento: si una deja de funcionar, las otras siguen trabajando. Se conectan entre sí con redes de fibra óptica privadas de alta velocidad.</p>
+<div class="fig">
+  <p class="fig-title">Zonas de disponibilidad en una región de Azure</p>
+  <p class="fig-sub">Cada zona es un límite de aislamiento.</p>
+  <div class="rgn"><h4>Región de Azure (por ejemplo, East US)</h4>
+    <div class="zs">
+      <div class="zone"><h5>Zona de disponibilidad 1</h5><span class="srv"></span><p class="dc">Centro(s) de datos</p><ul><li>Energía independiente</li><li>Refrigeración independiente</li><li>Red independiente</li></ul></div>
+      <div class="zone"><h5>Zona de disponibilidad 2</h5><span class="srv"></span><p class="dc">Centro(s) de datos</p><ul><li>Energía independiente</li><li>Refrigeración independiente</li><li>Red independiente</li></ul></div>
+      <div class="zone"><h5>Zona de disponibilidad 3</h5><span class="srv"></span><p class="dc">Centro(s) de datos</p><ul><li>Energía independiente</li><li>Refrigeración independiente</li><li>Red independiente</li></ul></div>
+    </div>
+    <div class="fiber"></div>
+    <div class="fl">Red privada de fibra óptica de alta velocidad</div>
+    <div class="fs">Cada zona es un límite de aislamiento: si una falla, las demás siguen funcionando.</div>
+  </div>
+</div>
+<div class="callout" style="margin-top:12px"><b>Importante.</b> Las regiones con zonas de disponibilidad tienen un mínimo de tres zonas separadas. Pero no todas las regiones de Azure admiten zonas todavía.</div>
+<h3>Usar zonas de disponibilidad en tus cargas</h3>
+<p>En tu propio CPD, la redundancia significa comprar y mantener hardware duplicado. En Azure repartes la carga entre zonas de una región: colocas máquinas virtuales, almacenamiento, bases de datos y otros recursos en una zona y los replicas a otras de la misma región. Ojo: duplicar servicios y transferir datos entre zonas puede tener un coste.</p>
+<p>Los servicios con soporte de zonas se dividen en tres categorías.</p>
+<div class="fig">
+  <p class="fig-title">Categorías de servicios con zonas de disponibilidad</p>
+  <p class="fig-sub">Cómo se relacionan los distintos servicios de Azure con las zonas.</p>
+  <div class="split">
+    <div class="box ms"><h4>Zonales</h4>
+      <div class="zstack"><div class="zi on">Zona 1 · fijado aquí</div><div class="zi">Zona 2</div><div class="zi">Zona 3</div></div>
+      <p>Tú fijas el recurso a una zona concreta.</p><p class="pc"><b>Ejemplos:</b> máquinas virtuales, discos administrados y direcciones IP.</p></div>
+    <div class="box tl"><h4>Con redundancia de zona</h4>
+      <div class="zstack"><div class="zi rep">Zona 1 · replicada</div><div class="zi rep">Zona 2 · replicada</div><div class="zi rep">Zona 3 · replicada</div></div>
+      <p>La plataforma replica de forma automática entre zonas.</p><p class="pc"><b>Ejemplos:</b> almacenamiento con redundancia de zona y SQL Database.</p></div>
+    <div class="box cl"><h4>No regionales</h4>
+      <div class="zstack"><div class="zi dash">Global · sin zona ni región</div><div class="zi dash">Zona 1</div><div class="zi dash">Zona 2</div></div>
+      <p>Siempre disponibles desde las geografías de Azure, resistentes a caídas de una zona o de una región.</p><p class="pc"><b>Ejemplos:</b> Microsoft Entra ID, Traffic Manager y Azure DNS.</p></div>
+  </div>
+</div>
+<p class="pc" style="margin-top:8px">Diagrama de Learn rehecho en español.</p>
+<div class="tablebox"><table><thead><tr><th>Tipo</th><th>Qué haces tú</th><th>Quién gestiona la conmutación por error</th></tr></thead><tbody>
+<tr><td>Zonal</td><td>Eliges la zona. Para tener resistencia, despliegas recursos separados en varias zonas.</td><td>Tú <span class="badge">Ampliación</span></td></tr>
+<tr><td>Con redundancia de zona</td><td>Lo activas en el servicio y Azure reparte y replica.</td><td>Microsoft <span class="badge">Ampliación</span></td></tr>
+<tr><td>No regional</td><td>No eliges región ni zona.</td><td>El propio servicio global</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">Si no configuras un recurso para usar zonas, Azure lo trata como regional y puede colocarlo en cualquier zona de la región. Una caída de zona podría dejarlo sin servicio.</p>
+
+<h3>Pares de regiones</h3>
+<p>Incluso con zonas, un evento puede ser tan grande que afecte a varias zonas de una región. Para dar aún más resistencia, Azure tiene los pares de regiones. La mayoría de las regiones se emparejan con otra de la misma geografía (EE. UU., Europa, Asia…) que está al menos a 300 millas (unos 480 km). Así se reducen las interrupciones por desastres naturales, disturbios, cortes de energía o fallos de red física que afecten a una región entera.</p>
+<div class="fig">
+  <p class="fig-title">Pares de regiones de Azure</p>
+  <p class="fig-sub">Dos regiones de la misma geografía emparejadas para recuperación ante desastres.</p>
+  <div class="pair"><div class="gl">Geografía (por ejemplo, Estados Unidos)</div>
+    <div class="row">
+      <div class="rgx"><h4>Región 1: East US</h4><div class="mini"><span>Zona 1</span><span>Zona 2</span><span>Zona 3</span></div><p class="st"><b class="on">Activa</b>Cargas de trabajo y datos principales.</p></div>
+      <div class="mid"><span class="ar">⇄</span><b>Conmutación por error y replicación</b>Más de 300 millas (unos 480 km)</div>
+      <div class="rgx"><h4>Región 2: West US</h4><div class="mini"><span>Zona 1</span><span>Zona 2</span><span>Zona 3</span></div><p class="st"><b class="off">En espera</b>Cargas replicadas y copias de seguridad.</p></div>
+    </div>
+    <div class="split adv">
+      <div class="box ms"><h4>Restauración priorizada</h4><p>Al menos una región del par se restablece rápido.</p></div>
+      <div class="box ms"><h4>Actualizaciones escalonadas</h4><p>Se despliegan de una región en una, no a la vez.</p></div>
+      <div class="box ms"><h4>Residencia de datos</h4><p>Los datos permanecen en la misma geografía.</p></div>
+    </div>
+  </div>
+</div>
+<p class="pc" style="margin-top:8px">Diagrama de Learn rehecho en español. El reparto activa y en espera es un esquema: lo que ocurra de verdad depende del servicio y de lo que configures.</p>
+<div class="callout" style="margin-top:12px"><b>Ojo con la conmutación automática.</b> No todos los servicios replican datos ni conmutan por error a otra región por sí solos. En esos casos la recuperación y la replicación las configuras tú. Por ejemplo, West US y East US son un par, y Southeast Asia y East Asia otro.</div>
+<h3>Ventajas de los pares de regiones</h3>
+<ul><li>Si hay una caída extensa, se prioriza una región de cada par para restablecerla cuanto antes.</li><li>Las actualizaciones planificadas se despliegan en las regiones emparejadas de una en una, para reducir el riesgo de caída.</li><li>Los datos siguen en la misma geografía que su par (salvo Brazil South), por residencia de datos y cumplimiento.</li></ul>
+<p><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Los pares los define Microsoft: no puedes elegir los tuyos. Tampoco estás obligado a usar el par de tu región. Muchas regiones nuevas no tienen par y usan las zonas de disponibilidad como principal medio de redundancia.</p>
+<div class="callout"><b>Excepciones.</b> La mayoría de los pares funcionan en los dos sentidos (West US y East US se respaldan entre sí). Algunos solo en uno: Brazil South tiene como secundaria South Central US, que está fuera de su geografía, y South Central US no tiene a Brazil South como secundaria. Italy North, Poland Central e Israel Central no tienen un par tradicional y se apoyan en zonas de disponibilidad y almacenamiento con redundancia geográfica.</div>
+
+<h3>Regiones soberanas <span class="badge">Ampliación</span></h3>
+<p>Además de las regiones normales, Azure tiene regiones soberanas: instancias de Azure aisladas de la instancia principal. Puedes necesitarlas por motivos legales o de cumplimiento.</p>
+<div class="split">
+  <div class="box ms"><h4>Administraciones de EE. UU.</h4><p>US DoD Central, US Gov Virginia, US Gov Arizona y otras. Instancias aisladas física y lógicamente para agencias del gobierno de EE. UU. y sus socios. Las opera personal estadounidense verificado y tienen certificaciones adicionales.</p></div>
+  <div class="box cl"><h4>China</h4><p>China East, China North y otras. Se ofrecen mediante una alianza de Microsoft con 21Vianet, por la cual Microsoft no mantiene directamente los centros de datos.</p></div>
+</div>
+
+<h3>Región, zona y par de un vistazo</h3>
+<div class="tablebox"><table><thead><tr><th>Concepto</th><th>Qué es</th><th>Para qué sirve</th></tr></thead><tbody>
+<tr><td>Geografía</td><td>Área con límite de residencia de datos y cumplimiento</td><td>Que los datos se queden donde exige la normativa</td></tr>
+<tr><td>Región</td><td>Área con uno o más centros de datos cercanos y red de baja latencia</td><td>Reducir la latencia y repartir los servicios</td></tr>
+<tr><td>Zona de disponibilidad</td><td>Uno o varios centros de datos separados dentro de una región, con energía, refrigeración y red propias</td><td>Tolerancia a fallos dentro de la región</td></tr>
+<tr><td>Par de regiones</td><td>Dos regiones de la misma geografía, a más de 300 millas</td><td>Recuperarse de un desastre que afecte a una región entera</td></tr>
+<tr><td>Región soberana</td><td>Instancia de Azure aislada de la principal</td><td>Cumplir requisitos legales o de cumplimiento</td></tr></tbody></table></div>
+<div class="asir"><h4>Traducción ASIR</h4>
+<div class="tablebox" style="margin-top:4px"><table><thead><tr><th>Entorno ASIR</th><th>Azure</th></tr></thead><tbody>
+<tr><td>CPD de la empresa</td><td>Centro de datos de Azure</td></tr>
+<tr><td>Sede o delegación</td><td>Región</td></tr>
+<tr><td>Sala o edificio con su propia energía y refrigeración</td><td>Zona de disponibilidad</td></tr>
+<tr><td>CPD de respaldo en otra ciudad</td><td>Región emparejada</td></tr>
+<tr><td>Cabina NAS o SAN</td><td>Azure Storage</td></tr>
+<tr><td>Servidor físico</td><td>Máquina virtual de Azure</td></tr></tbody></table></div>
+<p style="margin-top:8px">Ejemplo: una tienda online española puede desplegar en una región europea para reducir la latencia, y usar varias zonas para que una avería no tumbe el servicio.</p></div>
+<h3>Frases de examen</h3>
+<p class="quote">Una región contiene uno o varios centros de datos.</p>
+<p class="quote">Una zona de disponibilidad es físicamente independiente de las demás.</p>
+<p class="quote">Las zonas de disponibilidad mejoran la alta disponibilidad y la tolerancia a fallos.</p>
+<p class="quote">No todas las regiones tienen zonas de disponibilidad.</p>
+<p class="quote">Los servicios con redundancia de zona se replican automáticamente.</p>
+<p class="quote">Los pares de regiones permiten recuperarse de un desastre que afecte a toda una región.</p>
+<p>Si el enunciado habla de un fallo dentro de una región, piensa en zonas. Si habla de un desastre que afecta a toda la región, piensa en pares de regiones.</p>
+<h3>Lo que más se pregunta</h3>
+<div class="tablebox"><table><thead><tr><th>Pregunta</th><th>Respuesta</th></tr></thead><tbody>
+<tr><td>¿Qué es una región?</td><td>Un área geográfica con uno o más centros de datos conectados con baja latencia.</td></tr>
+<tr><td>¿Cuántas zonas tiene una región con zonas?</td><td>Un mínimo de tres.</td></tr>
+<tr><td>¿Qué servicios son zonales?</td><td>Máquinas virtuales, discos administrados y direcciones IP.</td></tr>
+<tr><td>¿Qué servicios tienen redundancia de zona?</td><td>Almacenamiento con redundancia de zona y SQL Database.</td></tr>
+<tr><td>¿Qué servicios son no regionales?</td><td>Microsoft Entra ID, Traffic Manager y Azure DNS.</td></tr>
+<tr><td>¿A qué distancia mínima están los pares?</td><td>Al menos 300 millas, en la misma geografía.</td></tr></tbody></table></div>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Pensar que región y zona son lo mismo</td><td>Una región puede contener varias zonas, y cada zona uno o varios centros de datos.</td></tr>
+<tr><td>Creer que una zona es un solo edificio</td><td>Una zona puede estar formada por varios centros de datos.</td></tr>
+<tr><td>Pensar que todas las regiones tienen zonas</td><td>Algunas regiones aún no ofrecen zonas de disponibilidad.</td></tr>
+<tr><td>Creer que una VM se replica sola entre zonas</td><td>Una VM es un recurso zonal: tú decides la zona y creas las copias en otras.</td></tr>
+<tr><td>Dar por hecho que un par de regiones conmuta solo</td><td>Depende del servicio. En muchos casos la replicación y la recuperación las configuras tú.</td></tr>
+<tr><td>Confundir alta disponibilidad con escalabilidad</td><td>Son ventajas distintas (Módulo 2): seguir funcionando frente a poder crecer.</td></tr></tbody></table></div>
+<h3>Truco para memorizar</h3>
+<div class="callout"><b>Región = ciudad. Zona = grupo de edificios con su propia luz, refrigeración y red. Centro de datos = edificio.</b> Si una ciudad tiene varios grupos de edificios independientes, el servicio sigue funcionando aunque uno falle. Y si cae la ciudad entera, entra la ciudad emparejada.</div>
+<p class="pc" style="margin-top:8px">Para el AZ-104: tendrás que decidir en qué región desplegar, configurar la redundancia y diseñar infraestructuras resistentes. Para el AZ-900 basta con entender qué es cada pieza.</p></section>
+
+<section id="u5"><div class="unit"><span class="n">UNIDAD 5/7</span></div>
+<h2>Infraestructura de administración de Azure</h2>
+<p class="idea"><b>Idea principal.</b> La infraestructura de administración incluye los recursos y los grupos de recursos, las suscripciones y las cuentas, y sobre ellas los grupos de administración. Entender esta jerarquía te ayuda a organizar los recursos, controlar quién accede a qué y gestionar los costes a medida que crece tu uso de Azure.</p>
+<div class="flow"><span class="node">Recurso</span><span class="arrow">→</span><span class="node">Grupo de recursos</span><span class="arrow">→</span><span class="node">Suscripción</span><span class="arrow">→</span><span class="node az">Grupo de administración</span></div>
+
+<h3>Recursos y grupos de recursos</h3>
+<p>Un recurso es el bloque de construcción básico de Azure. Todo lo que creas, aprovisionas o implementas es un recurso. Las máquinas virtuales, las redes virtuales, las bases de datos y los servicios de Azure AI son ejemplos de recursos.</p>
+<p>Los grupos de recursos son agrupaciones de recursos. Todo recurso debe pertenecer exactamente a un grupo de recursos.</p>
+<div class="fig">
+  <p class="fig-title">Reglas de los grupos de recursos</p>
+  <p class="fig-sub">GR = grupo de recursos. La línea discontinua indica que el recurso ya no está asociado a ese grupo.</p>
+  <div class="split">
+    <div class="box ms"><h4>Un grupo a la vez</h4>
+      <div class="rgr"><span class="chipg">GR A</span><span class="ar2">←</span><span class="chipv">VM</span><span class="xx">✕</span><span class="chipn">GR B</span></div>
+      <p class="pc" style="text-align:center;margin:0">Tras mover:</p>
+      <div class="rgr"><span class="chipn">GR A</span><span class="xx">✕</span><span class="chipv">VM</span><span class="ar2">→</span><span class="chipg">GR B</span></div>
+      <p>Cada recurso pertenece exactamente a un grupo de recursos. Puedes mover recursos entre grupos.</p></div>
+    <div class="box or"><h4>Sin anidar ni renombrar</h4>
+      <div class="nest">Grupo A<div class="in">Grupo B</div></div>
+      <p>Los grupos de recursos no se pueden anidar dentro de otros grupos. Tampoco se pueden renombrar después de crearlos.</p></div>
+    <div class="box tl"><h4>Acciones en cascada</h4>
+      <div class="rgbox"><b>Grupo de recursos</b><div class="items"><span class="chipv">VM</span><span class="chipv">BD</span><span class="chipv">App</span></div></div>
+      <p class="danger">Eliminar el grupo = eliminar todo</p>
+      <p>Eliminar un grupo de recursos elimina todo lo que contiene. Los permisos de acceso también se aplican a todos sus recursos.</p></div>
+  </div>
+</div>
+<p class="pc" style="margin-top:8px">Diagrama de Learn rehecho en español.</p>
+<div class="tablebox" style="margin-top:12px"><table><thead><tr><th>Regla</th><th>Qué significa</th></tr></thead><tbody>
+<tr><td>Un solo grupo</td><td>Un recurso está asociado a un único grupo de recursos a la vez.</td></tr>
+<tr><td>Se pueden mover</td><td>Puedes mover algunos recursos de un grupo a otro, aunque no todos los tipos admiten el cambio.</td></tr>
+<tr><td>Sin anidar</td><td>Un grupo de recursos no puede estar dentro de otro.</td></tr>
+<tr><td>Sin renombrar</td><td>No se puede cambiar el nombre tras crearlo. Conviene fijar una convención de nombres desde el principio.</td></tr>
+<tr><td>Acciones en cascada</td><td>Lo que aplicas al grupo afecta a todos sus recursos: borrarlo los borra, y conceder o denegar acceso se aplica a todos.</td></tr></tbody></table></div>
+<p style="margin-top:12px"><b>Para qué sirve.</b> Si montas un entorno de desarrollo temporal, reunir todos sus recursos en un grupo te permite eliminarlos de golpe al terminar. Si llevas varios proyectos, creas un grupo por proyecto para que cada equipo solo vea y gestione lo suyo. No hay reglas estrictas para estructurar los grupos: elige lo que mejor encaje.</p>
+
+<h3>Suscripciones de Azure</h3>
+<p>En Azure, las suscripciones son una unidad de administración, facturación y escala. Permiten organizar los grupos de recursos y controlar la facturación por separado del acceso.</p>
+<p>Usar Azure exige una suscripción: da acceso a los productos y servicios de Azure y sirve como unidad de facturación. Una suscripción se vincula a una cuenta de Azure, que es una identidad de Microsoft Entra ID o de un directorio en el que Microsoft Entra ID confía. Una cuenta puede tener varias suscripciones, pero solo necesita una.</p>
+<div class="fig">
+  <p class="fig-title">Límites de una suscripción de Azure</p>
+  <p class="fig-sub">Una suscripción marca dos límites: el de facturación y el de control de acceso.</p>
+  <div class="split">
+    <div class="box ms"><h4>Límite de facturación</h4>
+      <div class="bn">
+        <span class="nd dk">Cuenta de Azure</span><span class="st1"></span>
+        <div class="row2">
+          <div class="col"><span class="nd bl">Suscripción A</span><span class="st1"></span><span class="tag2 b">Factura A<br>(cobro separado)</span></div>
+          <div class="col"><span class="nd bl">Suscripción B</span><span class="st1"></span><span class="tag2 b">Factura B<br>(cobro separado)</span></div>
+        </div>
+      </div>
+      <p class="pc" style="text-align:center">Cada suscripción genera su propio informe de facturación y su factura.</p></div>
+    <div class="box tl"><h4>Límite de control de acceso</h4>
+      <div class="bn">
+        <div class="row2">
+          <div class="col"><span class="nd gr">Suscripción de desarrollo</span><span class="tag2 g">Directivas de acceso abiertas</span><span class="tag2 g">Límite de gasto más alto</span></div>
+          <div class="col"><span class="nd pu">Suscripción de producción</span><span class="tag2 p">Acceso restringido</span><span class="tag2 p">Límite de gasto estricto</span></div>
+        </div>
+      </div>
+      <p class="pc" style="text-align:center">Cada suscripción puede tener distintas directivas de administración de acceso, límites de gasto y reglas de acceso.</p></div>
+  </div>
+</div>
+<p class="pc" style="margin-top:8px">Diagrama de Learn rehecho en español.</p>
+<h3>Cuándo crear suscripciones adicionales</h3>
+<div class="tablebox"><table><thead><tr><th>Para separar</th><th>Qué significa</th></tr></thead><tbody>
+<tr><td>Entornos</td><td>Fases del ciclo de vida: sandbox, desarrollo, pruebas y producción. El control de acceso se aplica por suscripción, así que es un límite natural.</td></tr>
+<tr><td>Equipos y cargas de trabajo</td><td>Dar a cada proyecto su propia suscripción facilita seguir los costes, o separar los entornos de prueba de producción.</td></tr>
+<tr><td>Facturación</td><td>Seguir los costes por separado, por ejemplo producción por un lado y desarrollo y pruebas por otro.</td></tr></tbody></table></div>
+
+<h3>Grupos de administración de Azure</h3>
+<p>Los recursos van en grupos de recursos y los grupos de recursos van en suscripciones. Para un entorno pequeño basta. Pero con muchas suscripciones de varios equipos o zonas geográficas hace falta gestionar acceso y directivas a un nivel superior.</p>
+<p>Los grupos de administración están por encima de las suscripciones. Organizas las suscripciones en grupos de administración y aplicas condiciones de gobierno, como directivas de acceso o reglas de cumplimiento, al grupo. Todas las suscripciones del grupo las heredan automáticamente, igual que los recursos heredan los ajustes de su grupo de recursos. Los grupos de administración se pueden anidar hasta seis niveles de profundidad, sin contar el nivel raíz ni el de suscripción.</p>
+<p>Cada inquilino de Microsoft Entra tiene un único <b>grupo raíz del inquilino</b> (<i>Tenant Root Group</i>). Todos los demás grupos de administración y suscripciones cuelgan de él, lo que permite aplicar directivas de gobierno a toda la organización.</p>
+<div class="split">
+  <div class="box ms"><h4>Aplicar una directiva a varias suscripciones</h4><p>Por ejemplo, limitar la ubicación de las máquinas virtuales a la región West US en un grupo llamado Producción. La directiva se hereda en todas las suscripciones del grupo y afecta a todas sus VM. El propietario del recurso o de la suscripción no puede anularla, lo que refuerza el gobierno.</p></div>
+  <div class="box cl"><h4>Dar acceso a varias suscripciones a la vez</h4><p>Con las suscripciones bajo un grupo de administración, creas una única asignación de Azure RBAC en el grupo. Los subgrupos, suscripciones, grupos de recursos y recursos de debajo heredan esos permisos, sin repetirlo suscripción por suscripción.</p></div>
+</div>
+
+<h3>Jerarquía de grupos de administración, suscripciones y grupos de recursos</h3>
+<p>Puedes construir una estructura flexible de grupos de administración y suscripciones para organizar los recursos en una jerarquía con gestión unificada de directivas y accesos.</p>
+<div class="fig">
+  <p class="fig-title">Jerarquía de grupos de administración</p>
+  <p class="inh"><span>↓</span> Las directivas y el acceso se heredan hacia abajo</p>
+  <ul class="mg"><li><span class="n root"><small>Raíz</small>Grupo raíz del inquilino</span>
+    <ul>
+      <li><span class="n mgn"><small>Grupo de administración</small>Marketing</span>
+        <ul>
+          <li><span class="n sb"><small>Suscripción</small>Web</span><ul><li><span class="n rgn2">Grupo de recursos</span><ul><li><span class="n rs">VM</span></li></ul></li></ul></li>
+          <li><span class="n sb"><small>Suscripción</small>Móvil</span></li>
+        </ul></li>
+      <li><span class="n mgn"><small>Grupo de administración</small>TI</span>
+        <ul>
+          <li><span class="n sb"><small>Suscripción</small>Aplicaciones</span><ul><li><span class="n rgn2">Grupo de recursos</span><ul><li><span class="n rs">App</span></li></ul></li></ul></li>
+          <li><span class="n mgn2"><small>Grupo de administración</small>Infraestructura</span>
+            <ul><li><span class="n sb"><small>Suscripción</small>Servidores</span><ul><li><span class="n rgn2">Grupo de recursos</span><ul><li><span class="n rs">BD</span></li></ul></li></ul></li></ul></li>
+        </ul></li>
+    </ul></li></ul>
+  <div class="callout" style="margin-top:12px"><b>Anidamiento: hasta 6 niveles de profundidad</b> (sin contar el nivel raíz ni el de suscripción). Un único directorio admite hasta 10.000 grupos de administración. Cada grupo de administración o suscripción tiene un solo padre.</div>
+</div>
+<p class="pc" style="margin-top:8px">Diagrama de Learn rehecho en español como árbol.</p>
+<h3>Qué contiene qué</h3>
+<div class="tablebox"><table><thead><tr><th>Nivel</th><th>Qué contiene</th><th>Qué se hereda desde él</th></tr></thead><tbody>
+<tr><td>Grupo raíz del inquilino</td><td>Todos los grupos de administración y suscripciones</td><td>Directivas globales para toda la organización</td></tr>
+<tr><td>Grupo de administración</td><td>Suscripciones y otros grupos de administración (hasta 6 niveles)</td><td>Directivas y asignaciones de acceso hacia todo lo de debajo</td></tr>
+<tr><td>Suscripción</td><td>Grupos de recursos</td><td>Facturación y acceso hacia sus grupos y recursos</td></tr>
+<tr><td>Grupo de recursos</td><td>Recursos (un recurso, un solo grupo)</td><td>Acciones y permisos hacia todos sus recursos</td></tr>
+<tr><td>Recurso</td><td>El servicio concreto: VM, red, base de datos</td><td>Es el último nivel</td></tr></tbody></table></div>
+<div class="asir"><h4>Traducción ASIR</h4>
+<div class="tablebox" style="margin-top:4px"><table><thead><tr><th>Entorno ASIR</th><th>Azure</th></tr></thead><tbody>
+<tr><td>Un servidor o una red concretos</td><td>Recurso</td></tr>
+<tr><td>Carpeta organizativa de un proyecto</td><td>Grupo de recursos</td></tr>
+<tr><td>Departamento con su presupuesto y sus permisos</td><td>Suscripción</td></tr>
+<tr><td>Unidad organizativa con directivas que heredan hacia abajo</td><td>Grupo de administración</td></tr>
+<tr><td>Raíz del árbol de la organización</td><td>Grupo raíz del inquilino</td></tr></tbody></table></div>
+<p style="margin-top:8px">Son analogías aproximadas. La herencia hacia abajo te recordará a las directivas de grupo y las unidades organizativas de Active Directory, pero el reparto no es idéntico.</p>
+<p>Ejemplo: una empresa tiene una suscripción de Producción y otra de Desarrollo. Dentro de cada una crea grupos de recursos separados para aplicaciones, bases de datos y copias de seguridad.</p></div>
+<h3>Frases de examen</h3>
+<p class="quote">Un recurso solo puede pertenecer a un grupo de recursos a la vez.</p>
+<p class="quote">Los grupos de recursos no se pueden anidar ni renombrar.</p>
+<p class="quote">Eliminar un grupo de recursos elimina todos los recursos que contiene.</p>
+<p class="quote">Las suscripciones son un límite de facturación y de control de acceso.</p>
+<p class="quote">Los grupos de administración organizan varias suscripciones y heredan directivas y accesos hacia abajo.</p>
+<p>Si el enunciado habla de aplicar la misma directiva o permiso a muchas suscripciones, piensa en grupos de administración. Si habla de separar facturas, piensa en suscripciones. Si habla de borrar o dar acceso a un conjunto de recursos de golpe, piensa en grupo de recursos.</p>
+<h3>Lo que más se pregunta</h3>
+<div class="tablebox"><table><thead><tr><th>Pregunta</th><th>Respuesta</th></tr></thead><tbody>
+<tr><td>¿En cuántos grupos de recursos puede estar un recurso a la vez?</td><td>En uno.</td></tr>
+<tr><td>¿Qué pasa con los recursos al aplicar un ajuste en el grupo de recursos?</td><td>Se aplica a todos sus recursos.</td></tr>
+<tr><td>¿Se puede anidar un grupo de recursos?</td><td>No.</td></tr>
+<tr><td>¿Qué genera una factura propia?</td><td>Cada suscripción.</td></tr>
+<tr><td>¿Qué hay por encima de las suscripciones?</td><td>Los grupos de administración.</td></tr>
+<tr><td>¿Cuántos padres tiene una suscripción?</td><td>Uno.</td></tr>
+<tr><td>¿Cuántos niveles se pueden anidar los grupos de administración?</td><td>Hasta seis, sin contar la raíz ni las suscripciones.</td></tr></tbody></table></div>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Pensar que un recurso puede estar en varios grupos</td><td>Solo pertenece a un grupo de recursos a la vez.</td></tr>
+<tr><td>Confundir suscripción con grupo de recursos</td><td>La suscripción contiene grupos de recursos y marca los límites de facturación y de acceso.</td></tr>
+<tr><td>Creer que se puede renombrar o anidar un grupo de recursos</td><td>Ninguna de las dos cosas es posible. Elige bien el nombre.</td></tr>
+<tr><td>Borrar un grupo de recursos "solo para limpiar"</td><td>Elimina todo lo que contiene, sin excepciones.</td></tr>
+<tr><td>Pensar que el propietario de una suscripción puede saltarse la directiva de un grupo de administración</td><td>No puede anularla: se hereda desde arriba.</td></tr>
+<tr><td>Creer que un recurso o suscripción puede colgar de dos grupos de administración</td><td>Cada grupo de administración o suscripción tiene un único padre.</td></tr></tbody></table></div>
+<h3>Truco para memorizar</h3>
+<div class="callout"><b>Grupo de administración manda, suscripción factura, grupo de recursos agrupa, recurso es la pieza.</b> De arriba abajo: gobierno, facturación y acceso, organización, servicio concreto. Y las directivas y permisos siempre bajan, nunca suben.</div>
+<p class="pc" style="margin-top:8px">Para el AZ-104: tendrás que elegir regiones, diseñar la alta disponibilidad y la redundancia, administrar recursos y suscripciones, aplicar RBAC y directivas y diseñar la estructura de grupos de administración.</p></section>
+
+<section id="u6"><div class="unit"><span class="n">UNIDAD 6/7</span></div>
+<h2>Comprobación de conocimientos</h2>
+<p class="idea"><b>Idea principal.</b> La evaluación del módulo en Learn tiene tres preguntas. Aquí tienes cada una explicada: por qué la respuesta es correcta y por qué las otras no lo son. Intenta responder antes de abrirlas.</p>
+<details><summary>1. ¿En cuántos grupos de recursos puede estar un recurso al mismo tiempo? (Uno, dos o tres)</summary><div class="ex"><p><b>Uno.</b></p>
+<p><b>Por qué.</b> Todo recurso debe pertenecer exactamente a un grupo de recursos. Puedes mover algunos recursos de un grupo a otro, pero en cada momento solo están asociados a uno.</p>
+<p><b>Por qué no dos ni tres.</b> Un grupo de recursos es un contenedor lógico y no hay manera de compartir un recurso entre varios. Lo que sí puedes hacer es moverlo.</p>
+<p><b>Cómo reconocerlo.</b> "Exactamente uno" y "a la vez" apuntan a esta regla.</p></div></details>
+<details><summary>2. ¿Qué ocurre con los recursos de un grupo de recursos cuando se aplica una acción o ajuste a nivel de grupo? (Los actuales lo heredan y los futuros no / los futuros lo heredan y los actuales no / se aplica a los actuales y a los futuros)</summary><div class="ex"><p><b>El ajuste se aplica a los recursos actuales y futuros.</b></p>
+<p><b>Por qué.</b> Lo que aplicas a un grupo de recursos afecta a todos los recursos que contiene: borrarlo los borra y conceder o denegar acceso se aplica a todos. Un recurso que crees después en ese grupo queda dentro de la misma cascada.</p>
+<p><b>Por qué no las otras.</b> Un ajuste que solo alcanzara a una parte de los recursos rompería la idea de gestionarlos como conjunto.</p>
+<p><b>Cómo reconocerlo.</b> Las palabras "herencia" y "nivel de grupo" apuntan a que todo lo de dentro lo recibe.</p></div></details>
+<details><summary>3. ¿Qué característica de Azure replica recursos entre regiones separadas al menos 300 millas? (Pares de regiones, zonas de disponibilidad o regiones soberanas)</summary><div class="ex"><p><b>Pares de regiones.</b></p>
+<p><b>Por qué.</b> Una región se empareja con otra de la misma geografía situada al menos a 300 millas, para sobrevivir a un desastre que afecte a una región entera.</p>
+<p><b>Por qué no zonas de disponibilidad.</b> Son centros de datos separados dentro de una misma región, no entre regiones.</p>
+<p><b>Por qué no regiones soberanas.</b> Son instancias de Azure aisladas de la principal, para cumplimiento legal. No sirven para replicar entre regiones.</p>
+<p><b>Cómo reconocerlo.</b> "300 millas" y "entre regiones" apuntan a los pares de regiones.</p></div></details>
+<h3>Cómo razonar cualquier pregunta de este módulo</h3>
+<div class="flow"><span class="node">¿Falla algo dentro de una región?</span><span class="arrow">→</span><span class="node az">Zonas de disponibilidad</span></div>
+<div class="flow"><span class="node">¿Falla la región entera?</span><span class="arrow">→</span><span class="node az">Pares de regiones</span></div>
+<div class="flow"><span class="node">¿Necesito separar facturas o accesos?</span><span class="arrow">→</span><span class="node az">Suscripciones</span></div>
+<div class="flow"><span class="node">¿Necesito aplicar lo mismo a muchas suscripciones?</span><span class="arrow">→</span><span class="node az">Grupos de administración</span></div></section>
+
+<section id="u7"><div class="unit"><span class="n">UNIDAD 7/7</span></div>
+<h2>Resumen</h2>
+<p class="idea"><b>Idea principal.</b> Has visto la estructura física y de administración de Azure. Aprendiste la relación entre centros de datos, zonas de disponibilidad y regiones, y cómo la infraestructura sostiene beneficios de la nube como la alta disponibilidad y la fiabilidad. También viste cómo se relacionan los recursos y los grupos de recursos, y cómo las suscripciones y los grupos de administración ayudan a gestionar los recursos.</p>
+<h3>Ahora deberías poder</h3>
+<ul><li>Describir las regiones de Azure, los pares de regiones y las regiones soberanas.</li><li>Describir las zonas de disponibilidad.</li><li>Describir los centros de datos de Azure.</li><li>Describir los recursos de Azure y los grupos de recursos.</li><li>Describir las suscripciones.</li><li>Describir los grupos de administración.</li><li>Describir la jerarquía de grupos de recursos, suscripciones y grupos de administración.</li></ul>
+<h3>Los dos árboles de este módulo</h3>
+<div class="split">
+  <div class="box ms"><h4>Dónde está físicamente</h4><div class="flow" style="margin:0"><span class="node">Geografía</span><span class="arrow">→</span><span class="node">Región</span><span class="arrow">→</span><span class="node">Zona</span><span class="arrow">→</span><span class="node">Centro de datos</span></div></div>
+  <div class="box cl"><h4>Cómo se organiza</h4><div class="flow" style="margin:0"><span class="node">Grupo de administración</span><span class="arrow">→</span><span class="node">Suscripción</span><span class="arrow">→</span><span class="node">Grupo de recursos</span><span class="arrow">→</span><span class="node">Recurso</span></div></div>
+</div>
+<p class="pc">Es probablemente la pareja de jerarquías que más aparece en el AZ-900.</p></section>
+
+<section id="repaso"><h2>Repaso final</h2>
+<h3>Los 7 conceptos que sí o sí</h3>
+<div class="mnemo">
+  <div><b>1</b>Geografía, región, zona y centro de datos</div><div><b>2</b>Zonas y sus tres tipos de servicio</div><div><b>3</b>Pares de regiones y regiones soberanas</div><div><b>4</b>Recurso y grupo de recursos</div><div><b>5</b>Suscripción: facturación y acceso</div><div><b>6</b>Grupos de administración</div><div><b>7</b>Jerarquía y herencia</div>
+</div>
+<h3>Trucos para memorizar</h3>
+<div class="mnemo wide"><div><b>Azure</b>Alquilar en lugar de comprar</div><div><b>Región</b>Ciudad</div><div><b>Zona</b>Grupo de edificios independientes</div><div><b>Centro de datos</b>Edificio</div><div><b>Zonal</b>Tú fijas la zona</div><div><b>Redundante entre zonas</b>Azure replica por ti</div><div><b>No regional</b>Global, sin elegir</div><div><b>Par de regiones</b>Ciudad de respaldo, a 300+ millas</div><div><b>Fallo local</b>Zonas</div><div><b>Desastre regional</b>Pares de regiones</div><div><b>Grupo de recursos</b>Un recurso, un solo grupo. Sin anidar ni renombrar</div><div><b>Borrar el grupo</b>Borra todo lo de dentro</div><div><b>Suscripción</b>Factura y acceso propios</div><div><b>Grupo de administración</b>Gobierno de varias suscripciones, hasta 6 niveles</div><div><b>Herencia</b>Las directivas y permisos bajan, nunca suben</div></div>
+<h3>Preguntas de repaso</h3>
+<details><summary>¿Qué es Microsoft Azure?</summary><p>La plataforma de computación en la nube de Microsoft.</p></details>
+<details><summary>¿Quién administra los centros de datos físicos?</summary><p>Microsoft.</p></details>
+<details><summary>¿Azure solo proporciona máquinas virtuales?</summary><p>No. También ofrece redes, almacenamiento, bases de datos, seguridad, IA y mucho más.</p></details>
+<details><summary>¿Qué ventaja aprovecha una empresa con picos de demanda?</summary><p>Escalabilidad y elasticidad, y el pago por uso.</p></details>
+<details><summary>¿Qué necesitas para crear recursos en Azure?</summary><p>Una suscripción.</p></details>
+<details><summary>¿Qué incluye la cuenta gratuita de Azure?</summary><p>Productos populares gratis durante 12 meses, crédito los primeros 30 días y más de 65 servicios siempre gratuitos.</p></details>
+<details><summary>¿Qué ofrece la cuenta de estudiante gratuita?</summary><p>100 USD de crédito y herramientas de desarrollo gratuitas, sin necesidad de tarjeta de crédito.</p></details>
+<details><summary>¿Qué es una región de Azure?</summary><p>Un área geográfica con uno o más centros de datos cercanos, conectados con una red de baja latencia.</p></details>
+<details><summary>¿Qué es una zona de disponibilidad?</summary><p>Un grupo de uno o varios centros de datos físicamente separados dentro de una región, con energía, refrigeración y red independientes.</p></details>
+<details><summary>¿Cuántas zonas tiene como mínimo una región con zonas?</summary><p>Tres. Y no todas las regiones las tienen.</p></details>
+<details><summary>¿Qué servicios suelen aparecer como zonales?</summary><p>Máquinas virtuales, discos administrados y direcciones IP.</p></details>
+<details><summary>¿Qué servicios tienen redundancia de zona?</summary><p>Almacenamiento con redundancia de zona y SQL Database.</p></details>
+<details><summary>¿Qué servicios no necesitan que elijas región?</summary><p>Los globales: Microsoft Entra ID, Azure Traffic Manager y Azure DNS.</p></details>
+<details><summary>¿Cuál es la distancia mínima de un par de regiones?</summary><p>Al menos 300 millas, dentro de la misma geografía.</p></details>
+<details><summary>¿Qué ventajas tienen los pares de regiones?</summary><p>Restauración priorizada, actualizaciones escalonadas y residencia de datos en la misma geografía.</p></details>
+<details><summary>¿Para qué sirve una región soberana?</summary><p>Para cumplir requisitos legales o de cumplimiento con una instancia de Azure aislada de la principal.</p></details>
+<details><summary>¿Qué es un recurso de Azure?</summary><p>El bloque de construcción básico: todo lo que creas, aprovisionas o implementas, como una VM, una red virtual o una base de datos.</p></details>
+<details><summary>¿Cuántos grupos de recursos puede tener un recurso a la vez?</summary><p>Uno.</p></details>
+<details><summary>¿Se puede anidar o renombrar un grupo de recursos?</summary><p>No, ninguna de las dos cosas.</p></details>
+<details><summary>¿Qué pasa al eliminar un grupo de recursos?</summary><p>Se elimina todo lo que contiene.</p></details>
+<details><summary>¿Qué dos límites marca una suscripción?</summary><p>Un límite de facturación y un límite de control de acceso.</p></details>
+<details><summary>¿Con qué cuenta se vincula una suscripción?</summary><p>Con una cuenta de Azure, que es una identidad de Microsoft Entra ID o de un directorio en el que confía.</p></details>
+<details><summary>¿Qué hay por encima de las suscripciones?</summary><p>Los grupos de administración.</p></details>
+<details><summary>¿Cuántos niveles se pueden anidar los grupos de administración?</summary><p>Hasta seis, sin contar el nivel raíz ni el de suscripción.</p></details>
+<details><summary>¿Cuántos grupos de administración admite un directorio?</summary><p>Hasta 10.000.</p></details>
+<details><summary>¿Cuántos padres tiene un grupo de administración o una suscripción?</summary><p>Uno.</p></details>
+<details><summary>¿Qué es el grupo raíz del inquilino?</summary><p>El grupo de administración de nivel superior de cada inquilino de Microsoft Entra. De él cuelgan todos los demás grupos y suscripciones.</p></details>
+<h3>Escenarios para practicar</h3>
+<p class="pc">Ejercicios propios para entrenar los conceptos. No son preguntas de Microsoft.</p>
+<details><summary>Una VM debe seguir funcionando si falla un centro de datos de su región. ¿Qué usas?</summary><div class="ex"><p><b>Zonas de disponibilidad.</b></p><p>Una VM es un recurso zonal, así que despliegas VM en zonas distintas de la misma región y tú gestionas el reparto y la conmutación.</p></div></details>
+<details><summary>Una empresa quiere sobrevivir a un desastre que deje fuera toda una región.</summary><div class="ex"><p><b>Pares de regiones.</b></p><p>Una región emparejada está a más de 300 millas, en la misma geografía. Ojo: en muchos servicios la replicación se configura a mano.</p></div></details>
+<details><summary>Un organismo público de EE. UU. necesita una instancia de Azure aislada de la principal.</summary><div class="ex"><p><b>Región soberana.</b></p><p>Por ejemplo, US Gov Virginia, pensada para agencias del gobierno estadounidense y sus socios.</p></div></details>
+<details><summary>Un equipo quiere separar la facturación de desarrollo y producción.</summary><div class="ex"><p><b>Suscripciones distintas.</b></p><p>Las suscripciones separan la facturación y el control de acceso. Una misma cuenta puede tener varias.</p></div></details>
+<details><summary>Una persona estudiante quiere practicar sin dar su tarjeta.</summary><div class="ex"><p><b>Cuenta de estudiante gratuita.</b></p><p>Ofrece 100 USD de crédito y permite registrarse sin tarjeta de crédito.</p></div></details>
+<details><summary>Un equipo monta un entorno temporal de pruebas y quiere poder eliminarlo entero al terminar.</summary><div class="ex"><p><b>Un grupo de recursos para ese entorno.</b></p><p>Al eliminar el grupo se eliminan todos los recursos que contiene.</p></div></details>
+<details><summary>Una empresa con 20 suscripciones quiere obligar a que todas las VM se creen en una región concreta.</summary><div class="ex"><p><b>Un grupo de administración con una directiva.</b></p><p>La directiva se hereda en todas las suscripciones del grupo y su propietario no puede anularla.</p></div></details>
+<details><summary>Un jefe de proyecto quiere dar permisos a una persona sobre todas las suscripciones de su departamento con una sola asignación.</summary><div class="ex"><p><b>Una asignación de RBAC en el grupo de administración.</b></p><p>Los permisos los heredan los subgrupos, las suscripciones, los grupos de recursos y los recursos de debajo.</p></div></details>
+<details><summary>Una empresa quiere recibir facturas separadas para desarrollo y producción.</summary><div class="ex"><p><b>Dos suscripciones.</b></p><p>Cada suscripción genera su propio informe de facturación y su factura.</p></div></details>
+</section>
+
+<section id="learn"><h2>Contraste con Microsoft Learn</h2>
+<p>Revisé estos apuntes con la documentación oficial el 17 de octubre de 2026. La mayor parte coincide. Estos son los matices y las correcciones que hice.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>Resultado</th></tr></thead><tbody>
+<tr><td>Estructura del módulo</td><td>El módulo "Describe the core architectural components of Azure" tiene 7 unidades: introducción, qué es Azure, cuentas de Azure, infraestructura física, infraestructura de administración, evaluación y resumen. Este manual cubre las siete. La unidad 5 trata los recursos, los grupos de recursos, las suscripciones, los grupos de administración y su jerarquía.</td></tr>
+<tr><td>Peso en el examen</td><td>Este módulo pertenece al bloque de arquitectura y servicios (35–40 %), según la guía de estudio con habilidades medidas desde el 20 de julio de 2026.</td></tr>
+<tr><td>Categorías de servicios</td><td>El diagrama de Learn está en inglés. Lo rehice en español y dejé los nombres de producto como están. Son ejemplos, no un catálogo completo.</td></tr>
+<tr><td>Cuentas gratuitas</td><td>Coinciden con Learn: cuenta gratuita con 12 meses de productos populares, crédito 30 días y más de 65 servicios siempre gratuitos; estudiante con 100 USD y sin tarjeta. Las condiciones de las ofertas pueden cambiar, así que conviene confirmarlas en la web de Azure antes de registrarse.</td></tr>
+<tr><td>Zona de disponibilidad</td><td>Los apuntes de Copilot decían que una zona es "un centro de datos independiente". Según Learn, cada zona consta de uno o varios centros de datos. Corregido.</td></tr>
+<tr><td>Esquema y truco de jerarquía</td><td>El esquema de Copilot dejaba el centro de datos fuera de las zonas y el truco decía zona = edificio y centro de datos = sala de servidores. Learn contiene los centros de datos dentro de las zonas. Los rehice: región = ciudad, zona = grupo de edificios independientes, centro de datos = edificio.</td></tr>
+<tr><td>Mínimo de zonas</td><td>Learn indica un mínimo de tres zonas en las regiones con zonas, y que no todas las regiones las admiten. Coincide con el diagrama.</td></tr>
+<tr><td>Servicios no regionales</td><td>Copilot citaba Entra ID y Azure DNS. Learn añade Azure Traffic Manager, que también aparece como ejemplo de servicio global. Añadido.</td></tr>
+<tr><td>Quién conmuta por error</td><td>La distinción entre zonal (lo gestionas tú) y con redundancia de zona (lo gestiona Microsoft) viene de la guía de arquitectura de Azure, no del módulo. Está marcada como ampliación.</td></tr>
+<tr><td>Pares de regiones</td><td>Coincide con Learn: misma geografía, al menos 300 millas, restauración priorizada, actualizaciones escalonadas y residencia de datos. El diagrama muestra una región activa y otra en espera. Es un esquema: Learn avisa de que no todos los servicios replican ni conmutan solos y de que la recuperación puede ser tuya. Las excepciones (Brazil South, y regiones sin par como Italy North, Poland Central e Israel Central) vienen de Learn.</td></tr>
+<tr><td>Pares: elección</td><td>La documentación de fiabilidad de Azure indica que los pares los define Microsoft, que no puedes elegir los tuyos y que muchas regiones nuevas no tienen par. Está como ampliación.</td></tr>
+<tr><td>Regiones soberanas</td><td>No aparecían en las capturas ni en los apuntes de Copilot. Las añadí con el texto de Learn porque es una habilidad de la guía.</td></tr>
+<tr><td>Microsoft Entra ID y Active Directory</td><td>Los apuntes de Copilot equiparaban Active Directory con Entra ID. Es una aproximación útil, pero Entra ID no es un AD local en la nube. La guía lista también Microsoft Entra Domain Services como servicio de directorio. Lo dejé como equivalencia aproximada.</td></tr>
+<tr><td>Archivo de Copilot de la unidad 5</td><td>El archivo se cortó a mitad de las preguntas de repaso, así que las completé con el módulo de Learn.</td></tr>
+<tr><td>Esquema de la jerarquía</td><td>El esquema de Copilot ponía suscripciones y grupos de administración como ramas paralelas. Según Learn, el grupo raíz del inquilino contiene los grupos de administración, estos contienen suscripciones (y otros grupos), las suscripciones contienen grupos de recursos y estos contienen recursos. Lo rehice como árbol.</td></tr>
+<tr><td>Grupos de recursos</td><td>Coincide con Learn: un solo grupo a la vez, sin anidar ni renombrar y con acciones en cascada. Learn dice que puedes mover <i>algunos</i> recursos entre grupos, no todos, y el diagrama lo simplifica.</td></tr>
+<tr><td>Suscripciones y cuentas</td><td>Learn precisa que una suscripción se vincula a una cuenta, que es una identidad de Microsoft Entra ID o de un directorio que este servicio considera de confianza. Los apuntes de Copilot decían solo "límite administrativo, de acceso y facturación". Añadí lo que falta.</td></tr>
+<tr><td>Grupos de administración</td><td>Coincide con Learn: seis niveles de anidamiento sin contar la raíz ni las suscripciones, 10.000 grupos por directorio y un solo padre. Copilot no mencionaba el grupo raíz del inquilino ni que la directiva no puede anularla el propietario de la suscripción. Añadido.</td></tr>
+<tr><td>Departamento = suscripción</td><td>La analogía de Copilot sirve para orientarte, pero la suscripción es un límite de facturación y de acceso, no una unidad organizativa. Lo señalé como analogía aproximada.</td></tr>
+<tr><td>Evaluación del módulo</td><td>La evaluación de Learn tiene 3 preguntas (grupos de recursos por recurso, ajustes a nivel de grupo y pares de regiones). La página no muestra la clave de respuestas: las respuestas salen del texto de las unidades. Las preguntas de repaso y los escenarios son ejercicios propios.</td></tr>
+<tr><td>Terminología</td><td>Traduje al español los términos en inglés de los diagramas y de las notas de Copilot: grupo de recursos, grupo de administración, límite de facturación, límite de control de acceso y grupo raíz del inquilino (<i>Tenant Root Group</i>). El examen puede mostrarlos en inglés, así que conviene reconocer los dos.</td></tr>
+<tr><td>Ejemplos y analogías</td><td>La analogía de la electricidad, el ejemplo de la tienda online española y los escenarios para practicar son recursos didácticos, no datos de Microsoft. El ejemplo de la aplicación con picos estacionales sí está en Learn. En la unidad 5, los ejemplos del entorno temporal, de la directiva de ubicación de VM y de la asignación RBAC en un grupo también están en Learn; las analogías con carpetas, departamentos y unidades organizativas son didácticas.</td></tr></tbody></table></div>
+<p class="src" style="margin-top:14px">Fuentes:
+<a href="https://learn.microsoft.com/training/modules/describe-core-architectural-components-of-azure/">Módulo Describe the core architectural components of Azure</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-core-architectural-components-of-azure/2-what-microsoft-azure">Qué es Microsoft Azure</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-core-architectural-components-of-azure/3-get-started-azure-accounts">Cuentas de Azure</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-core-architectural-components-of-azure/5-describe-azure-physical-infrastructure">Infraestructura física</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-core-architectural-components-of-azure/6-describe-azure-management-infrastructure">Infraestructura de administración</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-core-architectural-components-of-azure/8-knowledge-check">Evaluación del módulo</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-core-architectural-components-of-azure/9-summary">Resumen</a> ·
+<a href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900">Guía de estudio AZ-900</a> ·
+<a href="https://learn.microsoft.com/azure/reliability/regions-paired">Pares de regiones y regiones sin par</a> ·
+<a href="https://learn.microsoft.com/azure/well-architected/design-guides/regions-availability-zones">Uso de zonas de disponibilidad y regiones</a> ·
+<a href="https://learn.microsoft.com/azure/reliability/availability-zones-service-support">Servicios con soporte de zonas</a></p></section>
+
+</main></div>
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+<script>
+(function(){var KEY='az900-m4-check',boxes=document.querySelectorAll('#checklist input');
+try{var s=JSON.parse(localStorage.getItem(KEY)||'[]');boxes.forEach(function(b,i){b.checked=!!s[i]})}catch(e){}
+boxes.forEach(function(b){b.addEventListener('change',function(){try{localStorage.setItem(KEY,JSON.stringify([].map.call(boxes,function(x){return x.checked})))}catch(e){}})})})();
+</script>
+</body>
+</html>
