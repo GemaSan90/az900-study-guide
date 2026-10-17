@@ -1,53 +1,69 @@
 # Guía de estudio AZ-900
 
-Manuales en español para preparar el examen **AZ-900: Microsoft Azure Fundamentals**, módulo a módulo. Cada concepto se traduce al mundo ASIR, se acompaña de las frases que caen en el examen y se contrasta con Microsoft Learn.
+Manuales por módulos para preparar el examen **AZ-900: Microsoft Azure Fundamentals**, en español. Cada manual está contrastado con Microsoft Learn y con la guía de estudio oficial del examen.
 
-## Manuales
+**Ver la guía publicada:** https://gemasan90.github.io/az900-study-guide
 
-| Módulo | Tema | Manual |
+## Módulos
+
+| Módulo | Tema | Estado | Archivo |
+| --- | --- | --- | --- |
+| 1 | Descripción de la informática en la nube | Unidades 1 a 6 | `modulo-1.html` |
+| 2 | Ventajas de usar servicios en la nube | Completo | `modulo-2.html` |
+| 3 | Tipos de servicio en la nube (IaaS, PaaS y SaaS) | Completo | `modulo-3.html` |
+| 4 | Componentes arquitectónicos principales de Azure | Completo: 7 unidades | `modulo-4.html` |
+
+El Módulo 4 cubre la infraestructura física (regiones, zonas de disponibilidad, pares de regiones y regiones soberanas) y la de administración (recursos, grupos de recursos, suscripciones y grupos de administración).
+
+## Cómo encajan en el examen
+
+| Bloque del examen | Peso | Manuales |
 | --- | --- | --- |
-| 1 | Informática en la nube, responsabilidad compartida, modelos de nube y consumo | [modulo-1.html](modulo-1.html) |
-| 2 | Ventajas de usar servicios en la nube | [modulo-2.html](modulo-2.html) |
-| 3 | Tipos de servicio en la nube: IaaS, PaaS y SaaS | [modulo-3.html](modulo-3.html) |
+| Conceptos cloud | 25–30 % | Módulos 1, 2 y 3 |
+| Arquitectura y servicios de Azure | 35–40 % | Módulo 4 (componentes arquitectónicos). Faltan computación, redes, almacenamiento e identidad |
+| Administración y gobierno | 30–35 % | Pendiente |
 
-Los tres módulos cubren el bloque "Describir los conceptos de la nube", que pesa entre el 25 y el 30 % del examen según la [guía de estudio oficial](https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900).
+Pesos según la guía de estudio de Microsoft (habilidades medidas desde el 20 de julio de 2026).
 
-## Verlo en el navegador
+## Qué incluye cada manual
 
-La portada es `index.html`. Para verla publicada con GitHub Pages:
-
-1. En el repositorio, abre **Settings** y entra en **Pages**.
-2. En **Build and deployment**, elige **Deploy from a branch**.
-3. Selecciona la rama `main` y la carpeta `/ (root)`, y guarda.
-
-Pasados uno o dos minutos, GitHub muestra en esa misma pantalla la dirección de la web. Añádela aquí cuando la tengas.
+- Idea principal de cada unidad y diagramas rehechos en español.
+- Cuadros de **traducción ASIR** para relacionar Azure con lo que ya conoces.
+- Frases de examen, errores frecuentes y trucos para memorizar.
+- Preguntas de repaso desplegables y una lista de comprobación que se guarda en el navegador.
+- Una sección final de **contraste con Microsoft Learn** con las correcciones hechas.
 
 ## Estructura del repositorio
 
-```text
-.
-├── index.html      Portada con una tarjeta por manual
-├── modulo-1.html   Manual del Módulo 1
-├── modulo-2.html   Manual del Módulo 2
-├── modulo-3.html   Manual del Módulo 3
+```
+az900-study-guide/
+├── index.html      Portada con los módulos
+├── modulo-1.html
+├── modulo-2.html
+├── modulo-3.html
+├── modulo-4.html
 └── README.md
 ```
 
-Cada manual es un único archivo HTML. Las fuentes se cargan desde Google Fonts y el resto funciona sin instalar nada. Admite modo claro y oscuro según el navegador.
+Cada página es un único archivo HTML autocontenido. Solo carga las fuentes desde Google Fonts, así que se puede abrir directamente en el navegador.
 
-## Añadir un módulo nuevo
+## Publicar los cambios
 
-1. Guarda el manual como `modulo-N.html` en la raíz del repositorio.
-2. Añade su tarjeta en la sección "Manuales" de `index.html`.
-3. Añade su fila en la tabla de este README.
+1. Copia los archivos actualizados a la carpeta del repositorio.
+2. Súbelos:
+
+   ```
+   git add index.html modulo-4.html README.md
+   git commit -m "Completa el Módulo 4 (unidades 5 a 7) y actualiza la portada"
+   git push
+   ```
+
+3. GitHub Pages republica el sitio en uno o dos minutos.
 
 ## Fuentes
 
-- [Guía de estudio del examen AZ-900](https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900)
-- [Módulo "Describe cloud service types"](https://learn.microsoft.com/training/modules/describe-cloud-service-types/)
-- [Módulo "Describe the benefits of using cloud services"](https://learn.microsoft.com/training/modules/describe-benefits-use-cloud-services/)
-- [Responsabilidad compartida en la nube](https://learn.microsoft.com/azure/security/fundamentals/shared-responsibility)
+Los contenidos se contrastan con [Microsoft Learn](https://learn.microsoft.com/training/) y con la [guía de estudio del AZ-900](https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900). Los ejemplos, las analogías y los escenarios de práctica son material didáctico propio, no datos de Microsoft.
 
-## Aviso
+---
 
-Es material de estudio personal. Se ha contrastado con Microsoft Learn y con la guía de estudio del examen, pero no es contenido oficial de Microsoft ni está afiliado a Microsoft. Antes de examinarte, consulta siempre la guía de estudio vigente.
+Gema San · Sueña. Aprende. Crece.
