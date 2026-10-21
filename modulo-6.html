@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Manual AZ-900 Módulo 6</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>
+/* Layout: cabecera azul Azure, índice lateral fijo, diez temas de redes con esquemas de red virtual, enlaces VPN y ExpressRoute, alta disponibilidad de gateways y preguntas explicadas en desplegables */
+:root{
+  --bg:#f3f7fc; --surface:#ffffff; --surface2:#e8f1fb; --fg:#0b1b2e; --muted:#47607c;
+  --azure:#0078d4; --azure-deep:#004e8c; --azure-soft:#cfe5f8; --violet:#6b4fd8; --violet-soft:#e4defa; --line:#c9d9ea;
+  --teal:#0f766e; --ok:#15803d; --hero1:#005ba1; --hero2:#0078d4; --on-hero:#ffffff;
+  --display:'Sora',system-ui,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --teal:#2dd4bf; --ok:#4ade80; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --teal:#2dd4bf; --ok:#4ade80; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.hero{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:56px max(16px,env(safe-area-inset-left,0px)) 48px;background:radial-gradient(1200px 420px at 85% -10%,rgba(160,139,255,.45),transparent 60%),linear-gradient(135deg,var(--hero1),var(--hero2));color:var(--on-hero)}
+.hero-in{max-width:1100px;margin:0 auto}
+.tag{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+h1{font:800 clamp(30px,5.4vw,54px)/1.08 var(--display);margin:14px 0 14px;text-wrap:balance;letter-spacing:-.02em}
+.lead{max-width:60ch;font-size:18px;opacity:.95;margin:0 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 12px var(--mono);padding:6px 12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(255,255,255,.1)}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:210px minmax(0,1fr);gap:40px;padding-block:36px 72px}
+nav{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line)}
+nav a:hover,nav a:focus-visible{color:var(--azure);border-left-color:var(--azure);outline:none}
+nav .sep{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
+main{min-width:0;display:flex;flex-direction:column;gap:52px}
+section{scroll-margin-top:24px;min-width:0}
+.unit{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.unit .n{font:700 12px var(--mono);letter-spacing:.08em;color:var(--azure);border:1px solid var(--azure);border-radius:6px;padding:3px 8px;white-space:nowrap}
+h2{font:700 26px/1.2 var(--display);margin:0 0 14px;letter-spacing:-.01em;text-wrap:balance}
+h3{font:600 17px var(--display);margin:26px 0 8px;color:var(--azure)}
+p{margin:0 0 12px;max-width:70ch}
+.idea{background:linear-gradient(135deg,var(--azure-soft),var(--surface2));border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch;margin-bottom:16px}
+.idea b{color:var(--azure)}
+.callout{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch}
+.callout b{color:var(--azure)}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th{background:var(--azure-deep);color:#fff;text-align:left;font:600 13px var(--display);padding:10px 14px;letter-spacing:.02em}
+td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600;color:var(--azure)}
+tr:hover td{background:var(--surface2)}
+ul{margin:0 0 12px;padding-left:20px}li{margin-bottom:4px}
+.check{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.check label{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer}
+.check input{accent-color:var(--azure);width:18px;height:18px;margin-top:3px;flex:none}
+.check input:checked+span{text-decoration:line-through;color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 16px}
+.node{padding:8px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-weight:600}
+.node.az{background:var(--azure);color:#fff;border-color:var(--azure)}
+.arrow{color:var(--azure);font-weight:700}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.box h4{margin:0 0 6px;font:600 14px var(--display)}
+.box.ms{border-top:3px solid var(--azure)}.box.cl{border-top:3px solid var(--violet)}.box.tl{border-top:3px solid var(--teal)}.box.dep{border-top:3px dashed var(--muted)}
+.box p{margin:0;font-size:15px}
+.box ul{margin:0;font-size:15px}
+.pc{font-size:14px;color:var(--muted);margin-top:8px}
+.asir{background:var(--violet-soft);border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:10px;padding:14px 18px;max-width:72ch;margin:16px 0}
+.asir h4{margin:0 0 6px;font:600 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+.asir p,.asir ul{margin:0 0 6px;font-size:15px}
+.badge{display:inline-block;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--violet);border:1px solid var(--violet);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle}
+.quote{border-left:3px solid var(--azure);padding:4px 0 4px 14px;margin:0 0 10px;font-weight:500}
+.mnemo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.mnemo div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px}
+.mnemo b{display:block;color:var(--azure);font:600 15px var(--display)}
+.mnemo.wide{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+details{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+details p{margin:8px 0 0;color:var(--azure);font-weight:500}
+details .ex{margin-top:8px}
+details .ex p{margin:8px 0 0;color:var(--fg);font-weight:400}
+details .ex p b{color:var(--azure)}
+.src{font-size:14px;color:var(--muted)}
+.src a{color:var(--azure)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;max-width:820px;min-width:0}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;margin:10px 0 0;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;margin-right:6px;vertical-align:middle;border-radius:3px}
+.legend .l-acc{background:var(--azure-deep)}.legend .l-sub{background:#0f766e}.legend .l-grp{border:2px dashed var(--azure)}.legend .l-res{background:var(--azure-soft);border:1px solid var(--azure)}
+.fig-title{font:700 17px var(--display);margin:0 0 2px}
+.fig-sub{color:var(--muted);font-size:14px;margin:0 0 12px}
+.fig-foot{color:var(--muted);font-size:14px;margin:12px 0 0;text-align:center}
+footer{text-align:center;color:var(--muted);font:500 13px var(--mono);padding:24px 0 8px;border-top:1px solid var(--line);max-width:1100px;margin:0 auto}
+
+/* Módulo 4: categorías de servicios */
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.cat{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0}
+.cat h4{margin:0;padding:8px 10px;color:#fff;font:600 13px var(--display);text-align:center}
+.cat ul{list-style:none;margin:0;padding:10px 12px;font-size:13.5px;color:var(--muted)}
+.cat li{margin:0 0 3px}
+.k1{background:#1e40af}.k2{background:#047857}.k3{background:#0f766e}.k4{background:#6d28d9}.k5{background:#b45309}.k6{background:#475569}
+
+/* Módulo 4: jerarquía de cuenta */
+.acct{display:flex;flex-direction:column;align-items:center}
+.acct .top{background:var(--azure-deep);color:#fff;border-radius:10px;padding:10px 24px;font:700 15px var(--display)}
+.acct .stem{width:2px;height:16px;background:var(--muted)}
+.acct .subs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;width:100%}
+.acct .sub{border:1px solid var(--line);border-radius:10px;background:var(--surface2);padding:10px;min-width:0}
+.acct .sub>b{display:block;background:#0f766e;color:#fff;border-radius:8px;padding:6px 10px;font:600 14px var(--display);text-align:center;margin-bottom:8px}
+.acct .grp{border:2px dashed var(--azure);border-radius:8px;padding:8px;margin-top:8px;background:var(--surface)}
+.acct .grp>span{display:block;font:600 12px var(--mono);color:var(--azure);margin-bottom:6px}
+.res{display:inline-block;font-size:12.5px;padding:2px 8px;border-radius:6px;background:var(--azure-soft);border:1px solid var(--azure);margin:0 4px 4px 0}
+
+/* Módulo 4: infraestructura física */
+.hier{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.hier .lv{flex:1 1 160px;min-width:0;border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.hier .lv h4{margin:0;padding:8px 10px;color:#fff;font:600 14px var(--display);text-align:center}
+.hier .lv p{margin:0;padding:10px 12px 4px;font-size:14px}
+.hier .lv .eg{padding:0 12px 10px;font-size:12.5px;color:var(--muted);font-style:italic}
+.hier .ct{align-self:center;color:var(--muted);font:500 11px var(--mono);text-align:center}
+.l1{background:#475569}.l2{background:#1e40af}.l3{background:#0f766e}.l4{background:#9a3412}
+
+/* Módulo 4: zonas de disponibilidad */
+.rgn{border:2px solid var(--azure);border-radius:12px;overflow:hidden;background:var(--surface2)}
+.rgn>h4{margin:0;padding:8px 12px;background:var(--azure-deep);color:#fff;font:600 14px var(--display);text-align:center}
+.zs{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;padding:12px}
+.zone{background:var(--surface);border:2px solid #0f766e;border-radius:10px;overflow:hidden;min-width:0;text-align:center}
+.zone h5{margin:0;padding:6px 8px;background:#0f766e;color:#fff;font:600 13px var(--display)}
+.zone .srv{display:block;width:34px;height:40px;margin:10px auto 4px;border:2px solid var(--muted);border-radius:5px;background:repeating-linear-gradient(to bottom,transparent 0 9px,var(--muted) 9px 11px)}
+.zone .dc{font-size:13px;color:var(--muted);margin:0 0 6px}
+.zone ul{list-style:none;margin:0;padding:0 10px 10px;text-align:left;font-size:13px}
+.zone li{margin:0 0 2px;padding-left:14px;position:relative}
+.zone li::before{content:"";position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:50%;background:var(--azure)}
+.zone li:nth-child(1)::before{background:#d97706}.zone li:nth-child(3)::before{background:var(--teal)}
+.fiber{border-top:3px dashed var(--teal);margin:0 24px}
+.fl{text-align:center;color:var(--teal);font:600 13px var(--body);padding:6px 12px 2px}
+.fs{text-align:center;color:var(--muted);font-size:13px;padding:0 12px 12px}
+.zstack{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.zi{border-radius:6px;padding:5px 8px;font:600 12.5px var(--body);text-align:center;border:1px solid var(--line);background:var(--surface2);color:var(--muted)}
+.zi.on{background:var(--azure);color:#fff;border-color:var(--azure)}
+.zi.rep{background:#0f766e;color:#fff;border-color:#0f766e}
+.zi.dash{border-style:dashed;background:transparent}
+
+/* Módulo 4: pares de regiones */
+.pair{border:2px dashed var(--muted);border-radius:12px;padding:12px;background:var(--surface)}
+.pair .gl{font:600 13px var(--mono);color:var(--muted);margin-bottom:10px}
+.pair .row{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.pair .rgx{flex:1 1 230px;min-width:0;border:2px solid var(--azure);border-radius:10px;overflow:hidden;background:var(--surface2)}
+.pair .rgx>h4{margin:0;padding:8px 10px;background:var(--azure-deep);color:#fff;font:600 14px var(--display);text-align:center}
+.pair .mini{display:flex;gap:6px;padding:10px 10px 4px}
+.pair .mini span{flex:1;background:var(--surface);border:1px solid #0f766e;border-radius:6px;text-align:center;font:600 12px var(--body);color:var(--teal);padding:4px 2px}
+.pair .st{padding:4px 12px 12px;font-size:14px}
+.pair .st b{display:inline-block;font:600 12px var(--mono);border-radius:999px;padding:1px 10px;margin-right:6px;color:#fff}
+.pair .st b.on{background:#15803d;color:#fff}
+.pair .st b.off{background:var(--azure);color:#fff}
+.pair .mid{flex:0 1 150px;align-self:center;text-align:center;font-size:13px;color:var(--muted)}
+.pair .mid b{display:block;color:var(--azure);font:600 13px var(--display);margin:2px 0}
+.pair .mid .ar{font:700 20px var(--display);color:var(--azure)}
+.pair .adv{margin-top:12px}
+
+/* Módulo 4: grupos de recursos, suscripciones y jerarquía de administración */
+:root{--bad:#c4314b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bad:#ff7a90}}
+:root[data-theme="dark"]{--bad:#ff7a90}
+.box.or{border-top:3px solid #d97706}
+.rgr{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chipg{background:#15803d;color:#fff;border-radius:6px;padding:4px 10px;font:600 12.5px var(--body)}
+.chipn{border:2px dashed var(--bad);color:var(--bad);border-radius:6px;padding:2px 10px;font:600 12.5px var(--body)}
+.chipv{border:2px solid var(--azure);background:var(--azure-soft);border-radius:6px;padding:2px 10px;font:600 12.5px var(--body)}
+.xx{color:var(--bad);font-weight:800}
+.ar2{color:#15803d;font-weight:800}
+.nest{border:2px dashed #d97706;background:rgba(217,119,6,.12);border-radius:8px;padding:8px;text-align:center;font-size:13px;color:var(--muted);margin:8px 0}
+.nest .in{border:2px dashed #d97706;border-radius:6px;padding:8px;margin-top:6px;position:relative}
+.nest .in::after{content:"✕";position:absolute;inset:0;display:grid;place-items:center;color:var(--bad);font:800 30px sans-serif}
+.rgbox{border:2px solid #0f766e;background:rgba(15,118,110,.1);border-radius:8px;padding:8px;margin:8px 0}
+.rgbox>b{display:block;text-align:center;color:var(--teal);font:700 13px var(--display);margin-bottom:6px}
+.rgbox .items{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.danger{color:var(--bad);font-weight:700;text-align:center;margin:8px 0 4px;font-size:14px}
+.bn{display:flex;flex-direction:column;align-items:center;gap:6px}
+.bn .nd{border-radius:8px;padding:6px 14px;font:600 13px var(--body);text-align:center;color:#fff}
+.nd.dk{background:#004e8c}.nd.bl{background:#2563eb}.nd.gr{background:#0f766e}.nd.pu{background:#6d28d9}
+.bn .row2{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%}
+.bn .col{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1 1 120px;min-width:0}
+.bn .st1{width:2px;height:12px;background:var(--muted)}
+.tag2{border:1.5px solid;border-radius:6px;padding:3px 8px;font-size:12.5px;text-align:center;width:100%}
+.tag2.g{border-color:#0f766e;color:var(--teal);background:rgba(15,118,110,.1)}
+.tag2.p{border-color:var(--violet);color:var(--violet);background:var(--violet-soft)}
+.tag2.b{border-color:var(--azure);color:var(--azure);background:var(--azure-soft)}
+.mg,.mg ul{list-style:none;margin:0;padding:0}
+.mg ul{margin-left:18px;padding-left:16px;border-left:2px solid var(--line)}
+.mg li{margin:8px 0;position:relative}
+.mg ul>li::before{content:"";position:absolute;left:-16px;top:20px;width:16px;border-top:2px solid var(--line)}
+.mg .n{display:inline-block;border-radius:8px;padding:5px 12px;color:#fff;font:600 13.5px/1.25 var(--body)}
+.mg .n small{display:block;font:500 11px var(--body);opacity:.85}
+.n.root{background:#1e3a5f}.n.mgn{background:#1e40af}.n.mgn2{background:#2563eb}.n.sb{background:#0f766e}.n.rgn2{background:#b45309}
+.n.rs{background:#fef3c7;color:#92400e;border:1px solid #d97706}
+.inh{display:flex;align-items:center;gap:8px;color:var(--azure);font:600 13px var(--body);margin:0 0 10px}
+@media(max-width:820px){.wrap{grid-template-columns:1fr;gap:20px}nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}nav a{border:1px solid var(--line);border-radius:999px;padding:4px 12px}nav .sep{display:none}}
+@media(prefers-reduced-motion:no-preference){a,tr td{transition:background .15s,color .15s}}
+
+/* Módulo 5: escala de control, balanceador, dominios, pilas VM/contenedor y flujos de servicio */
+.ok{color:var(--ok);font-weight:700}
+.no{color:var(--bad);font-weight:700}
+.spec{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+.spec div{flex:1 1 130px;min-width:0;border-radius:8px;padding:10px 8px;color:#fff;font:600 13px/1.3 var(--body);text-align:center}
+.spec div small{display:block;font:500 11px var(--body);opacity:.9;margin-top:2px}
+.spec .s1{background:#003e73}.spec .s2{background:#00528f}.spec .s3{background:#0a66b5}.spec .s4{background:#0b6fc4}.spec .s5{background:#0a7a8f}
+.specax{display:flex;justify-content:space-between;font:500 12px var(--mono);color:var(--muted);margin:0 0 12px}
+.lb{display:flex;flex-direction:column;align-items:center;gap:6px;margin:8px 0}
+.lb .rowv{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.lb .nb{border-radius:8px;padding:6px 14px;font:600 13px var(--body);color:#fff;background:var(--azure-deep);text-align:center}
+.lb .nb.lbn{background:var(--violet)}
+.lb .nb.us{background:var(--surface);color:var(--fg);border:1px solid var(--line)}
+.lb .ar{color:var(--azure);font-weight:700;line-height:1}
+.dom{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0}
+.dom .fd{flex:1 1 200px;min-width:0;border:2px dashed var(--violet);border-radius:10px;padding:8px 10px;background:var(--violet-soft)}
+.dom .fd h4{margin:0 0 6px;font:600 13px var(--display);color:var(--violet);text-align:center}
+.dom .vmb{background:var(--azure-deep);color:#fff;border-radius:6px;padding:5px 10px;margin:5px 0;font:600 12.5px var(--body);display:flex;justify-content:space-between;gap:8px}
+.dom .vmb small{font:500 11px var(--mono);opacity:.9}
+.dom .vmb.u2{background:#0a7a8f}
+.stk{display:flex;flex-direction:column;gap:5px}
+.stk .ly{border-radius:6px;padding:7px 10px;text-align:center;font:600 13px var(--body);color:#fff;background:var(--azure-deep)}
+.stk .ly.gl{background:#0a7a8f}
+.stk .ly.hs{background:#5f6f84}
+.stk .row{display:flex;gap:5px}
+.stk .row .ly{flex:1}
+.stk h4{margin:0 0 4px;font:600 14px var(--display)}
+.qa td:first-child{white-space:normal}
+details .ex{margin-top:8px}
+details .ex p{margin:8px 0 0;color:var(--fg);font-weight:400}
+details .ex p b{color:var(--azure)}
+details .ex ul{margin:8px 0 0}
+.mnemo.wide{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+
+/* Módulo 6: red virtual con subredes y enlaces entre redes */
+.vnet{border:2px solid var(--azure);border-radius:12px;background:var(--surface2);overflow:hidden}
+.vnet>h4{margin:0;padding:8px 12px;background:var(--azure-deep);color:#fff;font:600 14px var(--display);text-align:center}
+.vnet .subs{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;padding:12px}
+.vnet .sn{border:2px solid var(--teal);border-radius:10px;background:var(--surface);text-align:center;overflow:hidden;min-width:0}
+.vnet .sn h5{margin:0;padding:6px 8px;background:#0f766e;color:#fff;font:600 13px var(--display)}
+.vnet .sn p{margin:0;padding:8px 10px;font-size:13px;color:var(--muted)}
+.lk{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;margin:8px 0}
+.lk .st{padding:8px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-weight:600;font-size:14px;text-align:center}
+.lk .st.az{background:var(--azure);color:#fff;border-color:var(--azure)}
+.lk .ln{flex:1 1 110px;min-width:90px;text-align:center;font:600 12px var(--body);color:var(--azure);border-bottom:3px dashed var(--azure);padding-bottom:2px;margin:0 4px}
+.lk .ln.sol{border-bottom-style:solid;border-bottom-color:var(--violet);color:var(--violet)}
+</style>
+</head>
+<body>
+<header class="hero"><div class="hero-in">
+  <div class="tag">AZ-900 · Microsoft Azure Fundamentals</div>
+  <h1>Módulo 6: Redes y conectividad en Azure</h1>
+  <p class="lead">Manual de la parte de redes: redes virtuales y subredes, puntos de conexión, filtrado y enrutamiento, peering, VPN Gateway, ExpressRoute y Azure DNS. Con repaso de examen y relación con el AZ-104.</p>
+  <div class="chips"><span class="chip">Gema San</span><span class="chip">Contrastado con Microsoft Learn</span><span class="chip">Sueña. Aprende. Crece.</span></div>
+</div></header>
+
+<div class="wrap">
+<nav aria-label="Índice">
+  <a href="index.html">← Todos los módulos</a>
+  <a href="#examen">Mapa del examen</a>
+  <div class="sep">Temas</div>
+  <a href="#u1">1 · Virtual Network</a><a href="#u2">2 · Subredes</a><a href="#u3">3 · Puntos de conexión</a><a href="#u4">4 · Filtrar y enrutar</a><a href="#u5">5 · VNet Peering</a><a href="#u6">6 · VPN Gateway</a><a href="#u7">7 · Alta disponibilidad VPN</a><a href="#u8">8 · ExpressRoute</a><a href="#u9">9 · Azure DNS</a><a href="#u10">10 · Repaso y examen</a>
+  <div class="sep">Cierre</div>
+  <a href="#repaso">Repaso final</a><a href="#learn">Contraste con Learn</a>
+</nav>
+<main>
+
+<section id="examen"><h2>Dónde encaja este módulo</h2>
+<p>Es el Módulo 6 de este manual y completa el bloque de redes dentro de arquitectura y servicios de Azure (35–40 % del examen). En el Módulo 5 dejé las redes pendientes: aquí están. Learn las ha separado en su propio módulo, <i>Describe Azure networking services</i>, de 7 unidades (introducción, redes virtuales, VPN, ExpressRoute, DNS, evaluación y resumen). Los temas siguen el orden de tus apuntes de Copilot, con lo que faltaba de Learn añadido y marcado.</p>
+<h3>Qué habilidad de la guía cubre cada tema</h3>
+<div class="tablebox"><table><thead><tr><th>Habilidad de la guía de estudio</th><th>Tema</th><th>Estado</th></tr></thead><tbody>
+<tr><td>Redes virtuales y subredes</td><td>1 y 2</td><td>En este manual</td></tr>
+<tr><td>Puntos de conexión públicos y privados</td><td>3</td><td>En este manual (ampliado respecto a Copilot)</td></tr>
+<tr><td>Peering de redes virtuales</td><td>5</td><td>En este manual</td></tr>
+<tr><td>VPN Gateway</td><td>6 y 7</td><td>En este manual</td></tr>
+<tr><td>ExpressRoute</td><td>8</td><td>En este manual</td></tr>
+<tr><td>Azure DNS</td><td>9</td><td>En este manual</td></tr>
+<tr><td>Controles de acceso básicos a la red (NSG, rutas)</td><td>4</td><td>En este manual</td></tr></tbody></table></div>
+<h3>Dónde vuelve cada tema en el AZ-900</h3>
+<p>Como en proceso, aquí no se configura nada: se trata de reconocer el servicio adecuado para cada escenario.</p>
+<div class="tablebox"><table><thead><tr><th>Tema de este módulo</th><th>Dónde vuelve en el examen</th></tr></thead><tbody>
+<tr><td>Redes virtuales y subredes</td><td>Máquinas virtuales (Módulo 5) y IaaS (Módulo 3)</td></tr>
+<tr><td>VPN y ExpressRoute</td><td>Nube híbrida (Módulo 1) y costes de Azure</td></tr>
+<tr><td>Alta disponibilidad de gateways</td><td>Zonas de disponibilidad (Módulo 4) y ventajas de la nube (Módulo 2)</td></tr>
+<tr><td>NSG y puntos de conexión privados</td><td>Seguridad y defensa en profundidad</td></tr>
+<tr><td>Azure DNS</td><td>Servicios de Azure para aplicaciones y dominios</td></tr></tbody></table></div>
+<h3>Lo que debo saber de este módulo</h3>
+<ul class="check" id="checklist">
+  <li><label><input type="checkbox"><span>Qué es una red virtual y qué capacidades ofrece</span></label></li>
+  <li><label><input type="checkbox"><span>Para qué sirven las subredes</span></label></li>
+  <li><label><input type="checkbox"><span>Punto de conexión público frente a privado</span></label></li>
+  <li><label><input type="checkbox"><span>Qué filtra un NSG y qué hace una ruta definida por el usuario</span></label></li>
+  <li><label><input type="checkbox"><span>VNet Peering: privado y por la red troncal de Microsoft</span></label></li>
+  <li><label><input type="checkbox"><span>Los tres tipos de conexión VPN: punto a sitio, sitio a sitio y red a red</span></label></li>
+  <li><label><input type="checkbox"><span>VPN basada en rutas frente a basada en directivas</span></label></li>
+  <li><label><input type="checkbox"><span>Activo/en espera, activo/activo y redundancia de zona</span></label></li>
+  <li><label><input type="checkbox"><span>ExpressRoute frente a VPN</span></label></li>
+  <li><label><input type="checkbox"><span>Qué es BGP y dónde se usa</span></label></li>
+  <li><label><input type="checkbox"><span>Azure DNS: público, privado y registros de alias</span></label></li>
+  <li><label><input type="checkbox"><span>Azure DNS no vende dominios</span></label></li>
+</ul></section>
+
+<section id="u1"><div class="unit"><span class="n">TEMA 1/10</span></div>
+<h2>Azure Virtual Network (VNet)</h2>
+<p class="idea"><b>Idea principal.</b> Azure Virtual Network es la red privada de Azure. Permite que máquinas virtuales, aplicaciones web y bases de datos se comuniquen entre sí, con Internet y con tus equipos locales. Learn la describe como una extensión de tu red local con recursos que enlazan con otros recursos de Azure.</p>
+<p class="quote">Una VNet es la red corporativa de tu empresa, pero alojada en Azure.</p>
+<div class="fig" style="max-width:520px"><div class="vnet"><h4>VNet de la empresa</h4><div class="subs">
+  <div class="sn"><h5>Subred Web</h5><p>Servidores web</p></div>
+  <div class="sn"><h5>Subred Aplicación</h5><p>Lógica de negocio</p></div>
+  <div class="sn"><h5>Subred Base de datos</h5><p>Datos</p></div></div></div></div>
+<p class="pc" style="margin-top:8px">Esquema de los apuntes de Copilot, rehecho en español.</p>
+<h3>Qué capacidades ofrece</h3>
+<div class="tablebox"><table><thead><tr><th>Capacidad</th><th>Qué significa</th></tr></thead><tbody>
+<tr><td>Aislamiento y segmentación</td><td>Creas redes aisladas y las divides en subredes. El rango de IP solo existe dentro de la red virtual y no se enruta por Internet.</td></tr>
+<tr><td>Comunicación por Internet</td><td>Asignas una IP pública a un recurso o lo pones detrás de un balanceador de carga público.</td></tr>
+<tr><td>Comunicación entre recursos de Azure</td><td>La red virtual conecta máquinas virtuales, AKS o Scale Sets. Los puntos de conexión de servicio enlazan recursos como Azure SQL o cuentas de almacenamiento.</td></tr>
+<tr><td>Comunicación con recursos locales</td><td>VPN de punto a sitio, VPN de sitio a sitio o ExpressRoute.</td></tr>
+<tr><td>Enrutar el tráfico</td><td>Tablas de rutas, rutas definidas por el usuario y BGP.</td></tr>
+<tr><td>Filtrar el tráfico</td><td>Network Security Groups y aplicaciones virtuales de red.</td></tr>
+<tr><td>Conectar redes virtuales</td><td>VNet Peering.</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">Cada capacidad tiene su tema en este manual.</p>
+<p>Para resolver nombres puedes usar el servicio integrado de Azure, o configurar la red para usar un servidor DNS interno o externo.</p>
+<div class="asir"><h4>Traducción ASIR</h4>
+<div class="tablebox"><table><thead><tr><th>Azure</th><th>Infraestructura tradicional</th></tr></thead><tbody>
+<tr><td>VNet</td><td>Red corporativa</td></tr>
+<tr><td>Subred</td><td>VLAN (analogía didáctica)</td></tr>
+<tr><td>NSG</td><td>ACL o firewall básico</td></tr>
+<tr><td>VPN Gateway</td><td>Concentrador VPN</td></tr>
+<tr><td>Azure DNS</td><td>Servidor DNS</td></tr></tbody></table></div></div>
+<h3>Cuándo usarla</h3>
+<ul><li>Aislar recursos.</li><li>Conectar máquinas virtuales.</li><li>Separar entornos de producción y de pruebas.</li><li>Crear arquitecturas híbridas con la red local.</li></ul>
+<p>Ejemplo real: un hospital aloja en una VNet sus aplicaciones médicas, las bases de datos de pacientes y los sistemas internos de gestión.</p>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Qué servicio es la red privada de Azure?</summary><div class="ex"><p><b>Azure Virtual Network.</b></p><p>Permite comunicar recursos de Azure entre sí, con Internet y con la red local.</p></div></details></section>
+
+<section id="u2"><div class="unit"><span class="n">TEMA 2/10</span></div>
+<h2>Subredes (subnets)</h2>
+<p class="idea"><b>Idea principal.</b> Las subredes dividen una red virtual en segmentos lógicos independientes. Al crear la VNet defines un espacio de direcciones IP y asignas una parte a cada subred con nombre. Facilitan la organización, la seguridad y la administración.</p>
+<p class="quote">Si la VNet es el edificio, las subredes son las plantas o los departamentos.</p>
+<h3>Cuándo usarlas</h3>
+<ul><li>Separar las bases de datos.</li><li>Aislar los servidores web.</li><li>Segmentar la seguridad.</li><li>Aplicar reglas específicas a cada grupo de recursos.</li></ul>
+<h3>Ejemplo: una tienda en línea</h3>
+<div class="fig" style="max-width:520px"><div class="vnet"><h4>VNet de la tienda</h4><div class="subs">
+  <div class="sn"><h5>Frontend</h5><p>La web que ve el cliente</p></div>
+  <div class="sn"><h5>Backend</h5><p>Pedidos y pagos</p></div>
+  <div class="sn"><h5>Base de datos</h5><p>Catálogo y clientes</p></div></div></div></div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Equivale a las VLAN de una red empresarial: una misma red física dividida en segmentos lógicos con reglas distintas. Es una analogía didáctica. En Azure el aislamiento lo marcan las reglas que apliques a cada subred.</p></div>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Confundir segmentación con disponibilidad</td><td>Las subredes segmentan la red. Las zonas y los conjuntos de disponibilidad evitan caídas.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Qué función de red divide una red virtual en segmentos lógicos más pequeños?</summary><div class="ex"><p><b>Las subredes.</b></p><p>Es la pregunta 1 de la evaluación de Learn. Los conjuntos de disponibilidad son de máquinas virtuales y los bloqueos de recursos protegen contra borrados.</p></div></details></section>
+
+<section id="u3"><div class="unit"><span class="n">TEMA 3/10</span></div>
+<h2>Puntos de conexión públicos y privados</h2>
+<p class="idea"><b>Idea principal.</b> Azure admite dos tipos de punto de conexión para que los recursos se comuniquen. Un punto de conexión público tiene IP pública y se puede alcanzar desde cualquier lugar del mundo. Uno privado vive dentro de una red virtual y tiene una IP privada de su espacio de direcciones.</p>
+<div class="split">
+  <div class="box or"><h4>Punto de conexión público</h4><p>IP pública. Accesible desde cualquier lugar. Es el caso de una web que quieres que vea todo el mundo.</p></div>
+  <div class="box ms"><h4>Punto de conexión privado</h4><p>IP privada dentro de la VNet. Solo se llega desde la red virtual o redes conectadas a ella.</p></div>
+</div>
+<p><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Los apuntes de Copilot no incluían este tema. Está en la guía de estudio y en la unidad de redes virtuales de Learn.</p>
+<h3>Puntos de conexión de servicio</h3>
+<p>Sirven para enlazar una red virtual con otros tipos de recurso de Azure, como bases de datos Azure SQL o cuentas de almacenamiento. Mejoran la seguridad y dan un enrutamiento óptimo entre los recursos.</p>
+<div class="asir"><h4>Traducción ASIR</h4><p>Un punto de conexión privado es como un servidor con dirección solo interna, sin puerto expuesto a Internet. El público es el servidor en la DMZ con IP pública.</p></div>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Pensar que todo recurso de Azure es privado por defecto</td><td>Un punto de conexión público es accesible desde Internet salvo que lo restrinjas.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Qué tipo de punto de conexión tiene una IP del espacio de direcciones de la red virtual?</summary><div class="ex"><p><b>El privado.</b></p><p>El público tiene una IP pública y se alcanza desde cualquier lugar.</p></div></details></section>
+
+<section id="u4"><div class="unit"><span class="n">TEMA 4/10</span></div>
+<h2>Filtrar y enrutar el tráfico: NSG, rutas y BGP</h2>
+<p class="idea"><b>Idea principal.</b> Dentro de una red virtual puedes controlar qué tráfico pasa y por dónde va. Los Network Security Groups (NSG) lo permiten o lo bloquean. Las rutas deciden el camino. BGP intercambia rutas de forma dinámica con otras redes.</p>
+<h3>Network Security Groups (NSG)</h3>
+<p>Son recursos de Azure con reglas de seguridad de entrada y de salida. Cada regla permite o bloquea tráfico según la IP de origen y de destino, el puerto y el protocolo.</p>
+<p class="quote">Un NSG es el vigilante que revisa quién puede entrar y salir.</p>
+<div class="tablebox"><table><thead><tr><th>Ejemplo de reglas</th><th>Resultado</th></tr></thead><tbody>
+<tr><td>HTTPS, puerto 443</td><td class="ok">Permitido</td></tr>
+<tr><td>SSH, puerto 22 desde una IP concreta</td><td class="ok">Permitido</td></tr>
+<tr><td>El resto del tráfico</td><td class="no">Bloqueado</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">En los apuntes de Copilot, SSH aparecía permitido desde Internet. Lo corrijo: abrir el 22 a todo el mundo no es buena práctica, así que lo limito a una IP concreta. Es un ejemplo ilustrativo.</p>
+<h3>Aplicaciones virtuales de red</h3>
+<p>Son máquinas virtuales especializadas, como un equipo de red reforzado, que realizan una función concreta: un firewall o la optimización de una WAN.</p>
+<div class="fig" style="max-width:520px"><div class="lb"><span class="nb us">Paquete entrante</span><span class="ar">▼</span><span class="nb">Reglas del NSG</span><span class="ar">▼</span><span class="nb lbn">Aplicación virtual de red</span><span class="ar">▼</span><span class="nb us">Máquina virtual de destino</span></div></div>
+<p class="pc" style="margin-top:8px">Flujo según el diagrama de Learn.</p>
+<h3>Enrutar el tráfico</h3>
+<p>Por defecto, Azure enruta el tráfico entre subredes, redes conectadas, redes locales e Internet. Puedes cambiarlo.</p>
+<div class="tablebox"><table><thead><tr><th>Mecanismo</th><th>Qué hace</th></tr></thead><tbody>
+<tr><td>Tablas de rutas</td><td>Definen reglas sobre cómo se dirige el tráfico entre subredes.</td></tr>
+<tr><td>Rutas definidas por el usuario (UDR)</td><td>Te dan más control sobre las tablas de enrutamiento entre subredes o entre redes virtuales.</td></tr>
+<tr><td>BGP</td><td>Trabaja con VPN Gateway, Azure Route Server o ExpressRoute para propagar rutas locales a las redes virtuales de Azure.</td></tr></tbody></table></div>
+<h3>BGP</h3>
+<p>Border Gateway Protocol intercambia rutas de forma dinámica: los routers se avisan entre sí de cómo llegar a otras redes, sin tener que escribir las rutas a mano.</p>
+<div class="flow"><span class="node">Red local</span><span class="arrow">⇄ BGP ⇄</span><span class="node az">Azure</span></div>
+<div class="asir"><h4>Traducción ASIR</h4><p>El NSG equivale a las ACL o a las reglas básicas de un firewall. BGP es el protocolo que usan las empresas y los operadores para anunciar rutas. Las tablas y las UDR son rutas estáticas manuales.</p></div>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Un NSG enruta el tráfico</td><td>Solo lo permite o lo bloquea. Enrutan las rutas.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Qué recurso filtra el tráfico entre subredes según IP, puerto y protocolo?</summary><div class="ex"><p><b>Un Network Security Group.</b></p></div></details>
+<details><summary>¿Qué protocolo permite que ExpressRoute intercambie rutas de forma dinámica?</summary><div class="ex"><p><b>BGP.</b></p></div></details></section>
+
+<section id="u5"><div class="unit"><span class="n">TEMA 5/10</span></div>
+<h2>VNet Peering</h2>
+<p class="idea"><b>Idea principal.</b> El peering conecta dos redes virtuales directamente. El tráfico entre ellas es privado, viaja por la red troncal de Microsoft y nunca entra en Internet. Las redes pueden estar en regiones distintas, así que puedes crear una red global interconectada.</p>
+<p class="quote">Es una puerta privada entre dos redes de Azure.</p>
+<div class="fig" style="max-width:520px"><div class="lb"><span class="nb">VNet A</span><span class="ar">▼</span><span class="nb lbn">Red troncal de Microsoft</span><span class="ar">▼</span><span class="nb">VNet B</span></div></div>
+<h3>Cuándo usarlo</h3>
+<ul><li>Comunicar redes virtuales entre sí.</li><li>Compartir aplicaciones entre redes.</li><li>Conectar regiones.</li></ul>
+<div class="asir"><h4>Traducción ASIR</h4><p>Es como interconectar dos redes internas con un enlace privado, pero sin montar un túnel VPN entre ellas.</p></div>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>El peering usa Internet</td><td>Usa la red troncal privada de Microsoft.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Qué conecta dos redes virtuales directamente y de forma privada?</summary><div class="ex"><p><b>El VNet Peering.</b></p><p>Una VPN red a red también las conecta, pero con túnel cifrado por Internet.</p></div></details></section>
+
+<section id="u6"><div class="unit"><span class="n">TEMA 6/10</span></div>
+<h2>Azure VPN Gateway</h2>
+<p class="idea"><b>Idea principal.</b> Una VPN usa un túnel cifrado dentro de otra red. Se despliega para conectar redes de confianza a través de una red que no lo es, normalmente Internet. El tráfico viaja cifrado para evitar escuchas. Azure VPN Gateway es la puerta de enlace que lo hace posible.</p>
+<p class="quote">Un túnel privado que usa Internet como medio de transporte.</p>
+<h3>Tres tipos de conexión</h3>
+<div class="tablebox"><table><thead><tr><th>Tipo</th><th>Conecta</th><th>Ejemplo</th></tr></thead><tbody>
+<tr><td>Punto a sitio</td><td>Un dispositivo individual con la red virtual</td><td>Un trabajador remoto desde casa</td></tr>
+<tr><td>Sitio a sitio</td><td>Un centro de datos local con la red virtual</td><td>Una sede con Azure</td></tr>
+<tr><td>Red a red</td><td>Una red virtual con otra red virtual</td><td>Dos VNets de Azure</td></tr></tbody></table></div>
+<div class="fig" style="margin-top:12px;max-width:640px">
+<div class="lk"><span class="st">Usuario remoto</span><span class="ln">VPN punto a sitio</span><span class="st az">Azure</span></div>
+<div class="lk"><span class="st">CPD local</span><span class="ln">VPN sitio a sitio</span><span class="st az">Azure</span></div></div>
+<p class="pc" style="margin-top:8px">La línea discontinua es un túnel cifrado a través de Internet.</p>
+<h3>Cosas que dice Learn sobre el gateway</h3>
+<ul><li>Se despliega en una subred dedicada de la red virtual.</li><li>Solo puedes tener un VPN Gateway por red virtual, pero uno puede conectar con varias ubicaciones.</li><li>Todo el tráfico va cifrado dentro del túnel privado. En Azure la autenticación es mediante una clave precompartida.</li></ul>
+<h3>Basada en rutas o basada en directivas</h3>
+<div class="tablebox"><table><thead><tr><th>Tipo</th><th>Cómo decide qué cifrar</th></tr></thead><tbody>
+<tr><td>Basada en directivas</td><td>Indica de forma estática las IP de los paquetes que se cifran por cada túnel. Evalúa cada paquete contra esas IP.</td></tr>
+<tr><td>Basada en rutas</td><td>El túnel funciona como una interfaz de red. El enrutamiento IP, estático o dinámico, decide por qué túnel sale cada paquete.</td></tr></tbody></table></div>
+<div class="callout" style="margin-top:12px"><b>Para el examen.</b> La basada en rutas es la preferida y la más resistente a cambios como crear subredes nuevas. Es obligatoria para conexiones entre redes virtuales, punto a sitio, multisitio o convivencia con un gateway de ExpressRoute.</div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Equivale a una solución VPN corporativa entre sedes o para teletrabajo, con un concentrador VPN en el extremo de Azure.</p></div>
+<h3>Frases de examen</h3>
+<p class="quote">Un empleado se conecta desde casa a la red de Azure. → Punto a sitio.</p>
+<p class="quote">Conectar el centro de datos de la empresa con Azure por Internet cifrado. → Sitio a sitio.</p>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Sitio a sitio y punto a sitio son iguales</td><td>Uno conecta redes. El otro conecta dispositivos o usuarios.</td></tr>
+<tr><td>ExpressRoute es una VPN</td><td>No. Es una conexión privada que no pasa por Internet.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Qué tipo de VPN gateway se recomienda para conectar redes virtuales o para escenarios multisitio?</summary><div class="ex"><p><b>La basada en rutas.</b></p><p>Es la pregunta 3 de la evaluación de Learn. «Point-based» no existe y la basada en directivas no admite esos escenarios.</p></div></details></section>
+
+<section id="u7"><div class="unit"><span class="n">TEMA 7/10</span></div>
+<h2>Alta disponibilidad en VPN Gateway</h2>
+<p class="idea"><b>Idea principal.</b> Una VPN que protege tus datos también debe ser resistente a los fallos. Azure ofrece varias formas de aumentar su resiliencia.</p>
+<h3>Activo/en espera</h3>
+<p>Es la configuración por defecto: aunque veas un solo recurso en Azure, hay dos instancias. Si el mantenimiento o un fallo afecta a la activa, la de reserva asume las conexiones sin intervención. Se interrumpen durante el cambio y se restauran en unos segundos si es mantenimiento planificado y en menos de 90 segundos si es un fallo no planificado.</p>
+<div class="dom"><div class="fd"><h4>Instancia activa</h4><div class="vmb">Gestiona el tráfico</div></div><div class="fd"><h4>Instancia en espera</h4><div class="vmb u2">Lista para sustituirla</div></div></div>
+<h3>Activo/activo</h3>
+<p>Con BGP puedes desplegar las dos instancias activas a la vez. Cada una tiene su propia IP pública y creas túneles separados desde el dispositivo local a cada IP. Puedes ampliar la disponibilidad con un dispositivo VPN local adicional.</p>
+<div class="dom"><div class="fd"><h4>Instancia A</h4><div class="vmb">IP pública 1</div></div><div class="fd"><h4>Instancia B</h4><div class="vmb">IP pública 2</div></div></div>
+<h3>Redundancia de zona</h3>
+<p>En regiones con zonas de disponibilidad, los gateways de VPN y de ExpressRoute pueden desplegarse repartidos entre zonas. Quedan separados física y lógicamente dentro de la región, y la conectividad con tu red local resiste el fallo de una zona. Requieren otros SKU de gateway y direcciones IP públicas Standard en lugar de Basic.</p>
+<div class="fig" style="max-width:640px"><div class="rgn"><h4>Región</h4><div class="zs">
+  <div class="zone"><h5>Zona 1</h5><p class="dc" style="margin-top:8px">Instancia del gateway</p></div>
+  <div class="zone"><h5>Zona 2</h5><p class="dc" style="margin-top:8px">Instancia del gateway</p></div>
+  <div class="zone"><h5>Zona 3</h5><p class="dc" style="margin-top:8px">Instancia del gateway</p></div></div></div></div>
+<h3>Failover de ExpressRoute</h3>
+<p><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Un VPN Gateway también sirve de ruta de reserva para ExpressRoute: si falla el circuito privado, la conexión sigue por Internet. Los apuntes de Copilot no lo mencionaban.</p>
+<div class="tablebox"><table><thead><tr><th>Opción</th><th>Idea</th></tr></thead><tbody>
+<tr><td>Activo/en espera</td><td>Una trabaja y otra espera. Por defecto.</td></tr>
+<tr><td>Activo/activo</td><td>Dos instancias con tráfico a la vez, con BGP.</td></tr>
+<tr><td>Redundancia de zona</td><td>Reparte el servicio entre zonas de disponibilidad.</td></tr>
+<tr><td>Reserva de ExpressRoute</td><td>VPN por Internet si cae el circuito privado.</td></tr></tbody></table></div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Es lo mismo que en un clúster de firewalls: uno activo y otro pasivo, o los dos en activo-activo, y en el nivel más alto repartidos en edificios distintos.</p></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Qué configuración protege la conectividad frente al fallo de una zona de disponibilidad?</summary><div class="ex"><p><b>Un gateway con redundancia de zona.</b></p></div></details>
+<details><summary>¿Qué dos instancias trabajan a la vez en la alta disponibilidad de una VPN?</summary><div class="ex"><p><b>La configuración activo/activo.</b></p><p>Cada instancia tiene su propia IP pública y su túnel.</p></div></details></section>
+
+<section id="u8"><div class="unit"><span class="n">TEMA 8/10</span></div>
+<h2>Azure ExpressRoute</h2>
+<p class="idea"><b>Idea principal.</b> ExpressRoute extiende tus redes locales a la nube de Microsoft mediante una conexión privada, con la ayuda de un proveedor de conectividad. Esa conexión se llama <b>circuito de ExpressRoute</b>. No pasa por la Internet pública, así que ofrece más fiabilidad, más velocidad, latencias consistentes y más seguridad que una conexión típica.</p>
+<div class="fig" style="max-width:640px"><div class="lk"><span class="st">Red local</span><span class="ln sol">ExpressRoute (privado)</span><span class="st">Proveedor</span><span class="ln sol">circuito</span><span class="st az">Nube de Microsoft</span></div></div>
+<p class="pc" style="margin-top:8px">La línea continua es una conexión privada, sin Internet.</p>
+<h3>Ventajas</h3>
+<ul><li>Conectividad con los servicios de Microsoft en todas las regiones de la zona geopolítica.</li><li>Conectividad global con ExpressRoute Global Reach.</li><li>Enrutamiento dinámico con BGP.</li><li>Redundancia integrada en cada ubicación de emparejamiento. Puedes configurar varios circuitos.</li></ul>
+<h3>Qué servicios alcanza</h3>
+<ul><li>Microsoft 365 y Dynamics 365.</li><li>Procesos de Azure, como Virtual Machines.</li><li>Servicios de nube de Azure, como Cosmos DB y Storage.</li></ul>
+<h3>ExpressRoute Global Reach</h3>
+<p>Conecta tus sedes entre sí usando la red global de Microsoft, sin pasar por la Internet pública. Por ejemplo, una oficina en Asia y un centro de datos en Europa, cada una con su circuito.</p>
+<div class="fig" style="max-width:640px"><div class="lk"><span class="st">Sede A</span><span class="ln sol">ExpressRoute</span><span class="st az">Red de Microsoft</span><span class="ln sol">ExpressRoute</span><span class="st">Sede B</span></div></div>
+<h3>Cuándo elegirla</h3>
+<ul><li>Conectividad privada y consistente entre la red local y Azure.</li><li>Normativas estrictas o requisitos de transferencia de datos.</li><li>Latencia predecible y alto rendimiento.</li><li>No enviar tráfico crítico por Internet.</li></ul>
+<div class="callout" style="margin-top:12px"><b>Matiz de Learn.</b> Aun con ExpressRoute, las consultas DNS, la comprobación de listas de revocación de certificados y las peticiones de Azure CDN siguen yendo por la Internet pública.</div>
+<h3>VPN frente a ExpressRoute</h3>
+<div class="tablebox"><table><thead><tr><th>Característica</th><th>VPN</th><th>ExpressRoute</th></tr></thead><tbody>
+<tr><td>Usa Internet</td><td class="ok">Sí</td><td class="no">No</td></tr>
+<tr><td>Coste</td><td>Bajo</td><td>Alto</td></tr>
+<tr><td>Latencia</td><td>Variable</td><td>Consistente</td></tr>
+<tr><td>Disponibilidad</td><td>Depende de la configuración</td><td>Redundancia integrada</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">Esta comparación es de tus apuntes de Copilot y es una guía de estudio. Learn no da esas valoraciones de coste, y la disponibilidad de la VPN puede subir con activo/activo y redundancia de zona.</p>
+<div class="asir"><h4>Traducción ASIR</h4><p>Equivale a una línea MPLS o a un enlace dedicado del operador, frente a una VPN que va por la Internet pública.</p></div>
+<p>Ejemplo real: un ayuntamiento conecta su CPD con Azure por ExpressRoute para alojar aplicaciones críticas.</p>
+<h3>Frases de examen</h3>
+<p class="quote">Conectividad privada y predecible entre el centro de datos y Azure.</p>
+<p class="quote">La conexión no debe pasar por la Internet pública.</p>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>ExpressRoute es una VPN</td><td>Es una conexión privada dedicada, no un túnel por Internet.</td></tr>
+<tr><td>Elegir Load Balancer o Front Door para conectar el CPD</td><td>Reparten tráfico. No conectan redes.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>Una empresa necesita conectividad privada y predecible entre su centro de datos y Azure. ¿Qué servicio es el mejor?</summary><div class="ex"><p><b>Azure ExpressRoute.</b></p><p>Es la pregunta 2 de la evaluación de Learn. Front Door y Load Balancer reparten tráfico, no conectan redes.</p></div></details></section>
+
+<section id="u9"><div class="unit"><span class="n">TEMA 9/10</span></div>
+<h2>Azure DNS</h2>
+<p class="idea"><b>Idea principal.</b> Azure DNS es un servicio de hospedaje de dominios DNS que resuelve nombres con la infraestructura de Azure. Traduce un nombre como www.empresa.com en una IP. Gestionas los registros con las mismas credenciales, API, herramientas y facturación que el resto de Azure.</p>
+<h3>Ventajas</h3>
+<div class="tablebox"><table><thead><tr><th>Ventaja</th><th>Qué significa</th></tr></thead><tbody>
+<tr><td>Fiabilidad y rendimiento</td><td>Los dominios se hospedan en la red global de servidores de nombres de Azure. Con anycast responde el servidor más cercano.</td></tr>
+<tr><td>Seguridad</td><td>Se basa en Azure Resource Manager: control de acceso por roles, registros de actividad y bloqueos de recursos.</td></tr>
+<tr><td>Facilidad de uso</td><td>Portal, PowerShell, CLI, API REST y SDK. Sirve para recursos de Azure y externos.</td></tr>
+<tr><td>Redes virtuales personalizables</td><td>Dominios privados con tus propios nombres dentro de las redes virtuales.</td></tr>
+<tr><td>Registros de alias</td><td>Apuntan a un recurso de Azure y se actualizan solos si cambia su IP.</td></tr></tbody></table></div>
+<h3>DNS público y DNS privado</h3>
+<div class="tablebox"><table><thead><tr><th>Característica</th><th>DNS público</th><th>DNS privado</th></tr></thead><tbody>
+<tr><td>Acceso</td><td>Internet</td><td>Solo las redes virtuales vinculadas</td></tr>
+<tr><td>Uso</td><td>Webs públicas</td><td>Servicios internos</td></tr></tbody></table></div>
+<h3>Registros de alias</h3>
+<p>Un conjunto de registros de alias puede apuntar a una IP pública de Azure, a un perfil de Traffic Manager o a un punto de conexión de Azure CDN. Apunta a la instancia del servicio, que a su vez está asociada a una IP, así que si la IP cambia el registro se actualiza solo al resolver.</p>
+<div class="callout" style="margin-top:12px"><b>Importante.</b> No puedes comprar un dominio con Azure DNS. Se compra por una cuota anual con App Service domains o con un registrador externo. Una vez comprado, puedes hospedarlo en Azure DNS para administrar sus registros.</div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Equivale a un servidor DNS Windows o a BIND, pero hospedado y administrado en Azure. El DNS privado es como la zona interna del dominio de tu empresa.</p></div>
+<p>Ejemplo real: una pyme aloja sus zonas DNS corporativas en Azure DNS.</p>
+<h3>Arquitectura de ejemplo</h3>
+<div class="fig" style="max-width:520px"><div class="lb"><span class="nb us">Usuarios</span><span class="ar">▼</span><span class="nb lbn">Azure DNS</span><span class="ar">▼</span><span class="nb">Aplicación web</span><span class="ar">▼</span><span class="nb">Base de datos</span></div></div>
+<p class="pc" style="margin-top:8px">Esquema simplificado de los apuntes de Copilot. En la realidad el DNS solo resuelve el nombre. El tráfico de la aplicación no pasa por él.</p>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Azure DNS compra dominios</td><td>No. Administra registros DNS de dominios que ya tienes.</td></tr>
+<tr><td>Azure DNS sustituye los controles de seguridad de red</td><td>No. Resuelve nombres. El filtrado lo hacen los NSG y demás.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Cuál es una ventaja principal de Azure DNS?</summary><div class="ex"><p><b>Administrar los registros DNS con credenciales y herramientas de Azure.</b></p><p>Es la pregunta 4 de la evaluación de Learn. Azure DNS no es un registrador de dominios y no elimina la necesidad de controles de seguridad de red.</p></div></details></section>
+
+<section id="u10"><div class="unit"><span class="n">TEMA 10/10</span></div>
+<h2>Repaso y examen: redes</h2>
+<p class="idea"><b>Idea principal.</b> Microsoft pregunta qué servicio elegir según el escenario y cómo se diferencian conceptos parecidos. Aquí tienes lo que más cae, las palabras clave y las preguntas.</p>
+<h3>Lo que realmente pregunta Microsoft</h3>
+<ul><li>Qué servicio elegir según el escenario.</li><li>Diferencia entre VPN y ExpressRoute.</li><li>Diferencia entre DNS público y privado.</li><li>Cuándo usar peering.</li><li>Cómo segmentar una red.</li><li>Qué solución da alta disponibilidad.</li></ul>
+<h3>Conceptos que más caen</h3>
+<div class="mnemo">
+  <div><b>1</b>VNet</div><div><b>2</b>Subred</div><div><b>3</b>NSG</div><div><b>4</b>VPN Gateway</div><div><b>5</b>ExpressRoute</div><div><b>6</b>BGP</div><div><b>7</b>VNet Peering</div><div><b>8</b>DNS privado</div><div><b>9</b>Zonas de disponibilidad</div>
+</div>
+<h3>Palabras clave de examen</h3>
+<div class="tablebox"><table><thead><tr><th>Palabra</th><th>Significado real</th></tr></thead><tbody>
+<tr><td>Scalability (escalabilidad)</td><td>Capacidad de crecer</td></tr>
+<tr><td>Availability (disponibilidad)</td><td>Tiempo operativo</td></tr>
+<tr><td>Latency (latencia)</td><td>Tiempo de respuesta</td></tr>
+<tr><td>Peering</td><td>Unión de redes virtuales</td></tr>
+<tr><td>Gateway</td><td>Puerta de enlace</td></tr>
+<tr><td>BGP</td><td>Enrutamiento dinámico</td></tr>
+<tr><td>ExpressRoute</td><td>Conexión privada</td></tr>
+<tr><td>VPN</td><td>Túnel cifrado por Internet</td></tr></tbody></table></div>
+<h3>Errores frecuentes del módulo</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo correcto</th></tr></thead><tbody>
+<tr><td>ExpressRoute es una VPN</td><td>Es una conexión privada dedicada.</td></tr>
+<tr><td>Azure DNS compra dominios</td><td>Administra registros DNS.</td></tr>
+<tr><td>VNet Peering usa Internet</td><td>Usa la red troncal de Microsoft.</td></tr>
+<tr><td>Sitio a sitio y punto a sitio son iguales</td><td>Uno conecta redes. El otro, usuarios o dispositivos.</td></tr></tbody></table></div>
+<h3>Comprobación de conocimientos de Learn</h3>
+<p>La evaluación del módulo tiene cuatro preguntas. Intenta responder antes de abrirlas.</p>
+<details><summary>1. ¿Qué función de red divide una red virtual en segmentos lógicos más pequeños?</summary><div class="ex"><p><b>Subredes.</b></p>
+<p><b>Por qué.</b> Reparten el espacio de direcciones de la red virtual en segmentos con nombre.</p>
+<p><b>Por qué no conjuntos de disponibilidad.</b> Son de máquinas virtuales y tratan de mantenimiento y fallos.</p>
+<p><b>Por qué no bloqueos de recursos.</b> Protegen un recurso de borrados o cambios.</p></div></details>
+<details><summary>2. Una empresa necesita conectividad privada y predecible entre su centro de datos y Azure. ¿Qué servicio es el mejor?</summary><div class="ex"><p><b>Azure ExpressRoute.</b></p>
+<p><b>Por qué.</b> Es una conexión privada con proveedor, sin Internet y con latencia consistente.</p>
+<p><b>Por qué no Front Door ni Load Balancer.</b> Reparten tráfico, no conectan redes.</p></div></details>
+<details><summary>3. ¿Qué tipo de VPN gateway se recomienda para conectar redes virtuales y para escenarios multisitio?</summary><div class="ex"><p><b>Basada en rutas.</b></p>
+<p><b>Por qué.</b> Es la preferida y la requerida para redes virtuales, punto a sitio y multisitio.</p>
+<p><b>Por qué no basada en directivas.</b> Fija las IP cifradas de forma estática y no sirve para esos casos.</p>
+<p><b>Por qué no «point-based».</b> No existe.</p></div></details>
+<details><summary>4. ¿Cuál es un beneficio principal de Azure DNS?</summary><div class="ex"><p><b>Administrar los registros DNS con credenciales y herramientas de Azure.</b></p>
+<p><b>Por qué no registrador integrado.</b> Azure DNS no compra dominios.</p>
+<p><b>Por qué no eliminar controles de seguridad.</b> Resolver nombres no sustituye el filtrado de red.</p></div></details>
+<h3>Preguntas tipo examen (ejercicios de apoyo)</h3>
+<p class="pc">Vienen de tus apuntes de Copilot. No son preguntas de Microsoft.</p>
+<details><summary>¿Qué servicio divide una VNet?</summary><div class="ex"><p><b>Subred.</b></p></div></details>
+<details><summary>¿Qué servicio conecta el CPD y Azure de forma privada?</summary><div class="ex"><p><b>ExpressRoute.</b></p></div></details>
+<details><summary>¿Qué protocolo usa ExpressRoute para el enrutamiento dinámico?</summary><div class="ex"><p><b>BGP.</b></p></div></details>
+<details><summary>¿Qué conecta dos VNets directamente?</summary><div class="ex"><p><b>Peering.</b></p></div></details>
+<details><summary>¿Qué VPN conecta usuarios remotos?</summary><div class="ex"><p><b>Punto a sitio.</b></p></div></details>
+<details><summary>¿Qué VPN conecta sedes?</summary><div class="ex"><p><b>Sitio a sitio.</b></p></div></details>
+<details><summary>¿Qué recurso filtra tráfico?</summary><div class="ex"><p><b>NSG.</b></p></div></details>
+<details><summary>¿Qué servicio resuelve nombres?</summary><div class="ex"><p><b>Azure DNS.</b></p></div></details>
+<details><summary>¿Qué DNS se usa para servicios internos?</summary><div class="ex"><p><b>DNS privado.</b></p></div></details>
+<details><summary>¿Qué arquitectura usa dos gateways a la vez?</summary><div class="ex"><p><b>Activo/activo.</b></p></div></details>
+<details><summary>¿Qué protege frente al fallo de una zona?</summary><div class="ex"><p><b>Un gateway con redundancia de zona.</b></p></div></details>
+<details><summary>¿Qué servicio da una latencia predecible?</summary><div class="ex"><p><b>ExpressRoute.</b></p><p>Learn habla de latencias consistentes. «Menor latencia» no es la formulación oficial.</p></div></details>
+<h3>Matriz de decisión rápida</h3>
+<div class="tablebox"><table><thead><tr><th>Necesidad</th><th>Servicio</th></tr></thead><tbody>
+<tr><td>Usuario remoto</td><td>VPN punto a sitio</td></tr>
+<tr><td>Conectar una sede</td><td>VPN sitio a sitio</td></tr>
+<tr><td>Conectividad empresarial crítica y privada</td><td>ExpressRoute</td></tr>
+<tr><td>Conectar redes virtuales</td><td>Peering</td></tr>
+<tr><td>Controlar tráfico</td><td>NSG</td></tr>
+<tr><td>Resolver nombres</td><td>Azure DNS</td></tr></tbody></table></div>
+<h3>Escenarios empresariales</h3>
+<div class="tablebox"><table><thead><tr><th>Organización</th><th>Solución</th></tr></thead><tbody>
+<tr><td>Academia</td><td>VPN punto a sitio para los profesores remotos</td></tr>
+<tr><td>Hospital</td><td>ExpressRoute para aplicaciones clínicas críticas</td></tr>
+<tr><td>Ayuntamiento</td><td>VPN sitio a sitio entre el CPD y Azure</td></tr>
+<tr><td>Pyme</td><td>Azure DNS para los dominios corporativos</td></tr>
+<tr><td>Tienda en línea</td><td>VNet, NSG y DNS público</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">Son escenarios de tus apuntes de Copilot, orientativos. Un ayuntamiento también podría usar ExpressRoute si la normativa lo exige.</p>
+<h3>Cómo razona Microsoft</h3>
+<ul><li>Si la pregunta menciona privacidad total → ExpressRoute.</li><li>Si menciona teletrabajo → punto a sitio.</li><li>Si menciona sedes → sitio a sitio.</li><li>Si habla de segmentación → subredes.</li><li>Si habla de filtrado → NSG.</li><li>Si habla de nombres → DNS.</li><li>Si habla de varias redes virtuales → peering.</li></ul>
+<h3>Relación con el AZ-104</h3>
+<p>Tu meta es el AZ-104. Esto es lo que cambia de un examen a otro.</p>
+<div class="tablebox"><table><thead><tr><th>Servicio</th><th>AZ-900</th><th>AZ-104</th></tr></thead><tbody>
+<tr><td>VNet</td><td>Saber qué es</td><td>Diseñar y administrar redes</td></tr>
+<tr><td>Subred</td><td>Saber para qué sirve</td><td>Planificar el direccionamiento IP</td></tr>
+<tr><td>NSG</td><td>Saber qué filtra</td><td>Crear reglas de seguridad</td></tr>
+<tr><td>VPN Gateway</td><td>Saber los tipos</td><td>Implementar VPN híbridas</td></tr>
+<tr><td>ExpressRoute</td><td>Saber cuándo elegirla</td><td>Gestionar la conectividad empresarial</td></tr>
+<tr><td>Azure DNS</td><td>Saber qué ofrece</td><td>Administrar zonas y registros</td></tr>
+<tr><td>Peering</td><td>Saber para qué sirve</td><td>Interconectar redes virtuales</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">Esta tabla es de tus apuntes de Copilot. Es una orientación de estudio, no una lista oficial de Microsoft.</p>
+<h3>Resumen exprés</h3>
+<ol><li>VNet = la red privada de Azure.</li><li>Las subredes segmentan la red.</li><li>NSG controla el tráfico.</li><li>VPN Gateway = túnel cifrado por Internet.</li><li>ExpressRoute = conexión privada, sin Internet.</li><li>BGP intercambia rutas dinámicamente.</li><li>Peering conecta redes virtuales de forma privada.</li><li>Azure DNS administra registros DNS.</li><li>DNS privado sirve para recursos internos.</li><li>Alta disponibilidad = activo/activo y redundancia de zona.</li></ol></section>
+
+<section id="repaso"><h2>Repaso final</h2>
+<h3>Cómo decidir en el examen</h3>
+<div class="tablebox"><table><thead><tr><th>Si el enunciado dice</th><th>Piensa en</th></tr></thead><tbody>
+<tr><td>Dividir una red virtual en segmentos</td><td>Subredes</td></tr>
+<tr><td>Permitir o bloquear tráfico por puerto, IP y protocolo</td><td>Network Security Group</td></tr>
+<tr><td>Conectar dos redes virtuales de forma privada</td><td>VNet Peering</td></tr>
+<tr><td>Empleado remoto que se conecta a Azure</td><td>VPN punto a sitio</td></tr>
+<tr><td>Conectar el centro de datos local por Internet cifrado</td><td>VPN sitio a sitio</td></tr>
+<tr><td>Conectividad privada, sin Internet, predecible</td><td>ExpressRoute</td></tr>
+<tr><td>Conectar dos sedes entre sí con la red de Microsoft</td><td>ExpressRoute Global Reach</td></tr>
+<tr><td>Dos gateways a la vez</td><td>Activo/activo</td></tr>
+<tr><td>Resistir el fallo de una zona</td><td>Gateway con redundancia de zona</td></tr>
+<tr><td>Gestionar dominios con credenciales de Azure</td><td>Azure DNS</td></tr>
+<tr><td>Nombres internos dentro de las redes virtuales</td><td>DNS privado</td></tr></tbody></table></div>
+<h3>Trucos para memorizar</h3>
+<div class="mnemo wide"><div><b>VNet</b>La red corporativa de Azure</div><div><b>Subred</b>La VLAN de Azure</div><div><b>NSG</b>El vigilante de la puerta</div><div><b>Peering</b>Puente privado entre redes virtuales</div><div><b>VPN</b>Internet más cifrado</div><div><b>ExpressRoute</b>Cable privado empresarial</div><div><b>BGP</b>El GPS de los routers</div><div><b>Azure DNS</b>La agenda de nombres</div></div>
+<h3>Preguntas de repaso</h3>
+<details><summary>¿Qué es una red virtual de Azure?</summary><p>La red privada de Azure, donde los recursos se comunican entre sí, con Internet y con la red local.</p></details>
+<details><summary>¿Qué diferencia hay entre un punto de conexión público y uno privado?</summary><p>El público tiene IP pública y se alcanza desde cualquier lugar. El privado tiene una IP de la red virtual.</p></details>
+<details><summary>¿Qué hace un NSG?</summary><p>Permite o bloquea tráfico según origen, destino, puerto y protocolo.</p></details>
+<details><summary>¿Por dónde viaja el tráfico de un peering?</summary><p>Por la red troncal de Microsoft, nunca por la Internet pública.</p></details>
+<details><summary>¿Cuáles son los tres tipos de conexión de VPN Gateway?</summary><p>Sitio a sitio, punto a sitio y red a red.</p></details>
+<details><summary>¿Qué tipo de VPN gateway se recomienda?</summary><p>La basada en rutas.</p></details>
+<details><summary>¿Qué configuración tiene un VPN Gateway por defecto?</summary><p>Activo/en espera: dos instancias, una activa y otra de reserva.</p></details>
+<details><summary>¿Qué es un circuito de ExpressRoute?</summary><p>La conexión privada entre tu red y la nube de Microsoft a través de un proveedor.</p></details>
+<details><summary>¿Qué hace ExpressRoute Global Reach?</summary><p>Conecta tus sedes entre sí a través de la red de Microsoft, sin Internet.</p></details>
+<details><summary>¿Qué es un registro de alias?</summary><p>Un registro que apunta a un recurso de Azure y se actualiza solo si cambia su IP.</p></details>
+<details><summary>¿Puede Azure DNS vender un dominio?</summary><p>No. Se compra con App Service domains o un registrador y luego se hospeda en Azure DNS.</p></details>
+<h3>Escenarios para practicar</h3>
+<p class="pc">Ejercicios propios para entrenar la elección de servicio. No son preguntas de Microsoft.</p>
+<details><summary>Una consultora quiere que sus empleados en casa se conecten a las aplicaciones de Azure de forma cifrada.</summary><div class="ex"><p><b>VPN punto a sitio.</b></p><p>Cada equipo inicia su propio túnel.</p></div></details>
+<details><summary>Un banco necesita enlazar su CPD con Azure sin pasar por Internet y con latencia predecible.</summary><div class="ex"><p><b>ExpressRoute.</b></p></div></details>
+<details><summary>Una empresa tiene una red virtual en Europa y otra en Asia y quiere que se vean sin salir a Internet.</summary><div class="ex"><p><b>VNet Peering.</b></p><p>Las redes pueden estar en regiones distintas y el tráfico va por la red troncal.</p></div></details>
+<details><summary>Quieres que el servidor de base de datos solo sea accesible desde el servidor de aplicaciones.</summary><div class="ex"><p><b>Subredes y NSG.</b></p><p>Pones la base de datos en su subred y la regla solo admite tráfico de la subred de aplicación.</p></div></details>
+<details><summary>Una web cambia de IP cuando se reasigna el recurso y no quieres tocar el DNS.</summary><div class="ex"><p><b>Un registro de alias en Azure DNS.</b></p></div></details>
+</section>
+
+<section id="learn"><h2>Contraste con Microsoft Learn</h2>
+<p>Revisé estos apuntes con la documentación oficial el 21 de octubre de 2026. Estos son los matices y las correcciones que hice.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>Resultado</th></tr></thead><tbody>
+<tr><td>Estructura del módulo</td><td>Learn tiene ahora un módulo propio, <i>Describe Azure networking services</i>, de 7 unidades: introducción, redes virtuales, VPN, ExpressRoute, DNS, evaluación y resumen. Antes las redes iban mezcladas con proceso. La evaluación del módulo de proceso ya solo tiene cuatro preguntas, todas de proceso. Los temas de este manual siguen los apuntes de Copilot y no la numeración de Learn.</td></tr>
+<tr><td>Puntos de conexión</td><td>Los apuntes no hablaban de puntos de conexión públicos y privados ni de puntos de conexión de servicio. Learn los incluye en la unidad de redes virtuales y la guía los pide. Añadido en el tema 3.</td></tr>
+<tr><td>Capacidades de la VNet</td><td>Añadí la lista de siete capacidades de Learn. Los apuntes solo la presentaban como red privada con subredes.</td></tr>
+<tr><td>NSG</td><td>Coincide. Corregí el ejemplo: permitía SSH desde Internet, que no es buena práctica. Lo limité a una IP concreta. Añadí las aplicaciones virtuales de red y el flujo de Learn.</td></tr>
+<tr><td>Rutas</td><td>Los apuntes solo mencionaban BGP. Añadí tablas de rutas y rutas definidas por el usuario. Aclaré que BGP trabaja con VPN Gateway, Route Server y ExpressRoute.</td></tr>
+<tr><td>VNet Peering</td><td>Coincide: privado, por la red troncal de Microsoft y entre regiones.</td></tr>
+<tr><td>VPN Gateway</td><td>Coincide con los tres tipos (Learn habla de red a red). Añadí la subred dedicada, un solo gateway por red virtual, la clave precompartida y la diferencia entre basada en rutas y basada en directivas. Esa diferencia sale en la pregunta 3 de la evaluación y los apuntes la daban por sabida.</td></tr>
+<tr><td>Alta disponibilidad</td><td>Coincide con activo/en espera, activo/activo y redundancia de zona. Añadí que activo/en espera es lo que hay por defecto, los tiempos de recuperación (segundos si es planificado, hasta 90 s si no lo es), que activo/activo usa BGP y una IP por instancia, que la redundancia de zona exige otros SKU e IP Standard, y la VPN como reserva de ExpressRoute.</td></tr>
+<tr><td>ExpressRoute</td><td>Coincide, incluidos BGP y Global Reach. Añadí el término circuito, los servicios que alcanza, la redundancia integrada y el matiz de Learn de que DNS, la comprobación de certificados y Azure CDN siguen yendo por Internet.</td></tr>
+<tr><td>Comparación VPN y ExpressRoute</td><td>La tabla de coste y disponibilidad es de los apuntes, no de Learn. Learn dice latencias consistentes, no «menor latencia», así que cambié esa pregunta a «predecible». La disponibilidad de la VPN puede subir con activo/activo y redundancia de zona.</td></tr>
+<tr><td>Azure DNS</td><td>Coincide. Añadí anycast, el modelo de Azure Resource Manager (RBAC, registros de actividad y bloqueos) y a qué recursos apunta un alias. La advertencia de que no vende dominios coincide con la nota de Learn. Matiz: se pueden comprar con App Service domains.</td></tr>
+<tr><td>Arquitectura de ejemplo con DNS</td><td>El esquema de los apuntes (usuarios, DNS, aplicación, base de datos) sugería que el tráfico pasa por el DNS. Lo dejé como simplificación y lo aclaré.</td></tr>
+<tr><td>Comprobación de conocimientos</td><td>La evaluación de Learn tiene cuatro preguntas: subredes, ExpressRoute, VPN basada en rutas y Azure DNS. Los apuntes las traían sin la respuesta completa. Ahora cada una explica por qué las otras opciones no valen.</td></tr>
+<tr><td>Escenarios, AZ-104, palabras clave y trucos</td><td>Son material didáctico de los apuntes, no datos de Microsoft. Las analogías (VLAN, MPLS, BIND) son aproximaciones.</td></tr></tbody></table></div>
+<p class="src" style="margin-top:14px">Fuentes:
+<a href="https://learn.microsoft.com/training/modules/describe-azure-networking-services/">Módulo Describe Azure networking services</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-azure-networking-services/2-virtual-network">Redes virtuales</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-azure-networking-services/3-virtual-private-networks">Redes privadas virtuales</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-azure-networking-services/4-expressroute">ExpressRoute</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-azure-networking-services/5-domain-name-system">Azure DNS</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-azure-networking-services/6-knowledge-check">Evaluación del módulo</a> ·
+<a href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900">Guía de estudio AZ-900</a></p></section>
+
+</main></div>
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+<script>
+(function(){var KEY='az900-m6-check',boxes=document.querySelectorAll('#checklist input');
+try{var s=JSON.parse(localStorage.getItem(KEY)||'[]');boxes.forEach(function(b,i){b.checked=!!s[i]})}catch(e){}
+boxes.forEach(function(b){b.addEventListener('change',function(){try{localStorage.setItem(KEY,JSON.stringify([].map.call(boxes,function(x){return x.checked})))}catch(e){}})})})();
+</script>
+</body>
+</html>
