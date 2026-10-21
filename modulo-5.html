@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Manual AZ-900 Módulo 5</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>
+/* Layout: cabecera azul Azure, índice lateral fijo, nueve temas de proceso con escala de control, esquemas de balanceador, dominios de disponibilidad y pilas de máquina virtual y contenedor, y preguntas explicadas en desplegables */
+:root{
+  --bg:#f3f7fc; --surface:#ffffff; --surface2:#e8f1fb; --fg:#0b1b2e; --muted:#47607c;
+  --azure:#0078d4; --azure-deep:#004e8c; --azure-soft:#cfe5f8; --violet:#6b4fd8; --violet-soft:#e4defa; --line:#c9d9ea;
+  --teal:#0f766e; --ok:#15803d; --hero1:#005ba1; --hero2:#0078d4; --on-hero:#ffffff;
+  --display:'Sora',system-ui,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --teal:#2dd4bf; --ok:#4ade80; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --teal:#2dd4bf; --ok:#4ade80; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.hero{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:56px max(16px,env(safe-area-inset-left,0px)) 48px;background:radial-gradient(1200px 420px at 85% -10%,rgba(160,139,255,.45),transparent 60%),linear-gradient(135deg,var(--hero1),var(--hero2));color:var(--on-hero)}
+.hero-in{max-width:1100px;margin:0 auto}
+.tag{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+h1{font:800 clamp(30px,5.4vw,54px)/1.08 var(--display);margin:14px 0 14px;text-wrap:balance;letter-spacing:-.02em}
+.lead{max-width:60ch;font-size:18px;opacity:.95;margin:0 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 12px var(--mono);padding:6px 12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(255,255,255,.1)}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:210px minmax(0,1fr);gap:40px;padding-block:36px 72px}
+nav{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line)}
+nav a:hover,nav a:focus-visible{color:var(--azure);border-left-color:var(--azure);outline:none}
+nav .sep{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
+main{min-width:0;display:flex;flex-direction:column;gap:52px}
+section{scroll-margin-top:24px;min-width:0}
+.unit{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.unit .n{font:700 12px var(--mono);letter-spacing:.08em;color:var(--azure);border:1px solid var(--azure);border-radius:6px;padding:3px 8px;white-space:nowrap}
+h2{font:700 26px/1.2 var(--display);margin:0 0 14px;letter-spacing:-.01em;text-wrap:balance}
+h3{font:600 17px var(--display);margin:26px 0 8px;color:var(--azure)}
+p{margin:0 0 12px;max-width:70ch}
+.idea{background:linear-gradient(135deg,var(--azure-soft),var(--surface2));border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch;margin-bottom:16px}
+.idea b{color:var(--azure)}
+.callout{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch}
+.callout b{color:var(--azure)}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th{background:var(--azure-deep);color:#fff;text-align:left;font:600 13px var(--display);padding:10px 14px;letter-spacing:.02em}
+td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600;color:var(--azure)}
+tr:hover td{background:var(--surface2)}
+ul{margin:0 0 12px;padding-left:20px}li{margin-bottom:4px}
+.check{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.check label{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer}
+.check input{accent-color:var(--azure);width:18px;height:18px;margin-top:3px;flex:none}
+.check input:checked+span{text-decoration:line-through;color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 16px}
+.node{padding:8px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-weight:600}
+.node.az{background:var(--azure);color:#fff;border-color:var(--azure)}
+.arrow{color:var(--azure);font-weight:700}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.box h4{margin:0 0 6px;font:600 14px var(--display)}
+.box.ms{border-top:3px solid var(--azure)}.box.cl{border-top:3px solid var(--violet)}.box.tl{border-top:3px solid var(--teal)}.box.dep{border-top:3px dashed var(--muted)}
+.box p{margin:0;font-size:15px}
+.box ul{margin:0;font-size:15px}
+.pc{font-size:14px;color:var(--muted);margin-top:8px}
+.asir{background:var(--violet-soft);border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:10px;padding:14px 18px;max-width:72ch;margin:16px 0}
+.asir h4{margin:0 0 6px;font:600 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+.asir p,.asir ul{margin:0 0 6px;font-size:15px}
+.badge{display:inline-block;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--violet);border:1px solid var(--violet);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle}
+.quote{border-left:3px solid var(--azure);padding:4px 0 4px 14px;margin:0 0 10px;font-weight:500}
+.mnemo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.mnemo div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px}
+.mnemo b{display:block;color:var(--azure);font:600 15px var(--display)}
+.mnemo.wide{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+details{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+details p{margin:8px 0 0;color:var(--azure);font-weight:500}
+details .ex{margin-top:8px}
+details .ex p{margin:8px 0 0;color:var(--fg);font-weight:400}
+details .ex p b{color:var(--azure)}
+.src{font-size:14px;color:var(--muted)}
+.src a{color:var(--azure)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;max-width:820px;min-width:0}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;margin:10px 0 0;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;margin-right:6px;vertical-align:middle;border-radius:3px}
+.legend .l-acc{background:var(--azure-deep)}.legend .l-sub{background:#0f766e}.legend .l-grp{border:2px dashed var(--azure)}.legend .l-res{background:var(--azure-soft);border:1px solid var(--azure)}
+.fig-title{font:700 17px var(--display);margin:0 0 2px}
+.fig-sub{color:var(--muted);font-size:14px;margin:0 0 12px}
+.fig-foot{color:var(--muted);font-size:14px;margin:12px 0 0;text-align:center}
+footer{text-align:center;color:var(--muted);font:500 13px var(--mono);padding:24px 0 8px;border-top:1px solid var(--line);max-width:1100px;margin:0 auto}
+
+/* Módulo 4: categorías de servicios */
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.cat{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0}
+.cat h4{margin:0;padding:8px 10px;color:#fff;font:600 13px var(--display);text-align:center}
+.cat ul{list-style:none;margin:0;padding:10px 12px;font-size:13.5px;color:var(--muted)}
+.cat li{margin:0 0 3px}
+.k1{background:#1e40af}.k2{background:#047857}.k3{background:#0f766e}.k4{background:#6d28d9}.k5{background:#b45309}.k6{background:#475569}
+
+/* Módulo 4: jerarquía de cuenta */
+.acct{display:flex;flex-direction:column;align-items:center}
+.acct .top{background:var(--azure-deep);color:#fff;border-radius:10px;padding:10px 24px;font:700 15px var(--display)}
+.acct .stem{width:2px;height:16px;background:var(--muted)}
+.acct .subs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;width:100%}
+.acct .sub{border:1px solid var(--line);border-radius:10px;background:var(--surface2);padding:10px;min-width:0}
+.acct .sub>b{display:block;background:#0f766e;color:#fff;border-radius:8px;padding:6px 10px;font:600 14px var(--display);text-align:center;margin-bottom:8px}
+.acct .grp{border:2px dashed var(--azure);border-radius:8px;padding:8px;margin-top:8px;background:var(--surface)}
+.acct .grp>span{display:block;font:600 12px var(--mono);color:var(--azure);margin-bottom:6px}
+.res{display:inline-block;font-size:12.5px;padding:2px 8px;border-radius:6px;background:var(--azure-soft);border:1px solid var(--azure);margin:0 4px 4px 0}
+
+/* Módulo 4: infraestructura física */
+.hier{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.hier .lv{flex:1 1 160px;min-width:0;border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.hier .lv h4{margin:0;padding:8px 10px;color:#fff;font:600 14px var(--display);text-align:center}
+.hier .lv p{margin:0;padding:10px 12px 4px;font-size:14px}
+.hier .lv .eg{padding:0 12px 10px;font-size:12.5px;color:var(--muted);font-style:italic}
+.hier .ct{align-self:center;color:var(--muted);font:500 11px var(--mono);text-align:center}
+.l1{background:#475569}.l2{background:#1e40af}.l3{background:#0f766e}.l4{background:#9a3412}
+
+/* Módulo 4: zonas de disponibilidad */
+.rgn{border:2px solid var(--azure);border-radius:12px;overflow:hidden;background:var(--surface2)}
+.rgn>h4{margin:0;padding:8px 12px;background:var(--azure-deep);color:#fff;font:600 14px var(--display);text-align:center}
+.zs{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;padding:12px}
+.zone{background:var(--surface);border:2px solid #0f766e;border-radius:10px;overflow:hidden;min-width:0;text-align:center}
+.zone h5{margin:0;padding:6px 8px;background:#0f766e;color:#fff;font:600 13px var(--display)}
+.zone .srv{display:block;width:34px;height:40px;margin:10px auto 4px;border:2px solid var(--muted);border-radius:5px;background:repeating-linear-gradient(to bottom,transparent 0 9px,var(--muted) 9px 11px)}
+.zone .dc{font-size:13px;color:var(--muted);margin:0 0 6px}
+.zone ul{list-style:none;margin:0;padding:0 10px 10px;text-align:left;font-size:13px}
+.zone li{margin:0 0 2px;padding-left:14px;position:relative}
+.zone li::before{content:"";position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:50%;background:var(--azure)}
+.zone li:nth-child(1)::before{background:#d97706}.zone li:nth-child(3)::before{background:var(--teal)}
+.fiber{border-top:3px dashed var(--teal);margin:0 24px}
+.fl{text-align:center;color:var(--teal);font:600 13px var(--body);padding:6px 12px 2px}
+.fs{text-align:center;color:var(--muted);font-size:13px;padding:0 12px 12px}
+.zstack{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.zi{border-radius:6px;padding:5px 8px;font:600 12.5px var(--body);text-align:center;border:1px solid var(--line);background:var(--surface2);color:var(--muted)}
+.zi.on{background:var(--azure);color:#fff;border-color:var(--azure)}
+.zi.rep{background:#0f766e;color:#fff;border-color:#0f766e}
+.zi.dash{border-style:dashed;background:transparent}
+
+/* Módulo 4: pares de regiones */
+.pair{border:2px dashed var(--muted);border-radius:12px;padding:12px;background:var(--surface)}
+.pair .gl{font:600 13px var(--mono);color:var(--muted);margin-bottom:10px}
+.pair .row{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.pair .rgx{flex:1 1 230px;min-width:0;border:2px solid var(--azure);border-radius:10px;overflow:hidden;background:var(--surface2)}
+.pair .rgx>h4{margin:0;padding:8px 10px;background:var(--azure-deep);color:#fff;font:600 14px var(--display);text-align:center}
+.pair .mini{display:flex;gap:6px;padding:10px 10px 4px}
+.pair .mini span{flex:1;background:var(--surface);border:1px solid #0f766e;border-radius:6px;text-align:center;font:600 12px var(--body);color:var(--teal);padding:4px 2px}
+.pair .st{padding:4px 12px 12px;font-size:14px}
+.pair .st b{display:inline-block;font:600 12px var(--mono);border-radius:999px;padding:1px 10px;margin-right:6px;color:#fff}
+.pair .st b.on{background:#15803d;color:#fff}
+.pair .st b.off{background:var(--azure);color:#fff}
+.pair .mid{flex:0 1 150px;align-self:center;text-align:center;font-size:13px;color:var(--muted)}
+.pair .mid b{display:block;color:var(--azure);font:600 13px var(--display);margin:2px 0}
+.pair .mid .ar{font:700 20px var(--display);color:var(--azure)}
+.pair .adv{margin-top:12px}
+
+/* Módulo 4: grupos de recursos, suscripciones y jerarquía de administración */
+:root{--bad:#c4314b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bad:#ff7a90}}
+:root[data-theme="dark"]{--bad:#ff7a90}
+.box.or{border-top:3px solid #d97706}
+.rgr{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chipg{background:#15803d;color:#fff;border-radius:6px;padding:4px 10px;font:600 12.5px var(--body)}
+.chipn{border:2px dashed var(--bad);color:var(--bad);border-radius:6px;padding:2px 10px;font:600 12.5px var(--body)}
+.chipv{border:2px solid var(--azure);background:var(--azure-soft);border-radius:6px;padding:2px 10px;font:600 12.5px var(--body)}
+.xx{color:var(--bad);font-weight:800}
+.ar2{color:#15803d;font-weight:800}
+.nest{border:2px dashed #d97706;background:rgba(217,119,6,.12);border-radius:8px;padding:8px;text-align:center;font-size:13px;color:var(--muted);margin:8px 0}
+.nest .in{border:2px dashed #d97706;border-radius:6px;padding:8px;margin-top:6px;position:relative}
+.nest .in::after{content:"✕";position:absolute;inset:0;display:grid;place-items:center;color:var(--bad);font:800 30px sans-serif}
+.rgbox{border:2px solid #0f766e;background:rgba(15,118,110,.1);border-radius:8px;padding:8px;margin:8px 0}
+.rgbox>b{display:block;text-align:center;color:var(--teal);font:700 13px var(--display);margin-bottom:6px}
+.rgbox .items{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.danger{color:var(--bad);font-weight:700;text-align:center;margin:8px 0 4px;font-size:14px}
+.bn{display:flex;flex-direction:column;align-items:center;gap:6px}
+.bn .nd{border-radius:8px;padding:6px 14px;font:600 13px var(--body);text-align:center;color:#fff}
+.nd.dk{background:#004e8c}.nd.bl{background:#2563eb}.nd.gr{background:#0f766e}.nd.pu{background:#6d28d9}
+.bn .row2{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%}
+.bn .col{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1 1 120px;min-width:0}
+.bn .st1{width:2px;height:12px;background:var(--muted)}
+.tag2{border:1.5px solid;border-radius:6px;padding:3px 8px;font-size:12.5px;text-align:center;width:100%}
+.tag2.g{border-color:#0f766e;color:var(--teal);background:rgba(15,118,110,.1)}
+.tag2.p{border-color:var(--violet);color:var(--violet);background:var(--violet-soft)}
+.tag2.b{border-color:var(--azure);color:var(--azure);background:var(--azure-soft)}
+.mg,.mg ul{list-style:none;margin:0;padding:0}
+.mg ul{margin-left:18px;padding-left:16px;border-left:2px solid var(--line)}
+.mg li{margin:8px 0;position:relative}
+.mg ul>li::before{content:"";position:absolute;left:-16px;top:20px;width:16px;border-top:2px solid var(--line)}
+.mg .n{display:inline-block;border-radius:8px;padding:5px 12px;color:#fff;font:600 13.5px/1.25 var(--body)}
+.mg .n small{display:block;font:500 11px var(--body);opacity:.85}
+.n.root{background:#1e3a5f}.n.mgn{background:#1e40af}.n.mgn2{background:#2563eb}.n.sb{background:#0f766e}.n.rgn2{background:#b45309}
+.n.rs{background:#fef3c7;color:#92400e;border:1px solid #d97706}
+.inh{display:flex;align-items:center;gap:8px;color:var(--azure);font:600 13px var(--body);margin:0 0 10px}
+@media(max-width:820px){.wrap{grid-template-columns:1fr;gap:20px}nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}nav a{border:1px solid var(--line);border-radius:999px;padding:4px 12px}nav .sep{display:none}}
+@media(prefers-reduced-motion:no-preference){a,tr td{transition:background .15s,color .15s}}
+
+/* Módulo 5: escala de control, balanceador, dominios, pilas VM/contenedor y flujos de servicio */
+.ok{color:var(--ok);font-weight:700}
+.no{color:var(--bad);font-weight:700}
+.spec{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+.spec div{flex:1 1 130px;min-width:0;border-radius:8px;padding:10px 8px;color:#fff;font:600 13px/1.3 var(--body);text-align:center}
+.spec div small{display:block;font:500 11px var(--body);opacity:.9;margin-top:2px}
+.spec .s1{background:#003e73}.spec .s2{background:#00528f}.spec .s3{background:#0a66b5}.spec .s4{background:#0b6fc4}.spec .s5{background:#0a7a8f}
+.specax{display:flex;justify-content:space-between;font:500 12px var(--mono);color:var(--muted);margin:0 0 12px}
+.lb{display:flex;flex-direction:column;align-items:center;gap:6px;margin:8px 0}
+.lb .rowv{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.lb .nb{border-radius:8px;padding:6px 14px;font:600 13px var(--body);color:#fff;background:var(--azure-deep);text-align:center}
+.lb .nb.lbn{background:var(--violet)}
+.lb .nb.us{background:var(--surface);color:var(--fg);border:1px solid var(--line)}
+.lb .ar{color:var(--azure);font-weight:700;line-height:1}
+.dom{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0}
+.dom .fd{flex:1 1 200px;min-width:0;border:2px dashed var(--violet);border-radius:10px;padding:8px 10px;background:var(--violet-soft)}
+.dom .fd h4{margin:0 0 6px;font:600 13px var(--display);color:var(--violet);text-align:center}
+.dom .vmb{background:var(--azure-deep);color:#fff;border-radius:6px;padding:5px 10px;margin:5px 0;font:600 12.5px var(--body);display:flex;justify-content:space-between;gap:8px}
+.dom .vmb small{font:500 11px var(--mono);opacity:.9}
+.dom .vmb.u2{background:#0a7a8f}
+.stk{display:flex;flex-direction:column;gap:5px}
+.stk .ly{border-radius:6px;padding:7px 10px;text-align:center;font:600 13px var(--body);color:#fff;background:var(--azure-deep)}
+.stk .ly.gl{background:#0a7a8f}
+.stk .ly.hs{background:#5f6f84}
+.stk .row{display:flex;gap:5px}
+.stk .row .ly{flex:1}
+.stk h4{margin:0 0 4px;font:600 14px var(--display)}
+.qa td:first-child{white-space:normal}
+details .ex{margin-top:8px}
+details .ex p{margin:8px 0 0;color:var(--fg);font-weight:400}
+details .ex p b{color:var(--azure)}
+details .ex ul{margin:8px 0 0}
+.mnemo.wide{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+</style>
+</head>
+<body>
+<header class="hero"><div class="hero-in">
+  <div class="tag">AZ-900 · Microsoft Azure Fundamentals</div>
+  <h1>Módulo 5: Servicios de proceso en Azure</h1>
+  <p class="lead">Manual de la parte de proceso del módulo de Learn: máquinas virtuales, escalabilidad y disponibilidad, escritorios virtuales, contenedores, funciones sin servidor y hospedaje de aplicaciones. Incluye una ampliación de IA e IoT y un repaso de examen.</p>
+  <div class="chips"><span class="chip">Gema San</span><span class="chip">Contrastado con Microsoft Learn</span><span class="chip">Sueña. Aprende. Crece.</span></div>
+</div></header>
+
+<div class="wrap">
+<nav aria-label="Índice">
+  <a href="index.html">← Todos los módulos</a>
+  <a href="#examen">Mapa del examen</a>
+  <div class="sep">Temas</div>
+  <a href="#u1">1 · Tipos de proceso</a><a href="#u2">2 · Máquinas virtuales</a><a href="#u3">3 · Escalabilidad y disponibilidad</a><a href="#u4">4 · Azure Virtual Desktop</a><a href="#u5">5 · Contenedores</a><a href="#u6">6 · Azure Functions</a><a href="#u7">7 · App Service y hospedaje</a><a href="#u8">8 · IA e IoT</a><a href="#u9">9 · Repaso y examen</a>
+  <div class="sep">Cierre</div>
+  <a href="#repaso">Repaso final</a><a href="#learn">Contraste con Learn</a>
+</nav>
+<main>
+
+<section id="examen"><h2>Dónde encaja este módulo</h2>
+<p>Es el Módulo 5 de este manual y continúa el bloque de arquitectura y servicios de Azure (35–40 % del examen). El módulo de Learn <i>Describe Azure compute and networking services</i> tiene 14 unidades y mezcla proceso y redes. Este manual cubre la parte de <b>proceso</b>. Las redes virtuales (VNet, subredes, peering, DNS, VPN Gateway, ExpressRoute y puntos de conexión) quedan para el siguiente manual. Los temas siguen el orden de tus apuntes de Copilot, no la numeración de unidades de Learn.</p>
+<h3>Qué habilidad de la guía cubre cada tema</h3>
+<div class="tablebox"><table><thead><tr><th>Habilidad de la guía de estudio</th><th>Tema</th><th>Estado</th></tr></thead><tbody>
+<tr><td>Comparar tipos de proceso: contenedores, máquinas virtuales y funciones</td><td>1, 2, 5 y 6</td><td>En este manual</td></tr>
+<tr><td>Opciones de máquinas virtuales: Virtual Machines, Virtual Machine Scale Sets, conjuntos de disponibilidad y Azure Virtual Desktop</td><td>2, 3 y 4</td><td>En este manual</td></tr>
+<tr><td>Describir los recursos necesarios para las máquinas virtuales</td><td>2</td><td>En este manual (ampliado respecto a Copilot)</td></tr>
+<tr><td>Opciones de hospedaje de aplicaciones: aplicaciones web, contenedores y máquinas virtuales</td><td>7</td><td>En este manual</td></tr>
+<tr><td>Redes virtuales, subredes, peering, Azure DNS, VPN Gateway y ExpressRoute</td><td>—</td><td>Pendiente</td></tr>
+<tr><td>Puntos de conexión públicos y privados</td><td>—</td><td>Pendiente</td></tr>
+<tr><td>IA e IoT (Azure AI services, Azure OpenAI, Azure Machine Learning, IoT Hub, IoT Central, IoT Edge)</td><td>8</td><td>Ampliación: no está en las habilidades de la guía</td></tr></tbody></table></div>
+<h3>Dónde vuelve cada tema en el AZ-900</h3>
+<p>Aquí no se configura nada: se trata de reconocer el servicio adecuado para cada escenario. La configuración llega con el AZ-104.</p>
+<div class="tablebox"><table><thead><tr><th>Tema de este módulo</th><th>Dónde vuelve en el examen</th></tr></thead><tbody>
+<tr><td>Máquinas virtuales</td><td>IaaS (Módulo 3), discos y almacenamiento, redes virtuales y costes de Azure</td></tr>
+<tr><td>Escalabilidad y disponibilidad</td><td>Regiones y zonas de disponibilidad (Módulo 4) y ventajas de la nube (Módulo 2)</td></tr>
+<tr><td>Azure Virtual Desktop</td><td>Identidad y acceso con Microsoft Entra ID</td></tr>
+<tr><td>Funciones</td><td>Informática sin servidor (Módulo 1) y modelo de consumo</td></tr>
+<tr><td>App Service y contenedores</td><td>PaaS (Módulo 3) y supervisión con Azure Monitor</td></tr></tbody></table></div>
+<h3>Lo que debo saber de este módulo</h3>
+<ul class="check" id="checklist">
+  <li><label><input type="checkbox"><span>Comparar máquina virtual, contenedor y función</span></label></li>
+  <li><label><input type="checkbox"><span>Cuándo usar una máquina virtual y qué recursos necesita</span></label></li>
+  <li><label><input type="checkbox"><span>Las familias de máquinas virtuales (B, D, E, F, M, L, N)</span></label></li>
+  <li><label><input type="checkbox"><span>Virtual Machine Scale Sets: escalar con balanceo de carga</span></label></li>
+  <li><label><input type="checkbox"><span>Conjuntos de disponibilidad: dominios de actualización y de error</span></label></li>
+  <li><label><input type="checkbox"><span>Azure Virtual Desktop y para qué sirve</span></label></li>
+  <li><label><input type="checkbox"><span>Contenedores frente a máquinas virtuales</span></label></li>
+  <li><label><input type="checkbox"><span>ACI, Container Apps y AKS: cuál usar</span></label></li>
+  <li><label><input type="checkbox"><span>Azure Functions: sirve código por evento sin servidores</span></label></li>
+  <li><label><input type="checkbox"><span>App Service y los cuatro tipos de aplicación que aloja</span></label></li>
+  <li><label><input type="checkbox"><span>Azure AI services frente a Azure Machine Learning</span></label></li>
+  <li><label><input type="checkbox"><span>IoT Hub, IoT Central e IoT Edge</span></label></li>
+</ul></section>
+
+<section id="u1"><div class="unit"><span class="n">TEMA 1/9</span></div>
+<h2>Tipos de proceso en Azure</h2>
+<p class="idea"><b>Idea principal.</b> Proceso (<i>compute</i>) es el servicio que ejecuta tu código o tus aplicaciones. Azure ofrece varias formas de hacerlo. Todas se ordenan en una misma escala: cuanto más control quieres, más administración te toca, y cuanto más administra Azure, menos controlas.</p>
+<h3>La escala de control</h3>
+<div class="spec">
+  <div class="s1">Máquinas virtuales<small>IaaS</small></div>
+  <div class="s2">AKS<small>Orquestación de contenedores</small></div>
+  <div class="s3">Container Instances y Container Apps<small>Contenedores gestionados</small></div>
+  <div class="s4">App Service<small>PaaS web</small></div>
+  <div class="s5">Azure Functions<small>Sin servidor</small></div>
+</div>
+<div class="specax"><span>← Más control y más administración</span><span>Menos administración →</span></div>
+<p class="pc">Es una guía de estudio, no una clasificación oficial: Learn dibuja el mismo espectro entre máquinas virtuales, contenedores y App Service.</p>
+<h3>Los tres tipos que compara la guía</h3>
+<div class="tablebox"><table><thead><tr><th>Tipo</th><th>Qué ejecutas</th><th>Qué administras tú</th><th>Servicio típico</th></tr></thead><tbody>
+<tr><td>Máquina virtual</td><td>Un servidor completo</td><td>Sistema operativo, parches y software</td><td>Azure Virtual Machines</td></tr>
+<tr><td>Contenedor</td><td>Una aplicación aislada con sus dependencias</td><td>La imagen del contenedor. No administras el sistema operativo</td><td>ACI, Container Apps, AKS</td></tr>
+<tr><td>Función</td><td>Un trozo de código que responde a un evento</td><td>Solo el código</td><td>Azure Functions</td></tr></tbody></table></div>
+<h3>Cuál elegir según la necesidad</h3>
+<div class="tablebox"><table><thead><tr><th>Si la necesidad es…</th><th>Piensa en</th></tr></thead><tbody>
+<tr><td>Control total del sistema operativo o mover un servidor tal cual</td><td>Azure Virtual Machines</td></tr>
+<tr><td>Publicar una aplicación web o una API sin administrar servidores</td><td>Azure App Service</td></tr>
+<tr><td>Ejecutar código solo cuando ocurre un evento</td><td>Azure Functions</td></tr>
+<tr><td>Ejecutar un contenedor simple, sin orquestación</td><td>Azure Container Instances</td></tr>
+<tr><td>Aplicaciones o microservicios en contenedores con escalado integrado</td><td>Azure Container Apps</td></tr>
+<tr><td>Gestionar una flota grande de contenedores</td><td>Azure Kubernetes Service</td></tr></tbody></table></div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Es como decidir cuánto de la cocina montas tú. Con una máquina virtual instalas y administras el servidor. Con contenedores empaquetas solo la aplicación. Con App Service solo subes la aplicación web. Con Functions solo escribes el código. Cuanto más abajo en la lista, menos tareas de sistemas te quedan.</p></div></section>
+
+<section id="u2"><div class="unit"><span class="n">TEMA 2/9</span></div>
+<h2>Azure Virtual Machines</h2>
+<p class="idea"><b>Idea principal.</b> Azure Virtual Machines permite ejecutar servidores Windows o Linux en la nube con control total sobre el sistema operativo y las aplicaciones. Es IaaS: Microsoft pone el hardware y tú sigues encargándote de los parches, las actualizaciones y la configuración dentro de la máquina.</p>
+<p class="quote">Una máquina virtual es un servidor tuyo alojado en el centro de datos de Microsoft.</p>
+<div class="fig svc" style="max-width:520px">
+<div class="lb"><span class="nb us">Usuario</span><span class="ar">▼</span><span class="nb">Azure VM</span><span class="ar">▼</span>
+<div class="rowv"><span class="nb lbn">Windows o Linux</span><span class="nb lbn">Aplicaciones</span><span class="nb lbn">Datos</span></div></div></div>
+<p class="pc" style="margin-top:8px">Esquema de los apuntes de Copilot, rehecho en español.</p>
+<h3>Cuándo usarla</h3>
+<div class="tablebox"><table><thead><tr><th>Caso</th><th>Qué significa</th></tr></thead><tbody>
+<tr><td>Migración lift-and-shift</td><td>Trasladar un servidor existente con mínimos cambios en la aplicación.</td></tr>
+<tr><td>Aplicaciones heredadas</td><td>Software que necesita un sistema operativo y una configuración concretos.</td></tr>
+<tr><td>Acceso administrativo</td><td>Cuando necesitas total control del sistema operativo o instalar software propio.</td></tr>
+<tr><td>Pruebas y desarrollo</td><td>Creas configuraciones distintas con rapidez y las quitas al terminar.</td></tr>
+<tr><td>Extensión del centro de datos</td><td>Amplías tu red local a Azure y alojas cargas en una red virtual conectada.</td></tr>
+<tr><td>Recuperación ante desastres</td><td>Mantienes capacidad de reserva en Azure por si falla el sitio principal.</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px"><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Extensión del centro de datos y recuperación ante desastres vienen del módulo de Learn. Los apuntes de Copilot listaban los otros cuatro.</p>
+<h3>Recursos que necesita una máquina virtual</h3>
+<p>La guía pide describir qué hace falta para crear una máquina virtual. Al aprovisionarla eliges tres cosas.</p>
+<div class="split">
+  <div class="box ms"><h4>Tamaño</h4><p>Para qué se usa, cuántos núcleos de procesador y cuánta memoria RAM.</p></div>
+  <div class="box ms"><h4>Discos de almacenamiento</h4><p>Discos duros o unidades de estado sólido. Afectan a la capacidad y al rendimiento.</p></div>
+  <div class="box ms"><h4>Red</h4><p>Red virtual, dirección IP pública y configuración de puertos.</p></div>
+</div>
+<p>La máquina virtual se despliega a partir de una <b>imagen</b>: una plantilla que ya incluye un sistema operativo y herramientas, como componentes de alojamiento web.</p>
+<h3>Familias de máquinas virtuales</h3>
+<p>Azure agrupa los tamaños en familias según la carga de trabajo. Se elige primero la familia que encaja con el comportamiento y después el tamaño.</p>
+<div class="tablebox"><table><thead><tr><th>Serie</th><th>Uso</th><th>Ejemplo</th></tr></thead><tbody>
+<tr><td>B</td><td>Bajo coste, con picos de CPU ocasionales</td><td>Pruebas y desarrollo</td></tr>
+<tr><td>D</td><td>Uso general</td><td>Servidores web y de aplicaciones pequeños o medianos</td></tr>
+<tr><td>E</td><td>Optimizada para memoria</td><td>Bases de datos en memoria, análisis</td></tr>
+<tr><td>F</td><td>Optimizada para CPU</td><td>Capas de aplicación que usan mucho procesador</td></tr>
+<tr><td>M</td><td>Mucha memoria</td><td>Grandes bases de datos empresariales</td></tr>
+<tr><td>L</td><td>Optimizada para almacenamiento</td><td>Procesamiento de datos con alto rendimiento de disco</td></tr>
+<tr><td>N</td><td>Con GPU</td><td>IA y gráficos</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px"><span class="badge" style="margin:0 8px 0 0">Ampliación</span>El nombre de un tamaño también informa. En <code>Standard_D2s_v5</code>: <b>D</b> es la familia, <b>2</b> los vCPU, <b>s</b> indica que admite discos Premium SSD y <b>v5</b> es la generación de hardware.</p>
+<div class="asir"><h4>Traducción ASIR</h4><p>Es una máquina virtual de VMware, Hyper-V o Proxmox, pero el host físico no está en tu empresa. Si sabes instalar Windows Server o Ubuntu Server, ya sabes administrar una máquina virtual de Azure. Lo que cambia es dónde está el hardware.</p></div>
+<h3>Frases de examen</h3>
+<p class="quote">Necesita control total sobre el sistema operativo.</p>
+<p class="quote">Quiere ejecutar software personalizado.</p>
+<p class="quote">Va a migrar un servidor existente sin rediseñarlo.</p>
+<p>Si aparece alguna de estas frases, la respuesta es una máquina virtual (IaaS).</p>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Pensar que Azure parchea el sistema operativo de la máquina virtual</td><td>En IaaS los parches y la configuración interna son tuyos.</td></tr>
+<tr><td>Elegir una máquina virtual para una web sencilla</td><td>Si no necesitas controlar el sistema operativo, App Service da menos trabajo.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Quién mantiene el sistema operativo de una máquina virtual de Azure?</summary><div class="ex"><p><b>El cliente.</b></p><p>Azure mantiene el hardware y el centro de datos. Dentro de la máquina, el sistema operativo, los parches y el software son tuyos.</p></div></details>
+<details><summary>¿Qué familia elegirías para una base de datos que guarda muchos datos en memoria?</summary><div class="ex"><p><b>La serie E, optimizada para memoria.</b></p><p>Si la base de datos es muy grande, la serie M ofrece aún más memoria.</p></div></details></section>
+
+<section id="u3"><div class="unit"><span class="n">TEMA 3/9</span></div>
+<h2>Escalabilidad y disponibilidad de las máquinas virtuales</h2>
+<p class="idea"><b>Idea principal.</b> Puedes ejecutar una máquina virtual suelta para pruebas, o agruparlas para ganar disponibilidad, escalabilidad y redundancia. Azure lo hace con dos funciones: los <b>Scale Sets</b> y los <b>conjuntos de disponibilidad</b>.</p>
+<h3>Virtual Machine Scale Sets</h3>
+<p>Permiten crear y administrar un grupo de máquinas virtuales idénticas con balanceo de carga. Pueden escalar hacia fuera o hacia dentro automáticamente según la demanda o según un horario, y se integran con el balanceador de carga para repartir el tráfico.</p>
+<div class="fig" style="max-width:520px"><div class="lb"><span class="nb us">Usuarios</span><span class="ar">▼</span><span class="nb lbn">Balanceador de carga</span><span class="ar">▼</span>
+<div class="rowv"><span class="nb">VM 1</span><span class="nb">VM 2</span><span class="nb">VM 3</span></div></div></div>
+<p class="pc" style="margin-top:8px">Sin Scale Sets tendrías que mantener la configuración de cada máquina, vigilar el uso y ajustar el número de instancias a mano.</p>
+<h3>Conjuntos de disponibilidad</h3>
+<p>Distribuyen las máquinas virtuales en distintos dominios de actualización y de error. Así reduces la probabilidad de que un mantenimiento o un fallo de hardware afecte a todas a la vez. Mejoran la resiliencia dentro de una región.</p>
+<div class="split">
+  <div class="box ms"><h4>Dominio de actualización</h4><p>Máquinas que pueden reiniciarse juntas durante un mantenimiento planificado.</p></div>
+  <div class="box cl"><h4>Dominio de error</h4><p>Máquinas que comparten un posible punto de fallo de energía o de red.</p></div>
+</div>
+<div class="fig" style="max-width:640px">
+<div class="dom">
+  <div class="fd"><h4>Dominio de error 1 (un rack)</h4><div class="vmb">VM 1 <small>actualización 1</small></div><div class="vmb u2">VM 3 <small>actualización 2</small></div></div>
+  <div class="fd"><h4>Dominio de error 2 (otro rack)</h4><div class="vmb">VM 2 <small>actualización 1</small></div><div class="vmb u2">VM 4 <small>actualización 2</small></div></div>
+</div>
+<p class="pc" style="margin:6px 0 0">Ejemplo ilustrativo. Si falla un rack, quedan dos máquinas en pie. Si se reinicia la actualización 1, siguen funcionando las de la actualización 2.</p></div>
+<div class="callout" style="margin-top:12px"><b>Dato de Learn.</b> Los conjuntos de disponibilidad no añaden coste: pagas por las máquinas. En las regiones con zonas de disponibilidad, un diseño basado en zonas suele preferirse porque aísla fallos más amplios (Módulo 4).</div>
+<h3>Scale Sets frente a conjuntos de disponibilidad</h3>
+<div class="tablebox"><table><thead><tr><th>Característica</th><th>Scale Sets</th><th>Conjuntos de disponibilidad</th></tr></thead><tbody>
+<tr><td>Objetivo</td><td>Escalar según la demanda</td><td>Seguir funcionando ante mantenimientos y fallos</td></tr>
+<tr><td>Cómo lo logra</td><td>Crea o quita instancias idénticas</td><td>Reparte las máquinas en dominios de actualización y de error</td></tr>
+<tr><td>Palabra clave</td><td>Escalar, balanceo de carga</td><td>Alta disponibilidad, dominios</td></tr></tbody></table></div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Un Scale Set es como un clúster de servidores web iguales detrás de un balanceador, que crece o encoge solo. Un conjunto de disponibilidad es colocar tus servidores en racks y circuitos eléctricos distintos, y programar las actualizaciones por turnos para que no caigan todos a la vez.</p></div>
+<h3>Frases de examen</h3>
+<p class="quote">Escalar automáticamente un grupo de máquinas virtuales idénticas.</p>
+<p class="quote">Escalonar las actualizaciones entre máquinas según el dominio de actualización y de error.</p>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Confundir Scale Sets con conjuntos de disponibilidad</td><td>Uno escala según la demanda. El otro evita que una incidencia afecte a todas las máquinas.</td></tr>
+<tr><td>Creer que un conjunto de disponibilidad escala solo</td><td>No crea ni quita máquinas. Solo las distribuye.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Qué función de las máquinas virtuales escalona las actualizaciones según el dominio de actualización y el de error?</summary><div class="ex"><p><b>Los conjuntos de disponibilidad.</b></p><p>Los Scale Sets escalan, pero no organizan dominios de actualización y de error. «Update sets» no existe como función.</p></div></details>
+<details><summary>Una tienda en línea recibe picos de tráfico en rebajas. ¿Qué usarías?</summary><div class="ex"><p><b>Virtual Machine Scale Sets.</b></p><p>Crean más instancias idénticas cuando sube la demanda y las quitan cuando baja, con el tráfico repartido por el balanceador.</p></div></details></section>
+
+<section id="u4"><div class="unit"><span class="n">TEMA 4/9</span></div>
+<h2>Azure Virtual Desktop</h2>
+<p class="idea"><b>Idea principal.</b> Azure Virtual Desktop es un servicio de virtualización de escritorios y aplicaciones en Azure. Permite acceder de forma segura a escritorios y aplicaciones Windows desde muchos tipos de dispositivos y ubicaciones, porque los escritorios viven en la nube y no en los equipos locales.</p>
+<div class="flow"><span class="node">Usuario</span><span class="arrow">→</span><span class="node">Microsoft Entra ID</span><span class="arrow">→</span><span class="node az">Grupo de hosts en Azure</span><span class="arrow">→</span><span class="node">Escritorio o aplicación</span></div>
+<h3>Ventajas</h3>
+<ul><li>Acceso desde cualquier lugar.</li><li>Administración centralizada de escritorios y aplicaciones.</li><li>Integración con Microsoft Entra ID para identidad y accesos.</li><li>Menor dependencia de los equipos locales: los datos pueden quedarse en Azure y no en el dispositivo.</li><li>Admite sesiones únicas y multisesión de Windows, según el usuario y la carga.</li></ul>
+<h3>Cuándo usarlo</h3>
+<p>Cuando un equipo necesita escritorios y aplicaciones centralizados para usuarios distribuidos, contratistas o trabajadores híbridos. Por ejemplo, un equipo de soporte con escritorios idénticos en la nube, con las mismas herramientas y políticas de seguridad en cada turno. Suele ser más fácil de operar que montar entornos de máquinas virtuales separados para cada grupo.</p>
+<div class="asir"><h4>Traducción ASIR</h4><p>Equivale a un entorno Remote Desktop Services (Terminal Server) moderno, alojado en la nube y gestionado con Microsoft Entra ID en lugar de con tu propio Active Directory local.</p></div>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Confundirlo con una máquina virtual normal</td><td>Una máquina virtual es un servidor. Virtual Desktop entrega escritorios y aplicaciones a muchos usuarios con administración central.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Qué ventaja de seguridad ofrece Azure Virtual Desktop?</summary><div class="ex"><p><b>Reduce la exposición de datos en los equipos locales.</b></p><p>Las aplicaciones y los datos pueden permanecer en sesiones alojadas en Azure, y el acceso se controla con Microsoft Entra ID.</p></div></details></section>
+
+<section id="u5"><div class="unit"><span class="n">TEMA 5/9</span></div>
+<h2>Contenedores: ACI, Container Apps y AKS</h2>
+<p class="idea"><b>Idea principal.</b> Un contenedor ejecuta una aplicación aislada compartiendo el sistema operativo del host. Se puede ejecutar varios en una misma máquina, física o virtual. Son ligeros y están pensados para crearse, escalarse y detenerse de forma dinámica. Docker es uno de los motores de contenedores más populares y Azure lo admite.</p>
+<h3>Máquina virtual frente a contenedor</h3>
+<div class="split">
+  <div class="box ms stk"><h4>Máquinas virtuales</h4>
+    <div class="row"><div class="ly">App A</div><div class="ly">App B</div></div>
+    <div class="row"><div class="ly gl">Sistema operativo invitado</div><div class="ly gl">Sistema operativo invitado</div></div>
+    <div class="ly hs">Hipervisor</div><div class="ly hs">Hardware</div></div>
+  <div class="box cl stk"><h4>Contenedores</h4>
+    <div class="row"><div class="ly">App A</div><div class="ly">App B</div></div>
+    <div class="ly gl">Motor de contenedores (por ejemplo, Docker)</div>
+    <div class="ly hs">Sistema operativo del host</div><div class="ly hs">Hardware</div></div>
+</div>
+<div class="tablebox"><table><thead><tr><th>Característica</th><th>Máquina virtual</th><th>Contenedor</th></tr></thead><tbody>
+<tr><td>Sistema operativo propio que administras</td><td class="ok">Sí</td><td class="no">No</td></tr>
+<tr><td>Arranque rápido</td><td class="no">No</td><td class="ok">Sí</td></tr>
+<tr><td>Menor consumo de recursos</td><td class="no">No</td><td class="ok">Sí</td></tr>
+<tr><td>Aislamiento</td><td>Completo respecto al host y a otras máquinas</td><td>Ligero: menos fuerte que el de una máquina virtual</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">Matiz de Learn: el contenedor no incluye un sistema operativo completo que administres. Usa el del host. Por eso arranca más rápido y consume menos.</p>
+<h3>Los tres servicios de contenedores</h3>
+<div class="tablebox"><table class="qa"><thead><tr><th>Servicio</th><th>Qué es</th><th>Cuándo usarlo</th></tr></thead><tbody>
+<tr><td>Azure Container Instances (ACI)</td><td>La forma más rápida y sencilla de ejecutar un contenedor, sin administrar máquinas virtuales ni servicios extra. Es PaaS.</td><td>Pruebas, tareas temporales y procesos sencillos.</td></tr>
+<tr><td>Azure Container Apps</td><td>Servicio administrado para aplicaciones en contenedores, también PaaS, con balanceo de carga y escalado integrados.</td><td>Microservicios, aplicaciones modernas y escenarios cloud-native.</td></tr>
+<tr><td>Azure Kubernetes Service (AKS)</td><td>Servicio de orquestación de contenedores basado en Kubernetes: gestiona el ciclo de vida de una flota de contenedores.</td><td>Muchos contenedores que hay que distribuir y escalar con control avanzado.</td></tr></tbody></table></div>
+<div class="spec" style="margin-top:12px"><div class="s3">Container Instances<small>Arranque más rápido y sencillo</small></div><div class="s4">Container Apps<small>Gestionado, con escalado</small></div><div class="s2">Kubernetes Service<small>Orquestación más profunda</small></div></div>
+<h3>Microservicios: el caso típico</h3>
+<p>Con contenedores puedes dividir una solución en piezas independientes, por ejemplo un contenedor para el front-end, otro para el back-end y otro para el almacenamiento. Si el back-end llega a su límite, escalas solo esa pieza. También puedes cambiar el almacenamiento o modificar el front-end sin afectar al resto.</p>
+<div class="fig" style="max-width:480px"><div class="lb"><span class="nb lbn">AKS</span><span class="ar">▼</span><div class="rowv"><span class="nb">Nodo 1</span><span class="nb">Nodo 2</span><span class="nb">Nodo 3</span></div></div></div>
+<p class="pc" style="margin-top:8px">Esquema de AKS de los apuntes de Copilot. Azure gestiona la plataforma Kubernetes y tú administras los nodos de trabajo.</p>
+<div class="asir"><h4>Traducción ASIR</h4><p>Un contenedor es una aplicación empaquetada con lo que necesita, como una imagen ligera que arranca en segundos. AKS equivale a administrar una granja de servidores que reparte y escala aplicaciones automáticamente, algo parecido a lo que Docker Swarm hacía a pequeña escala.</p></div>
+<h3>Frases de examen</h3>
+<p class="quote">Ejecutar un contenedor de forma rápida y sencilla, sin orquestación.</p>
+<p class="quote">Aplicación basada en microservicios con escalado automático.</p>
+<p class="quote">Orquestar y gestionar el ciclo de vida de muchos contenedores.</p>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Docker y Kubernetes son lo mismo</td><td>Docker ejecuta contenedores. Kubernetes los administra y orquesta.</td></tr>
+<tr><td>Un contenedor es una máquina virtual pequeña</td><td>No tiene sistema operativo propio: usa el del host.</td></tr>
+<tr><td>Usar AKS para ejecutar un solo contenedor sencillo</td><td>Para eso basta ACI. AKS compensa cuando hay que orquestar una flota.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Por qué los contenedores arrancan más rápido que las máquinas virtuales?</summary><div class="ex"><p><b>Porque no arrancan un sistema operativo completo.</b></p><p>Comparten el del host y empaquetan solo la aplicación y sus dependencias, así que consumen menos y se inician enseguida.</p></div></details>
+<details><summary>Una aplicación en contenedores necesita escalar sola según la demanda, sin gestionar Kubernetes. ¿Qué elegirías?</summary><div class="ex"><p><b>Azure Container Apps.</b></p><p>Incluye balanceo de carga y escalado integrados y elimina la administración de los contenedores. AKS daría más control, pero exige más administración.</p></div></details></section>
+
+<section id="u6"><div class="unit"><span class="n">TEMA 6/9</span></div>
+<h2>Azure Functions</h2>
+<p class="idea"><b>Idea principal.</b> Azure Functions es un servicio de proceso sin servidor y basado en eventos. No hay que mantener máquinas virtuales ni contenedores: un evento activa la función y, al terminar, Azure libera los recursos. Solo pagas por el tiempo de CPU que usa tu código mientras se ejecuta.</p>
+<div class="flow"><span class="node">Evento</span><span class="arrow">→</span><span class="node az">Azure Function</span><span class="arrow">→</span><span class="node">Resultado</span></div>
+<h3>Triggers frecuentes</h3>
+<ul><li>Una petición HTTP, por ejemplo una llamada REST.</li><li>Un temporizador.</li><li>Un mensaje en una cola o de otro servicio de Azure.</li></ul>
+<h3>Cuándo encaja</h3>
+<ul><li>Cuando solo te preocupa el código y no la plataforma ni la infraestructura.</li><li>Cuando el trabajo termina rápido, en segundos o menos.</li><li>Cuando la demanda es variable: escala automáticamente.</li></ul>
+<h3>Detalles que conviene saber</h3>
+<div class="tablebox"><table><thead><tr><th>Concepto</th><th>Qué significa</th></tr></thead><tbody>
+<tr><td>Sin estado (por defecto)</td><td>La función se comporta como si se reiniciara cada vez que responde a un evento.</td></tr>
+<tr><td>Con estado: Durable Functions</td><td>El motor pasa un contexto para recordar la actividad previa.</td></tr>
+<tr><td>Facturación</td><td>Por el tiempo de CPU usado mientras la función se ejecuta.</td></tr>
+<tr><td>Flexibilidad</td><td>Si cambian las necesidades, puedes desplegar el proyecto fuera del modelo sin servidor para controlar el escalado o aislarlo.</td></tr></tbody></table></div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Es como un script que se ejecuta solo cuando salta un cron o un webhook, pero sin servidor que mantener. «Sin servidor» no significa que no haya servidores: los gestiona Azure y tú no los ves.</p></div>
+<h3>Frases de examen</h3>
+<p class="quote">Ejecutar código en respuesta a un evento.</p>
+<p class="quote">Sin administrar máquinas virtuales ni contenedores.</p>
+<p class="quote">Pagar solo cuando el código se ejecuta.</p>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Azure Functions es una máquina virtual</td><td>Es un servicio sin servidor.</td></tr>
+<tr><td>Sin servidor significa que no existen servidores</td><td>Existen, pero Azure los administra por ti.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Qué opción de proceso es sin servidor y se activa por eventos?</summary><div class="ex"><p><b>Azure Functions.</b></p><p>Azure Virtual Machines es IaaS y exige administrar la máquina. Container Instances ejecuta contenedores sin servidores que administrar, pero no es un modelo basado en eventos.</p></div></details>
+<details><summary>¿Por qué Functions puede salir más barato que una máquina virtual para tareas esporádicas?</summary><div class="ex"><p><b>Porque no hay recursos encendidos esperando.</b></p><p>Un evento despierta la función, se ejecuta y los recursos se liberan. Pagas el tiempo de CPU usado, no una máquina encendida todo el día.</p></div></details></section>
+
+<section id="u7"><div class="unit"><span class="n">TEMA 7/9</span></div>
+<h2>Azure App Service y opciones de hospedaje</h2>
+<p class="idea"><b>Idea principal.</b> App Service es un servicio PaaS para hospedar aplicaciones web, APIs y backends móviles sin administrar los servidores. Azure mantiene el entorno funcionando y tú te centras en construir y mantener la aplicación.</p>
+<h3>Qué aloja</h3>
+<div class="tablebox"><table><thead><tr><th>Tipo</th><th>Qué es</th></tr></thead><tbody>
+<tr><td>Aplicaciones web</td><td>Sitios con ASP.NET, Java, Ruby, Node.js, PHP o Python, en Windows o en Linux.</td></tr>
+<tr><td>Aplicaciones de API</td><td>APIs REST con el lenguaje y el marco que prefieras.</td></tr>
+<tr><td>WebJobs</td><td>Programas o scripts en segundo plano, programados o activados por un trigger.</td></tr>
+<tr><td>Aplicaciones móviles</td><td>Backend para aplicaciones iOS y Android.</td></tr></tbody></table></div>
+<h3>Lo que ya trae</h3>
+<ul><li>Despliegue y administración integrados, con despliegue continuo desde GitHub, Azure DevOps o cualquier repositorio Git.</li><li>Puntos de conexión que se pueden proteger.</li><li>Escalado rápido ante picos de tráfico.</li><li>Balanceo de carga integrado, con alta disponibilidad.</li></ul>
+<h3>Las tres formas de hospedar una aplicación</h3>
+<div class="spec"><div class="s1">Máquinas virtuales<small>Máximo control</small></div><div class="s3">Contenedores<small>Aíslan y gestionan cada pieza</small></div><div class="s4">App Service<small>Menos esfuerzo operativo</small></div></div>
+<div class="tablebox" style="margin-top:12px"><table><thead><tr><th>Opción</th><th>Elígela cuando…</th></tr></thead><tbody>
+<tr><td>Máquina virtual</td><td>Necesitas controlar el entorno y configurarlo exactamente como quieres. Es lo más familiar si vienes de sistemas.</td></tr>
+<tr><td>Contenedores</td><td>Quieres aislar y gestionar por separado cada parte de la solución.</td></tr>
+<tr><td>App Service</td><td>Es una aplicación web, una API o un backend móvil y no quieres administrar infraestructura.</td></tr></tbody></table></div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Equivale a publicar una aplicación en IIS o en Apache sin tener que administrar el servidor ni el sistema operativo. Subes la aplicación y la plataforma pone el servidor web, los parches y el balanceo.</p></div>
+<h3>Frases de examen</h3>
+<p class="quote">Hospedar una aplicación web o una API sin administrar la infraestructura.</p>
+<p class="quote">Despliegue continuo desde GitHub y escalado automático.</p>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Pensar que se administra el sistema operativo de App Service</td><td>Lo administra Azure. Es PaaS.</td></tr>
+<tr><td>Creer que solo hospeda páginas web</td><td>También aloja APIs, tareas en segundo plano (WebJobs) y backends móviles.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Qué servicio hospeda aplicaciones web y APIs sin administrar la infraestructura?</summary><div class="ex"><p><b>Azure App Service.</b></p><p>Azure Virtual Machines exige administrar el sistema operativo, y ExpressRoute es un servicio de conexión de red, no de hospedaje.</p></div></details>
+<details><summary>¿Cuándo preferirías una máquina virtual a App Service para alojar una web?</summary><div class="ex"><p><b>Cuando necesites control sobre el sistema operativo o software especial.</b></p><p>Si la aplicación depende de una configuración concreta del servidor, App Service no te dejará tocar esa capa. Si no, App Service da menos trabajo.</p></div></details></section>
+
+<section id="u8"><div class="unit"><span class="n">TEMA 8/9</span></div>
+<h2>Ampliación: inteligencia artificial e IoT</h2>
+<p class="idea"><b>Idea principal.</b> Tus apuntes incluían servicios de IA y de IoT. No aparecen entre las habilidades de proceso de la guía de estudio del AZ-900, salvo una pregunta de la evaluación del módulo de Learn sobre servicios de IA. Lo dejo como ampliación para entender el mapa de servicios.</p>
+<h3>Azure AI services</h3>
+<p>Servicios de IA preentrenados que se consumen por API, sin entrenar un modelo propio. Casos de uso:</p>
+<ul><li>Reconocimiento de imágenes y vídeo.</li><li>Procesamiento de lenguaje.</li><li>Transcripción de voz.</li><li>Análisis de documentos.</li></ul>
+<p><b>Azure OpenAI</b> es el servicio de IA generativa para chat, automatización y generación de contenido.</p>
+<div class="callout" style="margin-top:12px"><b>Cambio de nombre.</b> Microsoft ha renombrado Azure AI services como <i>Foundry Tools</i>, y Azure OpenAI se ofrece dentro de Microsoft Foundry. La evaluación de Learn sigue diciendo «Azure AI services», así que en el examen puede aparecer con cualquiera de los dos nombres.</div>
+<h3>Azure Machine Learning</h3>
+<p>Plataforma para crear, entrenar y administrar modelos de Machine Learning personalizados.</p>
+<div class="tablebox"><table><thead><tr><th>Servicio</th><th>Modelos</th><th>Cuándo</th></tr></thead><tbody>
+<tr><td>Azure AI services</td><td>Ya entrenados</td><td>Un API cubre tu caso: visión, voz, lenguaje o documentos.</td></tr>
+<tr><td>Azure Machine Learning</td><td>Propios, los creas y entrenas tú</td><td>Necesitas un modelo a medida con tus datos.</td></tr></tbody></table></div>
+<h3>Azure IoT</h3>
+<p>Servicios para conectar y administrar dispositivos físicos.</p>
+<div class="tablebox"><table><thead><tr><th>Servicio</th><th>Objetivo</th></tr></thead><tbody>
+<tr><td>IoT Hub</td><td>Servicio en la nube que actúa de centro de mensajes entre tu aplicación y los dispositivos, en los dos sentidos.</td></tr>
+<tr><td>IoT Central</td><td>Administración simplificada de dispositivos. Sirve también de interfaz en la nube para dispositivos IoT Edge.</td></tr>
+<tr><td>IoT Edge</td><td>Ejecuta contenedores en el propio dispositivo o en una puerta de enlace, para analizar cerca de los dispositivos y decidir aunque no haya conexión.</td></tr></tbody></table></div>
+<div class="fig" style="max-width:640px"><div class="flow" style="margin:0"><span class="node">Sensores</span><span class="arrow">⇄</span><span class="node az">IoT Hub</span><span class="arrow">→</span><span class="node">Servicios en la nube (análisis, IA)</span></div>
+<div class="flow" style="margin:10px 0 0"><span class="node">Sensores</span><span class="arrow">→</span><span class="node">IoT Edge (en la planta)</span><span class="arrow">→</span><span class="node az">IoT Hub</span></div></div>
+<p class="pc" style="margin-top:8px">Esquema corregido. En los apuntes de Copilot, IoT Edge aparecía al final de la cadena, después de la nube. En realidad se ejecuta en el lado del dispositivo y se conecta a IoT Hub.</p>
+<div class="asir"><h4>Traducción ASIR</h4><p>IoT Hub es el servidor central que recibe la telemetría de todos los sensores. IoT Edge es un pequeño servidor en la propia fábrica que filtra y procesa datos antes de enviarlos, igual que un proxy o una caché local reducen el tráfico hacia fuera.</p></div>
+<h3>Errores frecuentes</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo que pasa en realidad</th></tr></thead><tbody>
+<tr><td>Azure AI services y Azure Machine Learning son lo mismo</td><td>AI services usa modelos preentrenados. Machine Learning crea modelos propios.</td></tr>
+<tr><td>IoT Edge es un servicio de la nube</td><td>Funciona en el dispositivo, cerca de los sensores.</td></tr></tbody></table></div>
+<h3>Preguntas de comprensión</h3>
+<details><summary>¿Qué categoría de servicios ofrece APIs de visión, voz y lenguaje sin entrenar un modelo propio?</summary><div class="ex"><p><b>Azure AI services.</b></p><p>Es la pregunta 4 de la evaluación de Learn. Las otras opciones, Virtual Machines y Virtual Networks, no son servicios de IA.</p></div></details></section>
+
+<section id="u9"><div class="unit"><span class="n">TEMA 9/9</span></div>
+<h2>Repaso y examen: servicios de proceso</h2>
+<p class="idea"><b>Idea principal.</b> Microsoft no pide configurar nada: pide elegir el servicio adecuado para un escenario y distinguir conceptos parecidos. Aquí tienes lo que más cae, las palabras clave y las preguntas.</p>
+<h3>Conceptos que más caen</h3>
+<div class="mnemo">
+  <div><b>1</b>Azure Virtual Machines</div><div><b>2</b>Scale Sets</div><div><b>3</b>Availability Sets</div><div><b>4</b>Azure Virtual Desktop</div><div><b>5</b>Azure Functions</div><div><b>6</b>Azure App Service</div><div><b>7</b>AKS</div><div><b>8</b>ACI</div><div><b>9</b>Azure AI services</div><div><b>10</b>Azure Machine Learning</div><div><b>11</b>IoT Hub</div><div><b>12</b>IaaS frente a PaaS</div><div><b>13</b>Sin servidor</div>
+</div>
+<h3>Palabras clave de examen</h3>
+<div class="tablebox"><table><thead><tr><th>Palabra</th><th>Significado real</th></tr></thead><tbody>
+<tr><td>Serverless (sin servidor)</td><td>Azure administra la infraestructura</td></tr>
+<tr><td>Servicio administrado</td><td>Menos administración para ti</td></tr>
+<tr><td>Scale out (escalar hacia fuera)</td><td>Más instancias</td></tr>
+<tr><td>Alta disponibilidad</td><td>Seguir funcionando</td></tr>
+<tr><td>Orquestación</td><td>Kubernetes</td></tr>
+<tr><td>Basado en eventos</td><td>Azure Functions</td></tr></tbody></table></div>
+<h3>Errores frecuentes del módulo</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo correcto</th></tr></thead><tbody>
+<tr><td>Azure Functions es una máquina virtual</td><td>Es un servicio sin servidor.</td></tr>
+<tr><td>Docker y Kubernetes son iguales</td><td>Docker ejecuta contenedores y Kubernetes los administra.</td></tr>
+<tr><td>Azure AI services y Azure ML son lo mismo</td><td>AI services usa modelos preentrenados. Azure ML crea modelos propios.</td></tr></tbody></table></div>
+<h3>Qué evalúa Microsoft realmente</h3>
+<ul><li>Elegir el servicio adecuado.</li><li>Diferenciar IaaS de PaaS.</li><li>Identificar cuándo usar sin servidor.</li><li>Distinguir IA preentrenada de modelos personalizados.</li><li>Diferenciar IoT Hub de IoT Edge.</li></ul>
+<h3>Comprobación de conocimientos de Learn</h3>
+<p>La evaluación del módulo tiene cuatro preguntas sobre proceso, hospedaje e IA. Las que tratan de redes se verán en el siguiente manual. Intenta responder antes de abrirlas.</p>
+<details><summary>1. ¿Qué función de las máquinas virtuales escalona las actualizaciones según su dominio de actualización y de error?</summary><div class="ex"><p><b>Conjuntos de disponibilidad.</b></p>
+<p><b>Por qué.</b> Agrupan las máquinas en dominios de actualización (se reinician juntas en un mantenimiento) y de error (comparten energía o red), y así evitan que todas caigan a la vez.</p>
+<p><b>Por qué no Scale Sets.</b> Sirven para crear y escalar grupos de máquinas idénticas, no para repartir dominios.</p>
+<p><b>Por qué no «update sets».</b> No es una función de Azure.</p></div></details>
+<details><summary>2. ¿Qué opción de proceso es basada en eventos y sin servidor, para ejecutar código sin administrar máquinas virtuales?</summary><div class="ex"><p><b>Azure Functions.</b></p>
+<p><b>Por qué.</b> Un evento activa el código y los recursos se liberan al terminar. Pagas solo el tiempo de CPU.</p>
+<p><b>Por qué no Virtual Machines.</b> Es IaaS: administras el servidor.</p>
+<p><b>Por qué no Container Instances.</b> Ejecuta contenedores sin servidores que administrar, pero es para contenedores, no para código activado por eventos.</p></div></details>
+<details><summary>3. ¿Qué servicio permite hospedar aplicaciones web y APIs sin administrar la infraestructura?</summary><div class="ex"><p><b>Azure App Service.</b></p>
+<p><b>Por qué.</b> Es un servicio PaaS HTTP para aplicaciones web, APIs y backends móviles.</p>
+<p><b>Por qué no Virtual Machines.</b> Tendrías que administrar el sistema operativo.</p>
+<p><b>Por qué no ExpressRoute.</b> Es un servicio de conectividad de red, no de hospedaje.</p></div></details>
+<details><summary>4. ¿Qué categoría de servicios de Azure ofrece APIs preconstruidas de visión, voz y lenguaje sin entrenar tu propio modelo?</summary><div class="ex"><p><b>Azure AI services.</b></p>
+<p><b>Por qué.</b> Son servicios preentrenados que se consumen por API.</p>
+<p><b>Por qué no Virtual Machines ni Virtual Networks.</b> Son proceso y redes, no IA.</p></div></details>
+<h3>Preguntas tipo examen (ejercicios de apoyo)</h3>
+<p class="pc">Vienen de tus apuntes de Copilot. No son preguntas de Microsoft.</p>
+<details><summary>¿Qué servicio ejecuta código cuando ocurre un evento sin administrar servidores?</summary><div class="ex"><p><b>Azure Functions.</b></p><p>Porque es un servicio sin servidor basado en eventos.</p></div></details>
+<details><summary>¿Qué servicio permite hospedar una aplicación web sin administrar el sistema operativo?</summary><div class="ex"><p><b>Azure App Service.</b></p><p>Porque es una solución PaaS administrada.</p></div></details>
+<details><summary>¿Qué servicio utiliza Kubernetes?</summary><div class="ex"><p><b>Azure Kubernetes Service.</b></p><p>Porque Azure administra la plataforma Kubernetes.</p></div></details>
+<details><summary>¿Qué servicio usarías para entrenar tu propio modelo?</summary><div class="ex"><p><b>Azure Machine Learning.</b></p><p>Permite crear y administrar modelos personalizados.</p></div></details>
+<h3>Matriz de decisión rápida</h3>
+<div class="tablebox"><table><thead><tr><th>Necesidad</th><th>Servicio</th></tr></thead><tbody>
+<tr><td>Control total del sistema operativo</td><td>Azure VM</td></tr>
+<tr><td>Aplicación web</td><td>App Service</td></tr>
+<tr><td>Código por evento</td><td>Azure Functions</td></tr>
+<tr><td>Contenedor simple</td><td>ACI</td></tr>
+<tr><td>Microservicios</td><td>Container Apps</td></tr>
+<tr><td>Orquestación avanzada</td><td>AKS</td></tr></tbody></table></div>
+<h3>Relación con el AZ-104</h3>
+<p>Tu meta es el AZ-104. Esto es lo que cambia de un examen a otro.</p>
+<div class="tablebox"><table><thead><tr><th>Servicio</th><th>AZ-900</th><th>AZ-104</th></tr></thead><tbody>
+<tr><td>Máquinas virtuales</td><td>Saber qué es una VM</td><td>Crear y administrar VM</td></tr>
+<tr><td>AKS</td><td>Saber qué es AKS</td><td>Administrar clústeres Kubernetes</td></tr>
+<tr><td>App Service</td><td>Saber qué es App Service</td><td>Configurar despliegues y escalado</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">Esta tabla es de tus apuntes de Copilot. Es una orientación de estudio, no una lista oficial de Microsoft.</p>
+<h3>Resumen exprés</h3>
+<ol><li>VM = control total.</li><li>App Service = aplicaciones web administradas.</li><li>Functions = sin servidor.</li><li>ACI = contenedor simple.</li><li>Container Apps = microservicios.</li><li>AKS = Kubernetes.</li><li>Scale Sets = escalar.</li><li>Availability Sets = disponibilidad.</li><li>AI services = IA preentrenada.</li><li>Azure ML = modelos propios.</li></ol></section>
+
+<section id="repaso"><h2>Repaso final</h2>
+<h3>Cómo decidir en el examen</h3>
+<div class="tablebox"><table><thead><tr><th>Si el enunciado dice</th><th>Piensa en</th></tr></thead><tbody>
+<tr><td>Control total, sistema operativo propio, migrar un servidor tal cual, software personalizado</td><td>Azure Virtual Machines</td></tr>
+<tr><td>Grupo de máquinas idénticas que escala solo con balanceador</td><td>Virtual Machine Scale Sets</td></tr>
+<tr><td>Escalonar actualizaciones, dominios de actualización y de error</td><td>Conjuntos de disponibilidad</td></tr>
+<tr><td>Escritorios Windows en la nube para usuarios distribuidos</td><td>Azure Virtual Desktop</td></tr>
+<tr><td>Contenedor rápido y simple, sin orquestar</td><td>Azure Container Instances</td></tr>
+<tr><td>Microservicios con escalado integrado</td><td>Azure Container Apps</td></tr>
+<tr><td>Orquestar y gestionar muchos contenedores</td><td>Azure Kubernetes Service</td></tr>
+<tr><td>Código por evento, sin servidores, pago por uso</td><td>Azure Functions</td></tr>
+<tr><td>Web, API o backend móvil sin administrar infraestructura</td><td>Azure App Service</td></tr></tbody></table></div>
+<h3>Trucos para memorizar</h3>
+<div class="mnemo wide"><div><b>Máquina virtual</b>Mi servidor, en su centro de datos</div><div><b>Scale Set</b>Muchas iguales y crecen solas</div><div><b>Availability Set</b>Repartidas para que no caigan juntas</div><div><b>Virtual Desktop</b>Mi escritorio en la nube</div><div><b>Contenedor</b>Solo la aplicación, sin sistema operativo propio</div><div><b>ACI</b>El contenedor más rápido y sencillo</div><div><b>Container Apps</b>Microservicios sin gestionar Kubernetes</div><div><b>AKS</b>Orquestador de contenedores</div><div><b>Functions</b>Código que despierta con un evento</div><div><b>App Service</b>Subo la web y listo</div><div><b>AI services</b>IA ya entrenada</div><div><b>Azure ML</b>Mi propio modelo</div></div>
+<h3>Preguntas de repaso</h3>
+<details><summary>¿Qué es una máquina virtual de Azure?</summary><p>Un servidor Windows o Linux en la nube con control total del sistema operativo. Es IaaS.</p></details>
+<details><summary>¿Qué familia de máquinas virtuales es para GPU e IA?</summary><p>La serie N.</p></details>
+<details><summary>¿Qué hacen los Scale Sets?</summary><p>Crean y escalan grupos de máquinas virtuales idénticas con balanceo de carga.</p></details>
+<details><summary>¿Qué evitan los conjuntos de disponibilidad?</summary><p>Que un mantenimiento o un fallo de hardware afecte a todas las máquinas a la vez.</p></details>
+<details><summary>¿Qué es un dominio de error?</summary><p>Un grupo de máquinas que comparten un posible punto de fallo de energía o de red.</p></details>
+<details><summary>¿Para qué sirve Azure Virtual Desktop?</summary><p>Para entregar escritorios y aplicaciones Windows alojados en Azure a usuarios en cualquier lugar.</p></details>
+<details><summary>¿Qué diferencia hay entre una máquina virtual y un contenedor?</summary><p>La máquina virtual tiene su sistema operativo. El contenedor usa el del host, por lo que arranca más rápido y consume menos.</p></details>
+<details><summary>¿Qué servicio de contenedores es el más sencillo?</summary><p>Azure Container Instances.</p></details>
+<details><summary>¿Qué servicio de contenedores es el recomendable para microservicios con escalado integrado?</summary><p>Azure Container Apps.</p></details>
+<details><summary>¿Qué es AKS?</summary><p>Un servicio de orquestación de contenedores basado en Kubernetes.</p></details>
+<details><summary>¿Qué desencadena una función?</summary><p>Un evento: una petición HTTP, un temporizador o un mensaje en una cola.</p></details>
+<details><summary>¿Qué cuatro tipos de aplicación aloja App Service?</summary><p>Aplicaciones web, aplicaciones de API, WebJobs y aplicaciones móviles.</p></details>
+<details><summary>¿Qué diferencia hay entre IoT Hub e IoT Edge?</summary><p>IoT Hub es el centro de mensajes en la nube. IoT Edge ejecuta lógica en el dispositivo, cerca de los sensores.</p></details>
+<h3>Escenarios para practicar</h3>
+<p class="pc">Ejercicios propios para entrenar la elección de servicio. No son preguntas de Microsoft.</p>
+<details><summary>Una empresa tiene un servidor con una aplicación antigua que exige una versión concreta de Windows Server y quiere moverlo a Azure sin cambios.</summary><div class="ex"><p><b>Azure Virtual Machines.</b></p><p>Necesita control del sistema operativo y una migración lift-and-shift.</p></div></details>
+<details><summary>Una web de tickets recibe diez veces más visitas el día que salen a la venta.</summary><div class="ex"><p><b>Scale Sets o App Service con escalado automático.</b></p><p>Si la web corre en máquinas virtuales, Scale Sets. Si es una aplicación web sin necesidad de controlar el servidor, App Service.</p></div></details>
+<details><summary>Quieres que cada vez que se suba una foto a una carpeta se genere una miniatura, sin tener un servidor encendido.</summary><div class="ex"><p><b>Azure Functions.</b></p><p>Es código corto activado por un evento.</p></div></details>
+<details><summary>Un equipo de desarrollo quiere ejecutar un contenedor de pruebas durante una tarde y borrarlo después, sin montar nada.</summary><div class="ex"><p><b>Azure Container Instances.</b></p><p>Es la forma más rápida y sencilla de ejecutar un contenedor sin orquestación.</p></div></details>
+<details><summary>Una empresa tiene cientos de contenedores y necesita repartirlos y escalarlos con control avanzado.</summary><div class="ex"><p><b>Azure Kubernetes Service.</b></p><p>Es orquestación de una flota de contenedores.</p></div></details>
+<details><summary>Una consultora quiere dar a sus contratistas el mismo escritorio Windows con las mismas herramientas, desde cualquier equipo.</summary><div class="ex"><p><b>Azure Virtual Desktop.</b></p><p>Escritorios centralizados en Azure, con acceso controlado por Microsoft Entra ID.</p></div></details>
+</section>
+
+<section id="learn"><h2>Contraste con Microsoft Learn</h2>
+<p>Revisé estos apuntes con la documentación oficial el 20 de octubre de 2026. Estos son los matices y las correcciones que hice.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>Resultado</th></tr></thead><tbody>
+<tr><td>Estructura del módulo</td><td>El módulo <i>Describe Azure compute and networking services</i> tiene 14 unidades: proceso, redes, dos ejercicios, evaluación y resumen. Este manual cubre la parte de proceso (máquinas virtuales, Virtual Desktop, contenedores, funciones y hospedaje) y las preguntas de la evaluación que tratan de ella. Las redes y los ejercicios prácticos quedan fuera. Los temas siguen los apuntes de Copilot, no la numeración de Learn.</td></tr>
+<tr><td>Habilidades de la guía</td><td>La guía vigente desde el 20 de julio de 2026 incluye comparar tipos de proceso, opciones de máquinas virtuales, recursos de las máquinas virtuales y opciones de hospedaje. Los apuntes no hablaban de los recursos necesarios para una máquina virtual (tamaño, discos y red). Lo añadí al tema 2.</td></tr>
+<tr><td>IA e IoT</td><td>La guía no menciona IA ni IoT en las habilidades de proceso. La evaluación del módulo sí incluye una pregunta sobre Azure AI services. De IoT no hay unidad ni pregunta. Los dejé como ampliación en el tema 8.</td></tr>
+<tr><td>Nombre de Azure AI services</td><td>La documentación actual los llama <i>Foundry Tools</i> (antes Azure AI services y Cognitive Services), y Azure OpenAI se ofrece dentro de Microsoft Foundry. Los apuntes y la evaluación de Learn usan «Azure AI services», que mantengo, con una nota sobre el cambio.</td></tr>
+<tr><td>Casos de uso de las máquinas virtuales</td><td>Los apuntes citaban cuatro: lift-and-shift, aplicaciones heredadas, acceso administrativo y pruebas. Learn añade la extensión del centro de datos y la recuperación ante desastres. Lo completé.</td></tr>
+<tr><td>Familias de máquinas virtuales</td><td>Coinciden con Learn (B, D, E, F, M, L, N). Añadí un ejemplo de uso por familia y la lectura del nombre de un tamaño.</td></tr>
+<tr><td>Conjuntos de disponibilidad</td><td>Coincide con la definición de dominios de actualización y de error. Añadí que no tienen coste extra y que, donde hay zonas de disponibilidad, un diseño por zonas suele preferirse. El esquema de racks es ilustrativo: no refleja un número real de dominios.</td></tr>
+<tr><td>Scale Sets</td><td>Coincide. Añadí que escalan también según un horario y que sin ellos habría que mantener la configuración y el número de instancias a mano.</td></tr>
+<tr><td>Azure Virtual Desktop</td><td>Coincide, y añadí la integración con Microsoft Entra ID, la menor exposición de datos en el equipo local y las sesiones únicas y multisesión. La comparación con Remote Desktop Services es una analogía didáctica, no de Learn.</td></tr>
+<tr><td>Contenedores frente a máquinas virtuales</td><td>Los apuntes marcaban que el contenedor no tiene sistema operativo propio. Es correcto en el sentido de que no administras uno: usa el del host. Matiz añadido: el aislamiento es menos fuerte que el de una máquina virtual.</td></tr>
+<tr><td>ACI y Container Apps</td><td>Learn los clasifica como PaaS y dice que Container Apps incluye balanceo de carga y escalado integrados. Los apuntes no indicaban el tipo de servicio. Añadido.</td></tr>
+<tr><td>AKS</td><td>Coincide como servicio de orquestación. Añadí que Azure gestiona la plataforma Kubernetes y que tú administras los nodos de trabajo, según la documentación para desarrolladores de Azure. La comparación con una granja de servidores es una analogía de los apuntes.</td></tr>
+<tr><td>Azure Functions</td><td>Coincide. Añadí que se factura por el tiempo de CPU usado, que por defecto no tiene estado, que Durable Functions guarda contexto y que encaja con trabajos de segundos o menos.</td></tr>
+<tr><td>App Service</td><td>Coincide. Añadí los cuatro tipos de aplicación (web, API, WebJobs y móviles), la compatibilidad con Windows y Linux y el despliegue continuo desde GitHub, Azure DevOps o Git.</td></tr>
+<tr><td>Esquema de IoT</td><td>En los apuntes, IoT Edge aparecía después de la nube en la cadena IoT Hub → IA en la nube → IoT Edge. Según la documentación, IoT Edge se ejecuta en el dispositivo o en una puerta de enlace y es una función de IoT Hub, así que lo redibujé del lado del dispositivo. No comprobé el estado actual de IoT Central, que queda fuera de la guía.</td></tr>
+<tr><td>Comprobación de conocimientos</td><td>La evaluación de Learn tiene cuatro preguntas sobre este contenido: conjuntos de disponibilidad, Azure Functions, App Service y Azure AI services. Las cuatro preguntas tipo examen de los apuntes (Functions, App Service, AKS y Azure ML) son ejercicios de apoyo, no preguntas de Microsoft. Ahora cada tipo aparece por separado.</td></tr>
+<tr><td>Relación con AZ-104, palabras clave y matriz de decisión</td><td>Son material didáctico de los apuntes. La matriz coincide con la documentación de Learn sobre cuándo usar cada servicio.</td></tr>
+<tr><td>Ejemplos y analogías</td><td>Los escenarios para practicar, las analogías de ASIR y los esquemas son recursos didácticos de los apuntes, no datos de Microsoft.</td></tr></tbody></table></div>
+<p class="src" style="margin-top:14px">Fuentes:
+<a href="https://learn.microsoft.com/training/modules/describe-azure-compute-networking-services/">Módulo Describe Azure compute and networking services</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-azure-compute-networking-services/2-virtual-machines">Máquinas virtuales</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-azure-compute-networking-services/4-virtual-desktop">Azure Virtual Desktop</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-azure-compute-networking-services/5-containers">Contenedores</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-azure-compute-networking-services/6-functions">Azure Functions</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-azure-compute-networking-services/7-describe-application-hosting-options">Opciones de hospedaje</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-azure-compute-networking-services/13-knowledge-check">Evaluación del módulo</a> ·
+<a href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900">Guía de estudio AZ-900</a> ·
+<a href="https://learn.microsoft.com/azure/developer/intro/azure-developer-key-services">Servicios clave de Azure para desarrolladores</a> ·
+<a href="https://learn.microsoft.com/virtualization/windowscontainers/about/containers-vs-vm">Contenedores frente a máquinas virtuales</a> ·
+<a href="https://learn.microsoft.com/azure/iot-edge/about-iot-edge">Azure IoT Edge</a> ·
+<a href="https://learn.microsoft.com/azure/architecture/ai-ml/guide/data-science-and-machine-learning">Productos de IA y aprendizaje automático de Microsoft</a></p></section>
+
+</main></div>
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+<script>
+(function(){var KEY='az900-m5-check',boxes=document.querySelectorAll('#checklist input');
+try{var s=JSON.parse(localStorage.getItem(KEY)||'[]');boxes.forEach(function(b,i){b.checked=!!s[i]})}catch(e){}
+boxes.forEach(function(b){b.addEventListener('change',function(){try{localStorage.setItem(KEY,JSON.stringify([].map.call(boxes,function(x){return x.checked})))}catch(e){}})})})();
+</script>
+</body>
+</html>
