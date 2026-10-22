@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Manual AZ-900 Módulo 8</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>
+/* Layout: cabecera azul Azure, índice lateral fijo, versión resumida con fichas por tema, flujos de señales, capas de defensa y repaso de examen */
+:root{
+  --bg:#f3f7fc; --surface:#ffffff; --surface2:#e8f1fb; --fg:#0b1b2e; --muted:#47607c;
+  --azure:#0078d4; --azure-deep:#004e8c; --azure-soft:#cfe5f8; --violet:#6b4fd8; --violet-soft:#e4defa; --line:#c9d9ea;
+  --teal:#0f766e; --ok:#15803d; --bad:#c4314b; --hero1:#005ba1; --hero2:#0078d4; --on-hero:#ffffff;
+  --display:'Sora',system-ui,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --teal:#2dd4bf; --ok:#4ade80; --bad:#ff7a90; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --teal:#2dd4bf; --ok:#4ade80; --bad:#ff7a90; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.hero{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:56px max(16px,env(safe-area-inset-left,0px)) 48px;background:radial-gradient(1200px 420px at 85% -10%,rgba(160,139,255,.45),transparent 60%),linear-gradient(135deg,var(--hero1),var(--hero2));color:var(--on-hero)}
+.hero-in{max-width:1100px;margin:0 auto}
+.tag{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+h1{font:800 clamp(30px,5.4vw,54px)/1.08 var(--display);margin:14px 0 14px;text-wrap:balance;letter-spacing:-.02em}
+.lead{max-width:60ch;font-size:18px;opacity:.95;margin:0 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 12px var(--mono);padding:6px 12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(255,255,255,.1)}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:210px minmax(0,1fr);gap:40px;padding-block:36px 72px}
+nav{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line)}
+nav a:hover,nav a:focus-visible{color:var(--azure);border-left-color:var(--azure);outline:none}
+nav .sep{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
+main{min-width:0;display:flex;flex-direction:column;gap:48px}
+section{scroll-margin-top:24px;min-width:0}
+.unit{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.unit .n{font:700 12px var(--mono);letter-spacing:.08em;color:var(--azure);border:1px solid var(--azure);border-radius:6px;padding:3px 8px;white-space:nowrap}
+h2{font:700 26px/1.2 var(--display);margin:0 0 14px;letter-spacing:-.01em;text-wrap:balance}
+h3{font:600 17px var(--display);margin:26px 0 8px;color:var(--azure)}
+p{margin:0 0 12px;max-width:70ch}
+.idea{background:linear-gradient(135deg,var(--azure-soft),var(--surface2));border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch;margin-bottom:16px}
+.idea b{color:var(--azure)}
+.callout{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch}
+.callout b{color:var(--azure)}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th{background:var(--azure-deep);color:#fff;text-align:left;font:600 13px var(--display);padding:10px 14px;letter-spacing:.02em}
+td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600;color:var(--azure)}
+tr:hover td{background:var(--surface2)}
+ul{margin:0 0 12px;padding-left:20px}li{margin-bottom:4px}
+.check{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.check label{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer}
+.check input{accent-color:var(--azure);width:18px;height:18px;margin-top:3px;flex:none}
+.check input:checked+span{text-decoration:line-through;color:var(--muted)}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.box h4{margin:0 0 6px;font:600 15px var(--display)}
+.box.ms{border-top:3px solid var(--azure)}.box.cl{border-top:3px solid var(--violet)}.box.tl{border-top:3px solid var(--teal)}.box.or{border-top:3px solid #d97706}
+.box p{margin:0 0 6px;font-size:15px}
+.box ul{margin:0 0 6px;font-size:15px}
+.box .lbl{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-top:6px}
+.box .ex1{font-size:14px;color:var(--muted);margin:6px 0 0}
+.pc{font-size:14px;color:var(--muted);margin-top:8px}
+.asir{background:var(--violet-soft);border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:10px;padding:14px 18px;max-width:72ch;margin:16px 0}
+.asir h4{margin:0 0 6px;font:600 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+.asir p,.asir ul{margin:0 0 6px;font-size:15px}
+.badge{display:inline-block;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--violet);border:1px solid var(--violet);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle}
+.quote{border-left:3px solid var(--azure);padding:4px 0 4px 14px;margin:0 0 10px;font-weight:500}
+.mnemo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.mnemo div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px}
+.mnemo b{display:block;color:var(--azure);font:600 15px var(--display)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+details .ex{margin-top:8px}
+details .ex p{margin:8px 0 0;color:var(--fg);font-weight:400}
+details .ex p b{color:var(--azure)}
+.src{font-size:14px;color:var(--muted)}
+.src a{color:var(--azure)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;max-width:860px;min-width:0}
+.ok{color:var(--ok);font-weight:700}
+.no{color:var(--bad);font-weight:700}
+.cols{columns:2 260px;column-gap:28px;padding-left:20px}
+.cols li{break-inside:avoid}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 16px}
+.node{padding:8px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-weight:600}
+.node small{display:block;font:500 12px var(--body);color:var(--muted)}
+.node.az small{color:#fff;opacity:.92}
+.node.az{background:var(--azure);color:#fff;border-color:var(--azure)}
+.node.az small{color:#fff;opacity:.9}
+.arrow{color:var(--azure);font-weight:700}
+footer{text-align:center;color:var(--muted);font:500 13px var(--mono);padding:24px 0 8px;border-top:1px solid var(--line);max-width:1100px;margin:0 auto}
+
+/* Módulo 8: árbol del mapa */
+.mg,.mg ul{list-style:none;margin:0;padding:0}
+.mg ul{margin-left:18px;padding-left:16px;border-left:2px solid var(--line)}
+.mg li{margin:8px 0;position:relative}
+.mg ul>li::before{content:"";position:absolute;left:-16px;top:20px;width:16px;border-top:2px solid var(--line)}
+.mg .n{display:inline-block;border-radius:8px;padding:5px 12px;color:#fff;font:600 13.5px/1.25 var(--body)}
+.n.root{background:#1e3a5f}.n.k1{background:#1e40af}.n.k2{background:#0f766e}.n.k3{background:#6d28d9}.n.k4{background:#b45309}.n.k5{background:#475569}
+.n.leaf{background:var(--azure-soft);color:var(--fg);border:1px solid var(--azure)}
+.treebox{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:4px 24px}
+
+/* Módulo 8: escalas, jerarquía RBAC y capas de defensa */
+.spec{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+.spec div{flex:1 1 120px;min-width:0;border-radius:8px;padding:10px 8px;color:#fff;font:600 13px/1.3 var(--body);text-align:center}
+.spec div small{display:block;font:500 11.5px var(--body);opacity:.92;margin-top:2px}
+.spec .a1{background:#c2410c}.spec .a2{background:#0a66b5}.spec .a3{background:#0f766e}
+.specax{display:flex;justify-content:space-between;gap:12px;font:500 12px var(--mono);color:var(--muted);margin:0 0 4px}
+.hier{display:flex;flex-direction:column;gap:0;max-width:420px}
+.hier .h{border:2px solid var(--azure);background:var(--surface2);border-radius:10px;padding:8px 14px;font-weight:600;text-align:center}
+.hier .h small{display:block;font:500 12px var(--body);color:var(--muted)}
+.hier .dn{text-align:center;color:var(--azure);font:600 12px var(--mono);padding:3px 0}
+.layers{display:flex;flex-direction:column;gap:6px;max-width:640px}
+.layers div{margin-inline:calc(var(--i) * 14px);border-radius:8px;padding:8px 14px;color:#fff;font:600 14px/1.3 var(--body);display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px}
+.layers div small{font:500 12.5px var(--body);opacity:.92}
+.layers .l0{background:#334155}.layers .l1{background:#1e40af}.layers .l2{background:#0a66b5}.layers .l3{background:#0b6fc4}.layers .l4{background:#0a7a8f}.layers .l5{background:#0f766e}.layers .l6{background:#c2410c}
+@media(max-width:820px){.wrap{grid-template-columns:1fr;gap:20px}nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}nav a{border:1px solid var(--line);border-radius:999px;padding:4px 12px}nav .sep{display:none}}
+@media(prefers-reduced-motion:no-preference){a,tr td{transition:background .15s,color .15s}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="hero-in">
+  <div class="tag">AZ-900 · Microsoft Azure Fundamentals</div>
+  <h1>Módulo 8: Identidad, acceso y seguridad en Azure</h1>
+  <p class="lead">Versión resumida: Microsoft Entra ID, autenticación, identidades externas, Acceso condicional, RBAC, Zero Trust, defensa en profundidad, cifrado con Key Vault y Defender for Cloud. Con repaso de examen y relación con el AZ-104.</p>
+  <div class="chips"><span class="chip">Gema San</span><span class="chip">Contrastado con Microsoft Learn</span><span class="chip">Sueña. Aprende. Crece.</span></div>
+</div></header>
+
+<div class="wrap">
+<nav aria-label="Índice">
+  <a href="index.html">← Todos los módulos</a>
+  <a href="#mapa">Mapa del módulo</a>
+  <div class="sep">Temas</div>
+  <a href="#u1">1 · Entra ID y directorios</a><a href="#u2">2 · Autenticación</a><a href="#u3">3 · Identidades externas</a><a href="#u4">4 · Acceso condicional</a><a href="#u5">5 · RBAC</a><a href="#u6">6 · Zero Trust</a><a href="#u7">7 · Defensa en profundidad</a><a href="#u8">8 · Cifrado y Key Vault</a><a href="#u9">9 · Defender for Cloud</a>
+  <div class="sep">Examen</div>
+  <a href="#examen">Qué cae</a><a href="#learn-q">Preguntas de Learn</a><a href="#az104">Relación con AZ-104</a>
+  <div class="sep">Cierre</div>
+  <a href="#repaso">Repaso final</a><a href="#learn">Contraste con Learn</a>
+</nav>
+<main>
+
+<section id="mapa"><h2>Mapa del módulo</h2>
+<p>Este módulo también es una versión resumida: va a lo esencial de cada tema, con lo que pregunta el examen y su equivalente en el mundo ASIR. Se divide en tres bloques: quién eres (identidad), qué puedes hacer (autorización) y cómo se protege todo (seguridad).</p>
+<div class="fig"><div class="treebox">
+<ul class="mg"><li><span class="n root">Identidad</span>
+  <ul><li><span class="n k1">Microsoft Entra ID</span><ul><li><span class="n leaf">Entra Connect</span></li><li><span class="n leaf">Domain Services</span></li></ul></li>
+  <li><span class="n k2">Autenticación</span><ul><li><span class="n leaf">SSO</span></li><li><span class="n leaf">MFA</span></li><li><span class="n leaf">Passwordless</span></li></ul></li></ul></li></ul>
+<ul class="mg"><li><span class="n k3">Identidades externas</span>
+  <ul><li><span class="n leaf">B2B</span></li><li><span class="n leaf">B2B Direct Connect</span></li><li><span class="n leaf">External ID (clientes)</span></li></ul></li>
+  <li><span class="n k3">Acceso condicional</span></li>
+  <li><span class="n root">Autorización</span><ul><li><span class="n k4">RBAC</span><ul><li><span class="n leaf">Owner · Contributor · Reader</span></li><li><span class="n leaf">Herencia</span></li></ul></li></ul></li></ul>
+<ul class="mg"><li><span class="n root">Seguridad</span>
+  <ul><li><span class="n k5">Zero Trust</span></li><li><span class="n k5">Defensa en profundidad</span></li><li><span class="n k5">Cifrado y Key Vault</span></li><li><span class="n k5">Defender for Cloud</span></li></ul></li></ul>
+</div></div>
+<h3>Lo que debo saber de este módulo</h3>
+<ul class="check" id="checklist">
+  <li><label><input type="checkbox"><span>Qué hacen Entra ID, Entra Connect y Entra Domain Services</span></label></li>
+  <li><label><input type="checkbox"><span>SSO, MFA y passwordless: en qué se diferencian</span></label></li>
+  <li><label><input type="checkbox"><span>Windows Hello, Authenticator y FIDO2</span></label></li>
+  <li><label><input type="checkbox"><span>B2B, B2B Direct Connect y External ID para clientes</span></label></li>
+  <li><label><input type="checkbox"><span>Acceso condicional: señales, decisión y aplicación</span></label></li>
+  <li><label><input type="checkbox"><span>RBAC: ámbitos, herencia y suma de permisos</span></label></li>
+  <li><label><input type="checkbox"><span>Los tres principios de Zero Trust</span></label></li>
+  <li><label><input type="checkbox"><span>Las siete capas de la defensa en profundidad</span></label></li>
+  <li><label><input type="checkbox"><span>Cifrado en reposo y en tránsito, y qué guarda Key Vault</span></label></li>
+  <li><label><input type="checkbox"><span>Evaluar, asegurar y defender con Defender for Cloud</span></label></li>
+</ul></section>
+
+<section id="u1"><div class="unit"><span class="n">TEMA 1/9</span></div>
+<h2>Microsoft Entra ID y los servicios de directorio</h2>
+<p class="idea"><b>Idea principal.</b> Microsoft Entra ID es el servicio de identidad y acceso en la nube de Microsoft. Controlas las cuentas y Microsoft garantiza que el servicio esté disponible en todo el mundo. Se puede conectar con tu Active Directory local.</p>
+<div class="split">
+  <div class="box ms"><h4>Microsoft Entra ID</h4>
+    <p>Identidad y acceso en la nube para Microsoft 365, Azure y tus propias aplicaciones.</p>
+    <span class="lbl">Qué ofrece</span><ul><li>Autenticación (MFA, restablecer contraseña, lista de contraseñas prohibidas, bloqueo inteligente).</li><li>Inicio de sesión único (SSO).</li><li>Gestión de aplicaciones.</li><li>Gestión de dispositivos.</li></ul></div>
+  <div class="box tl"><h4>Microsoft Entra Connect</h4>
+    <p>Sincroniza las identidades del Active Directory local con Entra ID para no mantener dos conjuntos de cuentas.</p>
+    <span class="lbl">Examen</span><ul><li>Es el puente entre AD local y la nube.</li><li>Da SSO y MFA en ambos mundos.</li></ul></div>
+  <div class="box cl"><h4>Microsoft Entra Domain Services</h4>
+    <p>Dominio gestionado en Azure: unión a dominio, directivas de grupo, LDAP y Kerberos/NTLM, sin desplegar controladores de dominio.</p>
+    <span class="lbl">Examen</span><ul><li>Ideal para aplicaciones heredadas (lift and shift).</li><li>Sincronización de un solo sentido: de Entra ID al dominio gestionado.</li></ul></div>
+</div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Entra ID es como tu Active Directory, pero en la nube y sin mantener los servidores. Entra Connect es la sincronización entre tu AD local y la nube. Domain Services es un dominio de Windows ya montado, con sus controladores gestionados por Microsoft.</p></div>
+<p class="pc">Dato de Learn: al conectar tu AD local con Entra ID, Microsoft puede detectar inicios de sesión sospechosos sin coste adicional.</p></section>
+
+<section id="u2"><div class="unit"><span class="n">TEMA 2/9</span></div>
+<h2>Métodos de autenticación: SSO, MFA y passwordless</h2>
+<p class="idea"><b>Idea principal.</b> Autenticar es comprobar quién eres con credenciales. Los métodos modernos buscan más seguridad sin perder comodidad: la contraseña sola es cómoda pero débil, MFA añade factores y passwordless elimina la contraseña.</p>
+<div class="fig"><div class="specax"><span>Solo contraseña: baja seguridad, alta comodidad</span><span>Passwordless: alta seguridad, alta comodidad</span></div>
+<div class="spec"><div class="a1">Contraseña<small>Algo que sabes</small></div><div class="a2">MFA<small>Sabes + tienes o eres</small></div><div class="a3">Passwordless<small>Dispositivo + biometría o PIN</small></div></div></div>
+<h3>SSO</h3>
+<p>Inicias sesión una vez y accedes a varias aplicaciones de confianza. Reduce las contraseñas y simplifica dar o quitar accesos.</p>
+<div class="callout"><b>Para el examen.</b> El SSO es tan seguro como el primer método de autenticación, porque el resto de conexiones se apoyan en él. Y el SSO no da permisos: eso es RBAC.</div>
+<h3>MFA</h3>
+<p>Pide un factor extra al iniciar sesión, así que una contraseña robada no basta. Hay tres categorías de factor:</p>
+<div class="tablebox"><table><thead><tr><th>Factor</th><th>Ejemplo</th></tr></thead><tbody>
+<tr><td>Algo que sabes</td><td>Contraseña o pregunta de seguridad</td></tr>
+<tr><td>Algo que tienes</td><td>Código enviado al móvil</td></tr>
+<tr><td>Algo que eres</td><td>Huella o rostro</td></tr></tbody></table></div>
+<h3>Passwordless</h3>
+<p>Quita la contraseña y la sustituye por un dispositivo de confianza más biometría o PIN. Entra ID admite tres opciones:</p>
+<div class="tablebox"><table><thead><tr><th>Método</th><th>Cómo se autentica</th><th>Mejor uso</th><th>Para el examen</th></tr></thead><tbody>
+<tr><td>Windows Hello para Empresas</td><td>Biometría o PIN ligados al PC</td><td>Trabajador con su propio PC Windows</td><td>Integra PKI y SSO</td></tr>
+<tr><td>Microsoft Authenticator</td><td>Notificación en el móvil: número en pantalla y biometría o PIN</td><td>Movilidad (iOS y Android)</td><td>También sirve como MFA</td></tr>
+<tr><td>Claves FIDO2</td><td>Dispositivo de hardware (USB, Bluetooth o NFC)</td><td>Máxima seguridad</td><td>Resistente al phishing</td></tr></tbody></table></div>
+<div class="asir"><h4>Traducción ASIR</h4><p>SSO es como la autenticación centralizada de un dominio de Active Directory: te validas una vez y entras a los recursos. MFA es la verificación en dos pasos. FIDO2 es la llave física de seguridad.</p></div></section>
+
+<section id="u3"><div class="unit"><span class="n">TEMA 3/9</span></div>
+<h2>Identidades externas</h2>
+<p class="idea"><b>Idea principal.</b> Una identidad externa es una persona, dispositivo o servicio que está fuera de tu inquilino (tenant). Microsoft Entra External ID permite trabajar con ellos usando sus propias credenciales, mientras tú sigues controlando el acceso.</p>
+<div class="tablebox"><table><thead><tr><th>Capacidad</th><th>Para qué sirve</th><th>¿Aparece en tu directorio?</th></tr></thead><tbody>
+<tr><td>B2B collaboration</td><td>Colaborar con socios o proveedores como invitados</td><td class="ok">Sí, normalmente como usuarios invitados</td></tr>
+<tr><td>B2B direct connect</td><td>Confianza mutua entre dos inquilinos. Hoy admite canales compartidos de Teams</td><td class="no">No, se ven en el canal de Teams</td></tr>
+<tr><td>External ID para clientes <span class="badge">antes Azure AD B2C</span></td><td>Aplicaciones de cara al consumidor y a los clientes</td><td>Gestión aparte para consumidores</td></tr></tbody></table></div>
+<div class="callout" style="margin-top:12px"><b>Para el examen.</b> El proveedor de identidad externo gestiona la autenticación, y tú gestionas la autorización a tus aplicaciones. Para que los invitados no conserven acceso eterno, se usan revisiones de acceso.</div>
+<div class="asir"><h4>Traducción ASIR</h4><p>B2B es como crear invitados con acceso limitado a tu red. B2C es el registro de clientes de una tienda online.</p></div></section>
+
+<section id="u4"><div class="unit"><span class="n">TEMA 4/9</span></div>
+<h2>Acceso condicional</h2>
+<p class="idea"><b>Idea principal.</b> Acceso condicional es la herramienta de Entra ID que permite o deniega el acceso según señales de identidad: quién eres, dónde estás y desde qué dispositivo entras. Recoge señales, decide y aplica la decisión.</p>
+<div class="flow">
+  <div class="node">Señales<small>Usuario o grupo, ubicación, dispositivo, aplicación</small></div><span class="arrow">→</span>
+  <div class="node">Decisión<small>Según esas señales</small></div><span class="arrow">→</span>
+  <div class="node az">Aplicación<small>Permitir · pedir MFA · bloquear</small></div></div>
+<h3>Cuándo se usa</h3>
+<ul>
+  <li>Exigir MFA a los administradores o a quien entra desde fuera de las ubicaciones de confianza.</li>
+  <li>Permitir el acceso solo desde aplicaciones cliente aprobadas.</li>
+  <li>Exigir dispositivos administrados que cumplan tus estándares.</li>
+  <li>Bloquear el acceso desde orígenes no confiables.</li></ul>
+<div class="callout"><b>Para el examen.</b> La ubicación es una señal. MFA es una de las acciones que se aplican, no el motor que decide. La pregunta clásica es qué herramienta cambia las credenciales exigidas según la ubicación del usuario: Acceso condicional.</div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Son reglas de acceso dinámicas: como un firewall, pero en vez de IP y puertos mira quién entra, desde dónde y con qué dispositivo.</p></div></section>
+
+<section id="u5"><div class="unit"><span class="n">TEMA 5/9</span></div>
+<h2>Control de acceso basado en roles (RBAC)</h2>
+<p class="idea"><b>Idea principal.</b> Azure RBAC controla qué puede hacer cada identidad con los recursos. En vez de dar permisos uno a uno, asignas roles a personas o grupos y aplicas el rol sobre un ámbito. Es la forma de aplicar el mínimo privilegio.</p>
+<div class="fig" style="max-width:460px"><div class="hier">
+  <div class="h">Grupo de administración<small>Ámbito más amplio</small></div><div class="dn">▼ hereda</div>
+  <div class="h">Suscripción</div><div class="dn">▼ hereda</div>
+  <div class="h">Grupo de recursos</div><div class="dn">▼ hereda</div>
+  <div class="h">Recurso<small>Ámbito más estrecho</small></div></div></div>
+<p class="pc" style="margin-top:8px">Lo que asignas en un ámbito superior lo heredan todos los ámbitos inferiores.</p>
+<div class="tablebox" style="margin-top:12px"><table><thead><tr><th>Rol</th><th>Permisos</th></tr></thead><tbody>
+<tr><td>Owner</td><td>Control total, incluido dar acceso a otros</td></tr>
+<tr><td>Contributor</td><td>Crear y modificar recursos</td></tr>
+<tr><td>Reader</td><td>Solo ver</td></tr></tbody></table></div>
+<div class="callout" style="margin-top:12px"><b>Para el examen.</b> RBAC usa un modelo de permitir: si tienes varios roles, <b>sumas</b> sus permisos. Con un rol de lectura, otro de escritura y otro de lectura y escritura, el usuario puede leer y escribir. Además, RBAC se aplica a las acciones que pasan por Azure Resource Manager, no dentro de la aplicación ni de los datos.</div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Son las ACL y la delegación de permisos de siempre, pero con grupos y herencia por niveles, como los permisos de carpetas.</p></div></section>
+
+<section id="u6"><div class="unit"><span class="n">TEMA 6/9</span></div>
+<h2>Modelo Zero Trust</h2>
+<p class="idea"><b>Idea principal.</b> Zero Trust asume lo peor desde el principio: da por hecho que ya ha habido una brecha y verifica cada petición como si viniera de una red no controlada. Se acabó confiar en algo solo por estar dentro de la red.</p>
+<div class="split">
+  <div class="box ms"><h4>1 · Verificar explícitamente</h4><p>Autenticar y autorizar siempre con todos los datos disponibles.</p></div>
+  <div class="box tl"><h4>2 · Mínimo privilegio</h4><p>Limitar el acceso con just-in-time y just-enough-access, políticas adaptativas y protección de datos.</p></div>
+  <div class="box cl"><h4>3 · Asumir la brecha</h4><p>Limitar el impacto, segmentar el acceso, verificar el cifrado de extremo a extremo y usar análisis para detectar amenazas.</p></div>
+</div>
+<div class="tablebox"><table><thead><tr><th>Modelo clásico (perímetro)</th><th>Zero Trust</th></tr></thead><tbody>
+<tr><td>Se confía por estar en la red interna</td><td>Todos se autentican, estén donde estén</td></tr>
+<tr><td>Acceso según la ubicación</td><td>Acceso según identidad, dispositivo y riesgo</td></tr></tbody></table></div>
+<div class="callout" style="margin-top:12px"><b>Para el examen.</b> «Qué modelo asume el peor escenario» es Zero Trust, no defensa en profundidad ni RBAC.</div></section>
+
+<section id="u7"><div class="unit"><span class="n">TEMA 7/9</span></div>
+<h2>Defensa en profundidad</h2>
+<p class="idea"><b>Idea principal.</b> Se protege la información con varias capas, con los datos en el centro. Si una capa cae, la siguiente ya está ahí, así que no dependes de una sola protección y el ataque avanza más despacio.</p>
+<div class="fig"><div class="layers">
+  <div class="l0" style="--i:0">Seguridad física<small>Protege el hardware</small></div>
+  <div class="l1" style="--i:1">Identidad y acceso<small>SSO, MFA y auditoría</small></div>
+  <div class="l2" style="--i:2">Perímetro<small>Protección DDoS y firewalls</small></div>
+  <div class="l3" style="--i:3">Red<small>Segmentación y denegar por defecto</small></div>
+  <div class="l4" style="--i:4">Proceso (compute)<small>Parches y protección de endpoints</small></div>
+  <div class="l5" style="--i:5">Aplicación<small>Código seguro y secretos en Key Vault</small></div>
+  <div class="l6" style="--i:6">Datos<small>Cifrado y control de acceso</small></div></div></div>
+<div class="callout" style="margin-top:12px"><b>Para el examen.</b> Zero Trust y defensa en profundidad no son lo mismo. Zero Trust es un modelo que asume la brecha y verifica siempre. La defensa en profundidad son las capas de protección. En estos apuntes se estudian como complementarios.</div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Es lo que ya haces en una red: seguridad física del CPD, firewall perimetral, segmentación con VLAN, antivirus y parches en los equipos, y copias y cifrado de los datos.</p></div></section>
+
+<section id="u8"><div class="unit"><span class="n">TEMA 8/9</span></div>
+<h2>Cifrado y Azure Key Vault</h2>
+<p class="idea"><b>Idea principal.</b> El cifrado hace que los datos sean ilegibles para quien no está autorizado. Se cifran los datos almacenados (en reposo) y los datos que viajan (en tránsito). Azure Key Vault guarda de forma centralizada las claves, los secretos y los certificados.</p>
+<div class="tablebox"><table><thead><tr><th>Cifrado</th><th>Protege</th><th>Ejemplos</th></tr></thead><tbody>
+<tr><td>En reposo</td><td>Datos almacenados</td><td>Bases de datos, discos y cuentas de almacenamiento</td></tr>
+<tr><td>En tránsito</td><td>Datos en movimiento</td><td>Entre servicios, aplicaciones y usuarios (TLS, HTTPS, VPN)</td></tr></tbody></table></div>
+<h3>Azure Key Vault</h3>
+<div class="tablebox"><table><thead><tr><th>Contenido</th><th>Qué es</th></tr></thead><tbody>
+<tr><td>Secretos</td><td>Contraseñas, cadenas de conexión, claves de API</td></tr>
+<tr><td>Claves</td><td>Claves de cifrado para proteger los datos</td></tr>
+<tr><td>Certificados</td><td>Certificados TLS/SSL</td></tr></tbody></table></div>
+<ul style="margin-top:12px"><li>Controlas quién puede acceder, rotas las claves y auditas su uso.</li><li>Evita guardar secretos en el código o en archivos de configuración.</li></ul>
+<div class="callout"><b>Para el examen.</b> El servicio para guardar secretos, certificados y claves es Key Vault. Azure Policy y Azure Monitor no guardan secretos.</div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Es la caja fuerte de contraseñas y certificados del servidor, pero con control de acceso y auditoría.</p></div></section>
+
+<section id="u9"><div class="unit"><span class="n">TEMA 9/9</span></div>
+<h2>Microsoft Defender for Cloud</h2>
+<p class="idea"><b>Idea principal.</b> Defender for Cloud es un servicio de gestión de la postura de seguridad y de protección frente a amenazas. Vigila recursos de Azure, locales, híbridos y de otras nubes, y te da recomendaciones y alertas.</p>
+<div class="split">
+  <div class="box ms"><h4>1 · Evaluar</h4><p>Evalúa continuamente tu entorno. Identifica y sigue las vulnerabilidades.</p></div>
+  <div class="box tl"><h4>2 · Asegurar</h4><p>Refuerza recursos y servicios con recomendaciones basadas en el Microsoft cloud security benchmark. Calcula una puntuación de seguridad (secure score).</p></div>
+  <div class="box or"><h4>3 · Defender</h4><p>Detecta y resuelve amenazas con alertas de seguridad y protección avanzada.</p></div>
+</div>
+<ul><li>Cubre Azure de forma nativa y se extiende a servidores locales con Azure Arc y a otras nubes como AWS y GCP.</li>
+<li>Las alertas describen los recursos afectados y sugieren cómo remediarlas.</li></ul>
+<div class="asir"><h4>Traducción ASIR</h4><p>Es un panel de seguridad que hace de escáner de vulnerabilidades, auditor de buenas prácticas y sistema de detección de amenazas, todo en uno.</p></div></section>
+
+<section id="examen"><h2>Qué cae en el examen</h2>
+<p>Microsoft quiere comprobar que sabes proteger identidades, controlar el acceso y asegurar los recursos de Azure.</p>
+<h3>Lo que más cae</h3>
+<div class="mnemo">
+  <div><b>1</b>SSO</div><div><b>2</b>MFA</div><div><b>3</b>Passwordless y FIDO2</div><div><b>4</b>Acceso condicional</div><div><b>5</b>RBAC</div><div><b>6</b>Zero Trust</div><div><b>7</b>Defensa en profundidad</div><div><b>8</b>Key Vault</div><div><b>9</b>Defender for Cloud</div></div>
+<h3>Errores típicos</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo correcto</th></tr></thead><tbody>
+<tr><td>MFA y passwordless son iguales</td><td>MFA añade factores. Passwordless elimina la contraseña.</td></tr>
+<tr><td>El SSO da permisos</td><td>El SSO es un solo inicio de sesión. Los permisos los da RBAC.</td></tr>
+<tr><td>Zero Trust y defensa en profundidad son iguales</td><td>Zero Trust verifica siempre y asume la brecha. La defensa en profundidad son las capas de protección.</td></tr>
+<tr><td>Key Vault guarda máquinas virtuales</td><td>Guarda secretos, claves y certificados.</td></tr>
+<tr><td>Con varios roles, manda el más restrictivo</td><td>Los permisos se suman.</td></tr></tbody></table></div>
+<h3>Palabras clave</h3>
+<div class="tablebox"><table><thead><tr><th>Palabra</th><th>Idea rápida</th></tr></thead><tbody>
+<tr><td>SSO</td><td>Un solo inicio de sesión</td></tr><tr><td>MFA</td><td>Segundo factor</td></tr><tr><td>RBAC</td><td>Permisos por rol</td></tr><tr><td>Acceso condicional</td><td>Reglas según señales</td></tr><tr><td>Zero Trust</td><td>Nunca confiar, verificar siempre</td></tr><tr><td>Key Vault</td><td>Secretos, claves y certificados</td></tr></tbody></table></div></section>
+
+<section id="learn-q"><h2>Preguntas de Learn</h2>
+<p class="pc" style="margin-top:0">Son las cuatro de la evaluación del módulo. Intenta responder antes de abrirlas.</p>
+<details><summary>¿Qué herramienta de Entra puede variar las credenciales exigidas según señales, como dónde está el usuario? (Acceso condicional, acceso de invitado o passwordless)</summary><div class="ex"><p><b>Acceso condicional.</b></p>
+<p><b>Por qué.</b> Evalúa señales como el usuario, la ubicación y el dispositivo, y decide permitir, pedir MFA o bloquear.</p>
+<p><b>Trampa.</b> MFA es una acción que se aplica, no el motor de decisión.</p></div></details>
+<details><summary>¿Qué modelo de seguridad asume el peor escenario y protege los recursos en consecuencia? (Zero Trust, defensa en profundidad o RBAC)</summary><div class="ex"><p><b>Zero Trust.</b></p>
+<p><b>Por qué.</b> Asume la brecha desde el principio y verifica cada petición.</p>
+<p><b>Trampa.</b> No lo confundas con la defensa en profundidad, que son capas.</p></div></details>
+<details><summary>Un usuario tiene a la vez tres roles RBAC: lectura, escritura, y lectura y escritura. ¿Cuáles son sus permisos reales?</summary><div class="ex"><p><b>Lectura y escritura.</b></p>
+<p><b>Por qué.</b> RBAC es un modelo de permitir y los permisos se suman.</p>
+<p><b>Trampa.</b> No gana el rol más restrictivo ni el último asignado.</p></div></details>
+<details><summary>¿Qué servicio de Azure guarda de forma segura secretos, certificados y claves de cifrado? (Key Vault, Azure Policy o Azure Monitor)</summary><div class="ex"><p><b>Azure Key Vault.</b></p>
+<p><b>Por qué.</b> Está diseñado para centralizar secretos, claves y certificados.</p>
+<p><b>Trampa.</b> Azure Policy y Azure Monitor no guardan secretos.</p></div></details></section>
+
+<section id="az104"><h2>Relación con el AZ-104</h2>
+<p>Tu meta es el AZ-104. Esto es lo que cambia de un examen a otro.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>AZ-900</th><th>AZ-104</th></tr></thead><tbody>
+<tr><td>Entra ID</td><td>Saber qué es</td><td>Gestionar usuarios y grupos</td></tr>
+<tr><td>SSO</td><td>Saber qué hace</td><td>Configurar la federación</td></tr>
+<tr><td>MFA</td><td>Saber qué son los factores</td><td>Administrar las políticas</td></tr>
+<tr><td>Acceso condicional</td><td>Saber señales y decisiones</td><td>Crear reglas reales</td></tr>
+<tr><td>RBAC</td><td>Saber roles, ámbitos y herencia</td><td>Delegar permisos</td></tr>
+<tr><td>Key Vault</td><td>Saber qué guarda</td><td>Integrarlo con los recursos</td></tr>
+<tr><td>Defender for Cloud</td><td>Saber evaluar, asegurar y defender</td><td>Gestionar la postura de seguridad</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">Es una orientación de estudio de tus apuntes de Copilot, no una lista oficial de Microsoft.</p></section>
+
+<section id="repaso"><h2>Repaso final</h2>
+<h3>Frases de examen</h3>
+<ul class="cols">
+  <li>El SSO reduce el número de contraseñas.</li>
+  <li>MFA requiere más de un factor.</li>
+  <li>Passwordless elimina la contraseña.</li>
+  <li>FIDO2 usa una clave de hardware resistente al phishing.</li>
+  <li>RBAC aplica el mínimo privilegio.</li>
+  <li>Los permisos se heredan hacia abajo.</li>
+  <li>Zero Trust verifica siempre y asume la brecha.</li>
+  <li>Key Vault guarda secretos, claves y certificados.</li>
+  <li>Defender for Cloud evalúa, asegura y defiende.</li>
+  <li>El cifrado protege los datos en reposo y en tránsito.</li></ul>
+<h3>Trucos para memorizar</h3>
+<div class="mnemo">
+  <div><b>SSO</b>Una vez</div><div><b>MFA</b>Dos factores</div><div><b>Passwordless</b>Sin contraseña</div><div><b>RBAC</b>Permisos</div><div><b>Owner</b>Todo</div>
+  <div><b>Reader</b>Solo ver</div><div><b>Zero Trust</b>Nunca confiar</div><div><b>Key Vault</b>Caja fuerte</div><div><b>Defender</b>Protege Azure</div></div>
+<h3>Repaso exprés</h3>
+<ul class="cols">
+  <li>Entra ID = identidades.</li><li>Entra Connect = sincroniza el AD local.</li><li>Domain Services = dominio gestionado.</li><li>SSO = un inicio de sesión.</li><li>MFA = segundo factor.</li><li>Passwordless = sin contraseña.</li><li>FIDO2 = llave física.</li><li>Acceso condicional = reglas dinámicas.</li><li>RBAC = permisos por rol.</li><li>Zero Trust = verificar siempre.</li><li>Defensa en profundidad = capas.</li><li>Reposo = datos almacenados.</li><li>Tránsito = datos en movimiento.</li><li>Key Vault = secretos, claves y certificados.</li><li>Defender = evalúa, asegura y defiende.</li></ul></section>
+
+<section id="learn"><h2>Contraste con Microsoft Learn</h2>
+<p>Revisé estos apuntes con la documentación oficial el 22 de octubre de 2026. Es una versión resumida, así que solo he tocado lo que afecta al examen.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>Resultado</th></tr></thead><tbody>
+<tr><td>Directorios</td><td>Faltaba. El apunte de Copilot no explicaba Entra Connect ni Entra Domain Services, y la guía de estudio del examen pide describir los servicios de directorio, incluido Domain Services. Añadí el tema 1 desde Learn.</td></tr>
+<tr><td>Passwordless</td><td>Corregí «Muy alta» a «Alta» en seguridad y comodidad: Learn dice alta seguridad y alta comodidad. La fila de MFA (seguridad alta, comodidad media) es la lectura que hace Copilot de un diagrama, así que no la pongo como dato oficial.</td></tr>
+<tr><td>Identidades externas</td><td>Añadí que B2B direct connect hoy solo admite canales compartidos de Teams y que sus usuarios no aparecen en tu directorio. B2C ahora se llama Microsoft Entra External ID para clientes (antes Azure AD B2C).</td></tr>
+<tr><td>Acceso condicional</td><td>El esquema de Copilot mezclaba «decisión» y «controles». Learn lo explica en tres pasos: señales, decisión y aplicación. Learn nombra como señales el usuario, la ubicación, el dispositivo y la aplicación. Copilot añadía «riesgo» y «evaluación en tiempo real», que no vienen en esta unidad, así que los quité.</td></tr>
+<tr><td>RBAC</td><td>Coincide. Añadí que usa un modelo de permitir (los permisos se suman) y que se aplica a las acciones que pasan por Azure Resource Manager, no dentro de la aplicación ni de los datos.</td></tr>
+<tr><td>Zero Trust y defensa en profundidad</td><td>Coinciden los tres principios y las siete capas. «Son complementarios» es una idea de los apuntes, no una frase de Learn.</td></tr>
+<tr><td>Cifrado y Key Vault</td><td>Coincide. Quité «RSA, EC, HSM» de la tabla de claves: son detalles de Key Vault Premium que no vienen en la unidad de Learn. Esta unidad aparece en el módulo de Learn y en su evaluación, pero no figura en la lista de habilidades del examen publicada desde el 20 de julio de 2026.</td></tr>
+<tr><td>Defender for Cloud</td><td>Coincide: evaluar, asegurar y defender. Añadí la puntuación de seguridad y la extensión a híbrido y multicloud con Azure Arc. El «Azure Arc = híbrido y multicloud» que Copilot ponía en el repaso lo he dejado dentro de este tema, porque Arc se estudia en gestión.</td></tr>
+<tr><td>Preguntas de Learn</td><td>Las cuatro coinciden con la evaluación del módulo de Learn y sus respuestas son las correctas. Añadí las opciones que da Learn en cada enunciado.</td></tr>
+<tr><td>Traducciones ASIR y AZ-104</td><td>Son material didáctico de los apuntes, no datos de Microsoft.</td></tr></tbody></table></div>
+<p class="src" style="margin-top:14px">Fuentes:
+<a href="https://learn.microsoft.com/training/modules/describe-azure-identity-access-security/">Describe Azure identity, access, and security (Learn)</a> ·
+<a href="https://learn.microsoft.com/training/modules/describe-azure-identity-access-security/10-knowledge-check">Evaluación del módulo</a> ·
+<a href="https://learn.microsoft.com/azure/key-vault/general/overview">Acerca de Azure Key Vault</a> ·
+<a href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900">Guía de estudio AZ-900</a></p></section>
+
+</main></div>
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+<script>
+(function(){var KEY='az900-m8-check',boxes=document.querySelectorAll('#checklist input');
+try{var s=JSON.parse(localStorage.getItem(KEY)||'[]');boxes.forEach(function(b,i){b.checked=!!s[i]})}catch(e){}
+boxes.forEach(function(b){b.addEventListener('change',function(){try{localStorage.setItem(KEY,JSON.stringify([].map.call(boxes,function(x){return x.checked})))}catch(e){}})})})();
+</script>
+</body>
+</html>
