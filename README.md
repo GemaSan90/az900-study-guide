@@ -14,6 +14,7 @@ Manuales por módulos para preparar el examen **AZ-900: Microsoft Azure Fundamen
 | 4 | Componentes arquitectónicos principales de Azure | Completo: 7 unidades | `modulo-4.html` |
 | 5 | Servicios de proceso en Azure | Parte de proceso: 9 temas | `modulo-5.html` |
 | 6 | Redes y conectividad en Azure | Completo: 10 temas | `modulo-6.html` |
+| 7 | Almacenamiento en Azure | Versión resumida: 5 temas | `modulo-7.html` |
 
 El Módulo 4 cubre la infraestructura física (regiones, zonas de disponibilidad, pares de regiones y regiones soberanas) y la de administración (recursos, grupos de recursos, suscripciones y grupos de administración).
 
@@ -21,12 +22,14 @@ El Módulo 5 cubre la parte de proceso del módulo *Describe Azure compute and n
 
 El Módulo 6 cubre las redes: redes virtuales y subredes, puntos de conexión públicos y privados, NSG y rutas, VNet Peering, VPN Gateway (tipos y alta disponibilidad), ExpressRoute y Azure DNS. Incluye repaso de examen y relación con el AZ-104.
 
+El Módulo 7 cubre el almacenamiento: cuentas de almacenamiento, los servicios Blob, Files, Queues, Tables y Disks, la redundancia (LRS, ZRS, GRS, RA-GRS, GZRS y RA-GZRS), los niveles de acceso de Blob (Hot, Cool, Cold y Archive) y las herramientas de migración y movimiento de datos (Azure Migrate, Data Box, AzCopy, Storage Explorer y Azure File Sync). Es una versión resumida, más corta que los módulos anteriores, con repaso de examen y relación con el AZ-104.
+
 ## Cómo encajan en el examen
 
 | Bloque del examen | Peso | Manuales |
 | --- | --- | --- |
 | Conceptos cloud | 25–30 % | Módulos 1, 2 y 3 |
-| Arquitectura y servicios de Azure | 35–40 % | Módulos 4 (componentes arquitectónicos), 5 (servicios de proceso) y 6 (redes). Faltan almacenamiento e identidad |
+| Arquitectura y servicios de Azure | 35–40 % | Módulos 4 (componentes arquitectónicos), 5 (servicios de proceso), 6 (redes) y 7 (almacenamiento). Falta identidad |
 | Administración y gobierno | 30–35 % | Pendiente |
 
 Pesos según la guía de estudio de Microsoft (habilidades medidas desde el 20 de julio de 2026).
@@ -50,6 +53,7 @@ az900-study-guide/
 ├── modulo-4.html
 ├── modulo-5.html
 ├── modulo-6.html
+├── modulo-7.html
 └── README.md
 ```
 
@@ -61,8 +65,8 @@ Cada página es un único archivo HTML autocontenido. Solo carga las fuentes des
 2. Súbelos:
 
    ```
-   git add index.html modulo-6.html README.md
-   git commit -m "Añade el Módulo 6 (redes) y actualiza la portada"
+   git add index.html modulo-7.html README.md
+   git commit -m "Añade el Módulo 7 (almacenamiento) y actualiza la portada"
    git push
    ```
 
