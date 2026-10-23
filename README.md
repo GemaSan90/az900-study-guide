@@ -16,6 +16,7 @@ Manuales por módulos para preparar el examen **AZ-900: Microsoft Azure Fundamen
 | 6 | Redes y conectividad en Azure | Completo: 10 temas | `modulo-6.html` |
 | 7 | Almacenamiento en Azure | Versión resumida: 5 temas | `modulo-7.html` |
 | 8 | Identidad, acceso y seguridad en Azure | Versión resumida: 9 temas | `modulo-8.html` |
+| 9 | Etiquetas (tags) en Azure | Versión resumida: 4 temas | `modulo-9.html` |
 
 El Módulo 4 cubre la infraestructura física (regiones, zonas de disponibilidad, pares de regiones y regiones soberanas) y la de administración (recursos, grupos de recursos, suscripciones y grupos de administración).
 
@@ -27,13 +28,15 @@ El Módulo 7 cubre el almacenamiento: cuentas de almacenamiento, los servicios B
 
 El Módulo 8 cubre identidad, acceso y seguridad: Microsoft Entra ID (con Entra Connect y Domain Services), SSO, MFA y passwordless (Windows Hello, Authenticator y FIDO2), identidades externas (B2B, B2B direct connect y External ID), Acceso condicional, RBAC, Zero Trust, defensa en profundidad, cifrado con Key Vault y Defender for Cloud. Es una versión resumida, con repaso de examen y relación con el AZ-104.
 
+El Módulo 9 cubre las etiquetas: qué son (pares nombre-valor), sus seis usos, cómo se administran, cómo las exige Azure Policy, por qué no se heredan por defecto y sus límites. Es una versión resumida y abre el bloque de administración y gobierno.
+
 ## Cómo encajan en el examen
 
 | Bloque del examen | Peso | Manuales |
 | --- | --- | --- |
 | Conceptos cloud | 25–30 % | Módulos 1, 2 y 3 |
 | Arquitectura y servicios de Azure | 35–40 % | Módulos 4 (componentes arquitectónicos), 5 (servicios de proceso), 6 (redes), 7 (almacenamiento) y 8 (identidad, acceso y seguridad) |
-| Administración y gobierno | 30–35 % | Pendiente |
+| Administración y gobierno | 30–35 % | En curso: Módulo 9 (etiquetas). Pendiente el resto |
 
 Pesos según la guía de estudio de Microsoft (habilidades medidas desde el 20 de julio de 2026).
 
@@ -58,6 +61,7 @@ az900-study-guide/
 ├── modulo-6.html
 ├── modulo-7.html
 ├── modulo-8.html
+├── modulo-9.html
 └── README.md
 ```
 
@@ -69,8 +73,8 @@ Cada página es un único archivo HTML autocontenido. Solo carga las fuentes des
 2. Súbelos:
 
    ```
-   git add index.html modulo-8.html README.md
-   git commit -m "Añade el Módulo 8 (identidad, acceso y seguridad) y actualiza la portada"
+   git add index.html modulo-9.html README.md
+   git commit -m "Añade el Módulo 9 (etiquetas) y actualiza la portada"
    git push
    ```
 

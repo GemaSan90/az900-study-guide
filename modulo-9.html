@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Manual AZ-900 Módulo 9</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>
+/* Layout: cabecera azul Azure, índice lateral fijo, versión resumida con cuatro temas sobre etiquetas, esquema de herencia y fichas de uso */
+:root{
+  --bg:#f3f7fc; --surface:#ffffff; --surface2:#e8f1fb; --fg:#0b1b2e; --muted:#47607c;
+  --azure:#0078d4; --azure-deep:#004e8c; --azure-soft:#cfe5f8; --violet:#6b4fd8; --violet-soft:#e4defa; --line:#c9d9ea;
+  --teal:#0f766e; --ok:#15803d; --bad:#c4314b; --hero1:#005ba1; --hero2:#0078d4; --on-hero:#ffffff;
+  --display:'Sora',system-ui,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --teal:#2dd4bf; --ok:#4ade80; --bad:#ff7a90; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --teal:#2dd4bf; --ok:#4ade80; --bad:#ff7a90; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.hero{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:56px max(16px,env(safe-area-inset-left,0px)) 48px;background:radial-gradient(1200px 420px at 85% -10%,rgba(160,139,255,.45),transparent 60%),linear-gradient(135deg,var(--hero1),var(--hero2));color:var(--on-hero)}
+.hero-in{max-width:1100px;margin:0 auto}
+.tag{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+h1{font:800 clamp(30px,5.4vw,54px)/1.08 var(--display);margin:14px 0 14px;text-wrap:balance;letter-spacing:-.02em}
+.lead{max-width:60ch;font-size:18px;opacity:.95;margin:0 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 12px var(--mono);padding:6px 12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(255,255,255,.1)}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:210px minmax(0,1fr);gap:40px;padding-block:36px 72px}
+nav{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line)}
+nav a:hover,nav a:focus-visible{color:var(--azure);border-left-color:var(--azure);outline:none}
+nav .sep{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
+main{min-width:0;display:flex;flex-direction:column;gap:48px}
+section{scroll-margin-top:24px;min-width:0}
+.unit{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.unit .n{font:700 12px var(--mono);letter-spacing:.08em;color:var(--azure);border:1px solid var(--azure);border-radius:6px;padding:3px 8px;white-space:nowrap}
+h2{font:700 26px/1.2 var(--display);margin:0 0 14px;letter-spacing:-.01em;text-wrap:balance}
+h3{font:600 17px var(--display);margin:26px 0 8px;color:var(--azure)}
+p{margin:0 0 12px;max-width:70ch}
+code{font:500 14px var(--mono);background:var(--surface2);border-radius:4px;padding:1px 6px}
+.idea{background:linear-gradient(135deg,var(--azure-soft),var(--surface2));border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch;margin-bottom:16px}
+.idea b{color:var(--azure)}
+.callout{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch}
+.callout b{color:var(--azure)}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th{background:var(--azure-deep);color:#fff;text-align:left;font:600 13px var(--display);padding:10px 14px;letter-spacing:.02em}
+td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600;color:var(--azure)}
+tr:hover td{background:var(--surface2)}
+ul{margin:0 0 12px;padding-left:20px}li{margin-bottom:4px}
+.check{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.check label{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer}
+.check input{accent-color:var(--azure);width:18px;height:18px;margin-top:3px;flex:none}
+.check input:checked+span{text-decoration:line-through;color:var(--muted)}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.box h4{margin:0 0 6px;font:600 15px var(--display)}
+.box.ms{border-top:3px solid var(--azure)}.box.cl{border-top:3px solid var(--violet)}.box.tl{border-top:3px solid var(--teal)}.box.or{border-top:3px solid #d97706}
+.box p{margin:0 0 6px;font-size:15px}
+.pc{font-size:14px;color:var(--muted);margin-top:8px}
+.asir{background:var(--violet-soft);border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:10px;padding:14px 18px;max-width:72ch;margin:16px 0}
+.asir h4{margin:0 0 6px;font:600 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+.asir p,.asir ul{margin:0 0 6px;font-size:15px}
+.badge{display:inline-block;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--violet);border:1px solid var(--violet);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle}
+.quote{border-left:3px solid var(--azure);padding:4px 0 4px 14px;margin:0 0 10px;font-weight:500}
+.mnemo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.mnemo div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px}
+.mnemo b{display:block;color:var(--azure);font:600 15px var(--display)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+details .ex{margin-top:8px}
+details .ex p{margin:8px 0 0;color:var(--fg);font-weight:400}
+details .ex p b{color:var(--azure)}
+.src{font-size:14px;color:var(--muted)}
+.src a{color:var(--azure)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;max-width:860px;min-width:0}
+.ok{color:var(--ok);font-weight:700}
+.no{color:var(--bad);font-weight:700}
+.cols{columns:2 260px;column-gap:28px;padding-left:20px}
+.cols li{break-inside:avoid}
+footer{text-align:center;color:var(--muted);font:500 13px var(--mono);padding:24px 0 8px;border-top:1px solid var(--line);max-width:1100px;margin:0 auto}
+
+/* Módulo 9: par nombre = valor y esquema de herencia */
+.kv{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.kv span{display:inline-flex;border-radius:8px;overflow:hidden;border:1px solid var(--azure);font:500 14px var(--mono)}
+.kv b{background:var(--azure-deep);color:#fff;padding:6px 10px;font-weight:500}
+.kv i{background:var(--azure-soft);color:var(--fg);padding:6px 10px;font-style:normal}
+.tree{display:flex;flex-direction:column;gap:0;max-width:440px}
+.tree .t{border:2px solid var(--azure);background:var(--surface2);border-radius:10px;padding:8px 14px;font-weight:600;text-align:center}
+.tree .t small{display:block;font:500 12.5px var(--body);color:var(--muted)}
+.tree .t.has{border-color:var(--teal)}
+.tree .t.has small{color:var(--teal);font-weight:600}
+.tree .t.none{border:2px dashed var(--bad)}
+.tree .t.none small{color:var(--bad);font-weight:600}
+.tree .dn{text-align:center;color:var(--bad);font:600 12px var(--mono);padding:3px 0}
+.tree .dn.pol{color:var(--violet)}
+@media(max-width:820px){.wrap{grid-template-columns:1fr;gap:20px}nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}nav a{border:1px solid var(--line);border-radius:999px;padding:4px 12px}nav .sep{display:none}}
+@media(prefers-reduced-motion:no-preference){a,tr td{transition:background .15s,color .15s}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="hero-in">
+  <div class="tag">AZ-900 · Microsoft Azure Fundamentals</div>
+  <h1>Módulo 9: Etiquetas (tags) en Azure</h1>
+  <p class="lead">Versión resumida: qué son las etiquetas, para qué sirven, cómo se administran con Azure Policy, por qué no se heredan y qué límites tienen. Con repaso de examen y relación con el AZ-104.</p>
+  <div class="chips"><span class="chip">Gema San</span><span class="chip">Contrastado con Microsoft Learn</span><span class="chip">Sueña. Aprende. Crece.</span></div>
+</div></header>
+
+<div class="wrap">
+<nav aria-label="Índice">
+  <a href="index.html">← Todos los módulos</a>
+  <a href="#mapa">Mapa del módulo</a>
+  <div class="sep">Temas</div>
+  <a href="#u1">1 · Qué son las etiquetas</a><a href="#u2">2 · Para qué sirven</a><a href="#u3">3 · Policy y herencia</a><a href="#u4">4 · Límites y buenas prácticas</a>
+  <div class="sep">Examen</div>
+  <a href="#examen">Qué cae</a><a href="#az104">Relación con AZ-104</a>
+  <div class="sep">Cierre</div>
+  <a href="#repaso">Repaso final</a><a href="#learn">Contraste con Learn</a>
+</nav>
+<main>
+
+<section id="mapa"><h2>Dónde encaja este módulo</h2>
+<p>Es un módulo corto y empieza el bloque de administración y gobierno (30–35 % del examen). En la guía de estudio las etiquetas están dentro de <b>Describir la administración de costes en Azure</b>, junto con los factores que afectan a los costes, la calculadora de precios y las herramientas de Cost Management. Pero también ayudan a la gobernanza, por eso salen ligadas a Azure Policy.</p>
+<div class="tablebox"><table><thead><tr><th>Habilidad de la guía de estudio</th><th>Tema</th><th>Estado</th></tr></thead><tbody>
+<tr><td>Describir el propósito de las etiquetas</td><td>1 a 4</td><td>En este manual</td></tr>
+<tr><td>Factores de coste, calculadora de precios y Cost Management</td><td>—</td><td>Pendiente</td></tr>
+<tr><td>Azure Policy, bloqueos de recursos y Microsoft Purview</td><td>—</td><td>Pendiente (aquí solo se toca Azure Policy en relación con las etiquetas)</td></tr></tbody></table></div>
+<h3>Lo que debo saber de este módulo</h3>
+<ul class="check" id="checklist">
+  <li><label><input type="checkbox"><span>Una etiqueta es un par nombre = valor (metadatos)</span></label></li>
+  <li><label><input type="checkbox"><span>Las etiquetas no cambian cómo funciona el recurso</span></label></li>
+  <li><label><input type="checkbox"><span>Los seis usos: recursos, costes, operaciones, seguridad, gobernanza y automatización</span></label></li>
+  <li><label><input type="checkbox"><span>Con qué herramientas se crean y modifican</span></label></li>
+  <li><label><input type="checkbox"><span>Azure Policy puede exigir y aplicar etiquetas</span></label></li>
+  <li><label><input type="checkbox"><span>Las etiquetas NO se heredan por defecto</span></label></li>
+  <li><label><input type="checkbox"><span>Se etiquetan recursos, grupos de recursos y suscripciones, no grupos de administración</span></label></li>
+  <li><label><input type="checkbox"><span>No poner valores sensibles en las etiquetas</span></label></li>
+</ul></section>
+
+<section id="u1"><div class="unit"><span class="n">TEMA 1/4</span></div>
+<h2>Qué son las etiquetas</h2>
+<p class="idea"><b>Idea principal.</b> Las etiquetas son metadatos en forma de par clave-valor (nombre = valor) que se añaden a los recursos de Azure para identificarlos, organizarlos y seguirlos. No cambian cómo funciona el recurso: solo le añaden información.</p>
+<div class="kv"><span><b>Environment</b><i>Production</i></span><span><b>Owner</b><i>Ana</i></span><span><b>CostCenter</b><i>IT001</i></span><span><b>AppName</b><i>PortalClientes</i></span></div>
+<p class="pc">Ejemplos ilustrativos. Los nombres y valores los eliges tú.</p>
+<h3>Reglas básicas</h3>
+<ul><li>Un mismo recurso puede llevar varias etiquetas a la vez.</li><li>Se pueden poner en recursos, grupos de recursos y suscripciones.</li><li>Sirven para buscar y filtrar: por ejemplo, ver todos los recursos con <code>Environment = Production</code>.</li></ul>
+<div class="asir"><h4>Traducción ASIR</h4><p>Son como las etiquetas que pegas a un servidor del rack («Producción», «Aula 2», «Responsable: Ana»), pero digitales y con las que puedes filtrar, contar costes y automatizar.</p></div></section>
+
+<section id="u2"><div class="unit"><span class="n">TEMA 2/4</span></div>
+<h2>Para qué sirven</h2>
+<p class="idea"><b>Idea principal.</b> Microsoft agrupa los usos en seis categorías. Es lo que más se pregunta: reconocer qué problema resuelve una etiqueta.</p>
+<div class="split">
+  <div class="box ms"><h4>Gestión de recursos</h4><p>Localizar y organizar recursos por aplicación, departamento, entorno o propietario.</p></div>
+  <div class="box tl"><h4>Gestión de costes</h4><p>Asignar costes, elaborar presupuestos y seguir el gasto por departamento o proyecto.</p></div>
+  <div class="box cl"><h4>Gestión de operaciones</h4><p>Clasificar los recursos según su importancia y su disponibilidad para el negocio.</p></div>
+  <div class="box or"><h4>Seguridad</h4><p>Clasificar recursos según su nivel de sensibilidad o confidencialidad.</p></div>
+  <div class="box ms"><h4>Gobernanza y cumplimiento</h4><p>Identificar recursos sujetos a normativas y estándares.</p></div>
+  <div class="box tl"><h4>Automatización</h4><p>Ejecutar procesos automáticos sobre un grupo concreto de recursos.</p></div>
+</div>
+<h3>Etiquetas habituales</h3>
+<div class="tablebox"><table><thead><tr><th>Etiqueta</th><th>Para qué se usa</th></tr></thead><tbody>
+<tr><td>Environment</td><td>Producción, desarrollo o pruebas</td></tr>
+<tr><td>Owner</td><td>Responsable del recurso</td></tr>
+<tr><td>CostCenter</td><td>Centro de costes al que se imputa</td></tr>
+<tr><td>Workload / AppName</td><td>Aplicación o carga de trabajo a la que pertenece</td></tr>
+<tr><td>Impact</td><td>Importancia operativa del recurso</td></tr></tbody></table></div>
+<p class="pc">Son ejemplos habituales, no una lista cerrada de Microsoft: cada organización define su estructura de etiquetado.</p>
+<div class="callout" style="margin-top:12px"><b>Para el examen.</b> Si la pregunta habla de organizar recursos, repartir costes entre departamentos y facilitar la gobernanza a la vez, la respuesta son las etiquetas.</div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Es tu inventario de equipos, pero consultable por código: «dame todas las VM de pruebas del centro de costes IT001» y apágalas por la noche con un script.</p></div></section>
+
+<section id="u3"><div class="unit"><span class="n">TEMA 3/4</span></div>
+<h2>Administrar etiquetas, Azure Policy y herencia</h2>
+<p class="idea"><b>Idea principal.</b> Las etiquetas se crean, cambian y borran con las herramientas de siempre, y Azure Policy puede obligar a ponerlas. Pero cuidado: por defecto no se heredan.</p>
+<h3>Con qué se administran</h3>
+<ul class="cols"><li>Azure Portal</li><li>Azure PowerShell</li><li>Azure CLI</li><li>Plantillas ARM</li><li>API REST</li></ul>
+<h3>Azure Policy y las etiquetas</h3>
+<p>Azure Policy sirve para imponer reglas de etiquetado y mantener el cumplimiento de la organización:</p>
+<ul><li>Exigir etiquetas obligatorias, por ejemplo <code>Owner</code> en todos los recursos.</li><li>Comprobar los recursos nuevos al crearlos.</li><li>Añadir una etiqueta automáticamente si falta.</li><li>Corregir recursos existentes con una tarea de corrección (remediation).</li></ul>
+<h3>¿Se heredan las etiquetas?</h3>
+<div class="callout"><b>No, por defecto.</b> Un recurso no recibe las etiquetas de su grupo de recursos ni de su suscripción. Si etiquetas la suscripción con <code>Environment = Production</code>, la máquina virtual de dentro no tendrá esa etiqueta.</div>
+<div class="fig" style="max-width:460px;margin-top:12px"><div class="tree">
+  <div class="t has">Suscripción<small>Environment = Production</small></div><div class="dn">▼ no se hereda</div>
+  <div class="t none">Grupo de recursos<small>sin etiqueta</small></div><div class="dn">▼ no se hereda</div>
+  <div class="t none">Máquina virtual<small>sin etiqueta</small></div></div></div>
+<p class="pc" style="margin-top:8px">Esto es lo contrario de RBAC y de Azure Policy, que sí se aplican hacia abajo (Módulo 8).</p>
+<p style="margin-top:12px"><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Aunque no se heredan solas, sí puedes <b>forzar la herencia</b> con Azure Policy, con definiciones integradas como «Inherit a tag from the resource group» o «Inherit a tag from the subscription». Y en Cost Management existe la herencia de etiquetas para los informes de costes. Para el examen, la respuesta a «¿se heredan?» sigue siendo no.</p>
+<div class="asir"><h4>Traducción ASIR</h4><p>Es como las etiquetas físicas: pegar una pegatina en el armario no la pone en cada servidor de dentro. Azure Policy es el script que recorre todos y les pega la suya.</p></div></section>
+
+<section id="u4"><div class="unit"><span class="n">TEMA 4/4</span></div>
+<h2>Límites y buenas prácticas</h2>
+<p class="idea"><b>Idea principal.</b> Las etiquetas son simples, pero tienen límites y trampas. Esto no suele caer en el AZ-900, pero te lo piden en el AZ-104 y evita errores reales.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>Qué dice Learn</th></tr></thead><tbody>
+<tr><td>Dónde se aplican</td><td>Recursos, grupos de recursos y suscripciones. No se pueden poner en grupos de administración.</td></tr>
+<tr><td>Cuántas</td><td>Hasta 50 pares nombre-valor por recurso, grupo de recursos o suscripción. Algunos tipos de recurso admiten solo 15.</td></tr>
+<tr><td>Longitud</td><td>Nombre de hasta 512 caracteres y valor de hasta 256 (en cuentas de almacenamiento, el nombre admite 128).</td></tr>
+<tr><td>Mayúsculas</td><td>Los nombres no distinguen mayúsculas al operar. Los valores sí.</td></tr>
+<tr><td>Seguridad</td><td>Se guardan en texto plano: no pongas contraseñas ni datos sensibles. Pueden verse en informes de costes, historial de implementaciones y registros.</td></tr></tbody></table></div>
+<div class="callout" style="margin-top:12px"><b>Buena práctica.</b> Define una convención de nombres y de etiquetado antes de empezar, decide cuáles son obligatorias y hazlas cumplir con Azure Policy. Si no, acabas con <code>Owner</code>, <code>owner</code> y <code>Responsable</code> en el mismo entorno.</div></section>
+
+<section id="examen"><h2>Qué cae en el examen</h2>
+<h3>Lo que más cae</h3>
+<div class="mnemo">
+  <div><b>1</b>Qué es una etiqueta</div><div><b>2</b>Los seis usos</div><div><b>3</b>Costes y gobernanza</div><div><b>4</b>Azure Policy</div><div><b>5</b>No se heredan</div></div>
+<h3>Errores típicos</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo correcto</th></tr></thead><tbody>
+<tr><td>Las etiquetas protegen o bloquean el recurso</td><td>Solo describen. Para impedir borrados se usan los bloqueos de recursos.</td></tr>
+<tr><td>Se heredan del grupo de recursos</td><td>No por defecto. Se puede forzar con Azure Policy.</td></tr>
+<tr><td>Las etiquetas dan permisos</td><td>Los permisos los da RBAC.</td></tr>
+<tr><td>Se pueden poner en un grupo de administración</td><td>Solo en recursos, grupos de recursos y suscripciones.</td></tr>
+<tr><td>Una etiqueta cambia el funcionamiento del recurso</td><td>Es información, no configuración.</td></tr></tbody></table></div>
+<h3>Pregunta típica</h3>
+<details><summary>¿Qué permite organizar recursos, asignar costes a departamentos y facilitar la gobernanza?</summary><div class="ex"><p><b>Las etiquetas (tags).</b></p>
+<p><b>Por qué.</b> Son metadatos nombre-valor que permiten clasificar y filtrar recursos para costes, operaciones y gobernanza.</p>
+<p><b>Trampa.</b> Azure Policy hace cumplir reglas, pero no clasifica por sí sola. Los bloqueos protegen contra borrados.</p></div></details>
+<details><summary>Etiquetas la suscripción con Environment = Production. ¿Tendrá esa etiqueta la máquina virtual de dentro?</summary><div class="ex"><p><b>No, por defecto.</b></p>
+<p><b>Por qué.</b> Las etiquetas no se heredan entre suscripción, grupo de recursos y recursos, salvo que lo fuerces con Azure Policy.</p></div></details></section>
+
+<section id="az104"><h2>Relación con el AZ-104</h2>
+<p>Tu meta es el AZ-104. Esto es lo que cambia de un examen a otro.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>AZ-900</th><th>AZ-104</th></tr></thead><tbody>
+<tr><td>Etiquetas</td><td>Saber para qué sirven y que no se heredan</td><td>Aplicarlas con portal, CLI o PowerShell y gestionarlas a escala</td></tr>
+<tr><td>Azure Policy con etiquetas</td><td>Saber que puede exigirlas</td><td>Asignar políticas que añaden o heredan etiquetas</td></tr>
+<tr><td>Costes</td><td>Saber que ayudan a repartir costes</td><td>Filtrar y agrupar costes por etiqueta</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">Es una orientación de estudio de tus apuntes de Copilot, no una lista oficial de Microsoft.</p></section>
+
+<section id="repaso"><h2>Repaso final</h2>
+<h3>Chuleta rápida</h3>
+<ul class="cols">
+  <li>Etiqueta = nombre + valor.</li>
+  <li>Son metadatos: no cambian el recurso.</li>
+  <li>Seis usos: recursos, costes, operaciones, seguridad, gobernanza y automatización.</li>
+  <li>Se administran con portal, PowerShell, CLI, ARM y API REST.</li>
+  <li>Azure Policy las puede exigir, añadir y corregir.</li>
+  <li>No se heredan por defecto.</li>
+  <li>Se aplican a recursos, grupos de recursos y suscripciones.</li>
+  <li>No guardes datos sensibles en ellas.</li></ul>
+<h3>Trucos para memorizar</h3>
+<div class="mnemo"><div><b>Etiqueta</b>Nombre + valor</div><div><b>Costes</b>CostCenter</div><div><b>Quién</b>Owner</div><div><b>Dónde</b>Environment</div><div><b>Herencia</b>Ninguna por defecto</div><div><b>Obligarlas</b>Azure Policy</div></div>
+<h3>Preguntas de repaso</h3>
+<details><summary>¿Qué es una etiqueta de Azure?</summary><p>Un par nombre-valor de metadatos que se añade a un recurso.</p></details>
+<details><summary>¿Cambia una etiqueta el funcionamiento del recurso?</summary><p>No, solo añade información.</p></details>
+<details><summary>¿Cuáles son los seis usos de las etiquetas?</summary><p>Gestión de recursos, de costes, de operaciones, seguridad, gobernanza y cumplimiento, y automatización.</p></details>
+<details><summary>¿Qué herramienta puede exigir que todos los recursos tengan la etiqueta Owner?</summary><p>Azure Policy.</p></details>
+<details><summary>¿Se heredan las etiquetas del grupo de recursos?</summary><p>No, salvo que lo fuerces con Azure Policy.</p></details>
+<details><summary>¿Se pueden etiquetar los grupos de administración?</summary><p>No. Solo recursos, grupos de recursos y suscripciones.</p></details>
+<details><summary>¿Qué no debes guardar en una etiqueta?</summary><p>Datos sensibles: se almacenan en texto plano.</p></details>
+<h3>Escenarios para practicar</h3>
+<p class="pc">Ejercicios propios para entrenar los casos de uso. No son preguntas de Microsoft.</p>
+<details><summary>Finanzas quiere saber cuánto cuesta cada departamento en Azure.</summary><div class="ex"><p><b>Etiquetas como CostCenter.</b></p><p>Permiten agrupar y repartir el gasto.</p></div></details>
+<details><summary>Quieres apagar de noche todas las máquinas de pruebas.</summary><div class="ex"><p><b>Una etiqueta Environment = Test.</b></p><p>Un proceso automático actúa solo sobre los recursos con esa etiqueta.</p></div></details>
+<details><summary>Tu empresa quiere que ningún recurso se cree sin responsable.</summary><div class="ex"><p><b>Azure Policy que exija la etiqueta Owner.</b></p></div></details></section>
+
+<section id="learn"><h2>Contraste con Microsoft Learn</h2>
+<p>Revisé estos apuntes con la documentación oficial el 23 de octubre de 2026. Es una versión resumida, así que solo he tocado lo que afecta al examen.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>Resultado</th></tr></thead><tbody>
+<tr><td>Dónde encajan en el examen</td><td>La guía de estudio (habilidades medidas desde el 20 de julio de 2026) incluye «Describir el propósito de las etiquetas» dentro de la administración de costes, no de gobernanza. Lo indiqué en el mapa.</td></tr>
+<tr><td>Seis usos</td><td>Los seis usos de los apuntes (recursos, costes, operaciones, seguridad, gobernanza y automatización) son coherentes con la documentación de etiquetas, pero no pude comprobarlos contra la unidad exacta de Learn (ver más abajo). Quité los emojis de las fichas.</td></tr>
+<tr><td>Etiquetas «recomendadas por Microsoft»</td><td>Los apuntes decían que Environment, Owner, CostCenter y Workload eran las recomendadas por Microsoft. No encontré en Learn una lista oficial cerrada de cuatro: son ejemplos habituales. Lo reformulé y añadí AppName e Impact, que salían en otra tabla de los apuntes.</td></tr>
+<tr><td>Herencia</td><td>Correcto que no se heredan por defecto. Añadí que se puede forzar con Azure Policy («Inherit a tag from the resource group» o «from the subscription») y que Cost Management tiene su propia herencia para informes. Para el examen la respuesta sigue siendo no.</td></tr>
+<tr><td>Azure Policy</td><td>Coincide: exigir, añadir y corregir etiquetas, con el efecto modify y tareas de corrección para recursos que ya existen.</td></tr>
+<tr><td>Límites</td><td>Faltaban en los apuntes. Añadí el tema 4: 50 pares como máximo (15 en algunos tipos), nombre de hasta 512 caracteres y valor de hasta 256, nombres insensibles a mayúsculas y valores sensibles, y que no se pueden etiquetar grupos de administración. Salen de Learn, no de la guía del AZ-900.</td></tr>
+<tr><td>Seguridad</td><td>Añadí el aviso de Learn: las etiquetas se guardan en texto plano y no deben contener valores sensibles. Los apuntes sugerían usarlas para clasificar por sensibilidad, que es válido siempre que la etiqueta diga el nivel y no el dato.</td></tr>
+<tr><td>Pregunta típica</td><td>La pregunta de los apuntes decía «¿Qué servicio…?». Las etiquetas son una función, no un servicio. Lo dejé como «¿Qué permite…?».</td></tr>
+<tr><td>Página de Learn de la unidad</td><td>No pude abrir la página concreta de la unidad de etiquetas del módulo de gobernanza, así que contrasté con la documentación de etiquetas de Azure Resource Manager, las políticas de etiquetas y la guía de estudio.</td></tr>
+<tr><td>Ejemplos, AZ-104 y escenarios</td><td>Son material didáctico de los apuntes, no datos de Microsoft. Cambié «Owner = Gema» por un nombre genérico.</td></tr></tbody></table></div>
+<p class="src" style="margin-top:14px">Fuentes:
+<a href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900">Guía de estudio AZ-900</a> ·
+<a href="https://learn.microsoft.com/azure/azure-resource-manager/management/tag-resources">Usar etiquetas para organizar tus recursos de Azure</a> ·
+<a href="https://learn.microsoft.com/azure/azure-resource-manager/management/tag-policies">Políticas de cumplimiento de etiquetas</a> ·
+<a href="https://learn.microsoft.com/azure/governance/policy/tutorials/govern-tags">Gobernanza de etiquetas con Azure Policy</a> ·
+<a href="https://learn.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-tagging">Estrategia de etiquetado</a> ·
+<a href="https://learn.microsoft.com/azure/architecture/aws-professional/resources#tagging">Comparación de etiquetado entre AWS y Azure</a></p></section>
+
+</main></div>
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+<script>
+(function(){var KEY='az900-m9-check',boxes=document.querySelectorAll('#checklist input');
+try{var s=JSON.parse(localStorage.getItem(KEY)||'[]');boxes.forEach(function(b,i){b.checked=!!s[i]})}catch(e){}
+boxes.forEach(function(b){b.addEventListener('change',function(){try{localStorage.setItem(KEY,JSON.stringify([].map.call(boxes,function(x){return x.checked})))}catch(e){}})})})();
+</script>
+</body>
+</html>
