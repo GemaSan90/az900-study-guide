@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 11: Herramientas de administración, Azure Arc y ARM · Guía AZ-900</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header><div>
+  <div>AZ-900 · Microsoft Azure Fundamentals</div>
+  <h1>Módulo 11: Herramientas de administración, Azure Arc y ARM (IaC)</h1>
+  <p>Herramientas de gestión (Portal, Cloud Shell, CLI, PowerShell, Copilot), extensión híbrida con Azure Arc y despliegues declarativos mediante plantillas ARM y Bicep.</p>
+  <div><span>Gema San</span><span>Contrastado con Microsoft Learn</span><span>Sueña. Aprende. Crece.</span></div>
+</div></header>
+
+<div>
+<nav aria-label="Índice">
+  <a href="index.html">← Todos los módulos</a>
+  <a href="#mapa">Mapa del módulo</a>
+  <div>Temas</div>
+  <a href="#u1">1 · Herramientas de administración</a>
+  <a href="#u2">2 · Azure Arc</a>
+  <a href="#u3">3 · ARM y Bicep (IaC)</a>
+  <div>Examen</div>
+  <a href="#examen">Qué cae</a>
+  <a href="#learn-q">Preguntas de Learn</a>
+  <div>Cierre</div>
+  <a href="#repaso">Repaso final</a>
+</nav>
+
+<main>
+
+<section id="mapa">
+<h2>Mapa del módulo</h2>
+<p>Este módulo cubre las herramientas para interactuar con la nube de Azure, extender la gestión a entornos locales o multinube y automatizar infraestructuras mediante código desatendido.</p>
+
+<div>
+<table>
+  <thead>
+    <tr>
+      <th>Herramienta</th>
+      <th>Idea en una frase</th>
+      <th>Palabra clave</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Azure Portal</td><td>Consola gráfica basada en web</td><td>GUI, Paneles</td></tr>
+    <tr><td>Cloud Shell</td><td>Terminal en navegador con autenticación integrada</td><td>Bash, PowerShell, Sin instalación</td></tr>
+    <tr><td>Azure CLI / PowerShell</td><td>Línea de comandos para scripting y automatización</td><td>Cmdlets, Bash, Multiplataforma</td></tr>
+    <tr><td>Azure Arc</td><td>Gobernanza y gestión unificada fuera de Azure</td><td>Híbrido, Multinube, On-premises</td></tr>
+    <tr><td>ARM / Bicep</td><td>Infraestructura como Código declarativa</td><td>JSON, Bicep, Idempotente</td></tr>
+    <tr><td>Copilot in Azure</td><td>Asistente de operaciones asistido por IA</td><td>Lenguaje natural, Decisión humana</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<section id="u1">
+<div><span>TEMA 1/3</span></div>
+<h2>Herramientas de administración e interacción</h2>
+<p><b>Idea principal.</b> Azure proporciona múltiples vías de acceso e interacción con sus servicios, desde interfaces gráficas hasta comandos, scripts y herramientas asistidas por IA.</p>
+
+<div aria-label="Cuadro Maestro de Herramientas de Administración de Azure" role="img">
+  <div>Herramientas de Administración de Azure<small>Múltiples interfaces sobre una misma API</small></div>
+  <div>
+    <div><b>Azure Portal</b><br>Consola web para compilar, administrar y supervisar recursos.</div>
+    <div><b>Cloud Shell</b><br>Terminal web con autenticación automática.</div>
+    <div><b>Azure PowerShell / CLI</b><br>Scripting imperativo y comandos multiplataforma.</div>
+    <div><b>Copilot in Azure</b><br>Asistente IA contextual para acelerar operaciones.</div>
+  </div>
+</div>
+
+<h3>Diferencias clave entre herramientas</h3>
+<div>
+<table>
+  <thead>
+    <tr>
+      <th>Herramienta</th>
+      <th>Plataforma</th>
+      <th>Caso de uso</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Azure Portal</td><td>Web (Cualquier navegador)</td><td>Gestión puntual, visualización e inspección gráfica.</td></tr>
+    <tr><td>Cloud Shell</td><td>Navegador web</td><td>Línea de comandos rápida sin instalar software local.</td></tr>
+    <tr><td>Azure CLI</td><td>Windows, Linux, macOS, Cloud Shell</td><td>Entorno basado en comandos Bash.</td></tr>
+    <tr><td>Azure PowerShell</td><td>Windows, Linux, macOS, Cloud Shell</td><td>Entorno basado en Cmdlets e integración con scripts.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div><b>Para el examen.</b> Cloud Shell autentica automáticamente con las credenciales con las que iniciaste sesión en el Portal de Azure. No requiere configuración local ni instalación de clientes.</div>
+
+<div><h4>Traducción ASIR</h4><p>El Portal de Azure es tu Server Manager o la consola RSAT. Cloud Shell es una sesión SSH o PowerShell Remoto precargada en una pestaña del navegador. CLI y PowerShell son los scripts .ps1 o .sh que usas para administrar servidores a gran escala.</p></div>
+</section>
+
+<section id="u2">
+<div><span>TEMA 2/3</span></div>
+<h2>Azure Arc</h2>
+<p><b>Idea principal.</b> Azure Arc extiende la capa de administración de Azure Resource Manager (ARM) a servidores, clústeres de Kubernetes y bases de datos alojados fuera de Azure (locales o en otras nubes).</p>
+
+<div aria-label="Diagrama de Azure Arc extendiendo Azure Resource Manager" role="img">
+  <div>Azure Arc<small>vía Azure Resource Manager (ARM)</small></div>
+  <div>
+    <div><h4>Azure</h4><ul><li>Recursos nativos de Azure</li><li>Directivas, supervisión y cumplimiento</li></ul></div>
+    <div><h4>On-premises (Local)</h4><ul><li>Servidores Windows / Linux</li><li>Clústeres Kubernetes</li><li>SQL Server y Datos</li></ul></div>
+    <div><h4>Otras Nubes (Multinube)</h4><ul><li>Instancias de AWS / GCP</li><li>Servidores y clústeres externos</li></ul></div>
+  </div>
+</div>
+
+<div><b>Para el examen.</b> "Administrar entornos locales, híbridos y multinube de forma unificada desde Azure" es la definición exacta de <b>Azure Arc</b>.</div>
+
+<div><h4>Traducción ASIR</h4><p>Es como instalar un agente de administración en un servidor físico de tu CPD local o en un VPS de otro proveedor para que aparezca dentro de tu consola central de Active Directory/Azure y puedas aplicar directivas de grupo como si fuera una máquina nativa.</p></div>
+</section>
+
+<section id="u3">
+<div><span>TEMA 3/3</span></div>
+<h2>Infraestructura como Código (ARM y Bicep)</h2>
+<p><b>Idea principal.</b> IaC (Infraestructura como Código) permite definir la infraestructura deseada en archivos de texto declarativos en lugar de hacer configuraciones manuales. Azure Resource Manager (ARM) ejecuta estas plantillas garantizando un estado coherente y repetible (idempotencia).</p>
+
+<div aria-label="Flujo de solicitudes de Azure Resource Manager" role="img">
+  <div>Plantillas ARM (JSON) | Bicep (DSL Declarativo)</div>
+  <div>▼</div>
+  <div><b>Azure Resource Manager (ARM)</b><small>Autenticación + Orquestación</small></div>
+  <div>▼</div>
+  <div><span>Compute</span><span>Networking</span><span>Storage + Data</span></div>
+</div>
+
+<h3>Plantillas ARM vs Bicep</h3>
+<div>
+<table>
+  <thead>
+    <tr>
+      <th>Característica</th>
+      <th>Plantillas ARM</th>
+      <th>Bicep</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Formato / Sintaxis</td><td>JSON (Largo y complejo)</td><td>DSL (Sencillo, limpio y conciso)</td></tr>
+    <tr><td>Enfoque</td><td>Declarativo</td><td>Declarativo</td></tr>
+    <tr><td>Compilación</td><td>Nativa</td><td>Compila a JSON de ARM</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div><b>Para el examen.</b> Las plantillas ARM usan JSON; Bicep es el lenguaje declarativo moderno más conciso y legible. Ambos son idempotentes (puedes ejecutarlos N veces y el resultado siempre será exactamente el mismo).</div>
+
+<div><h4>Traducción ASIR</h4><p>Es el equivalente a los archivos de respuesta XML o scripts de Despliegue Desatendido (Unattended Installation / DSC) en Windows Server: defines qué quieres tener instalado y el sistema se encarga de crearlo en el orden correcto.</p></div>
+</section>
+
+<section id="examen">
+<h2>Qué cae en el examen</h2>
+<div>
+<table>
+  <thead>
+    <tr>
+      <th>❌ Error típico</th>
+      <th>✅ Concepto correcto</th>
+      <th>🔑 Palabra clave</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Creer que Azure Arc es solo para recursos dentro de la nube de Azure.</td>
+      <td>Azure Arc proyecta recursos <b>fuera de Azure</b> (locales/multinube) dentro de ARM.</td>
+      <td>Híbrido, On-premises, Multinube</td>
+    </tr>
+    <tr>
+      <td>Pensar que Bicep reemplaza la arquitectura de ARM.</td>
+      <td>Bicep es una capa sintáctica simplificada sobre ARM. Compila a JSON.</td>
+      <td>Declarativo, IaC, Bicep</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<section id="learn-q">
+<h2>Preguntas de Learn</h2>
+<div>
+  <div>
+    <b>1. ¿Qué servicio le ayuda a administrar los entornos de Azure, locales y multinube?</b>
+    <p><b>✅ Respuesta:</b> Azure Arc.</p>
+    <p><i>Razón:</i> Azure Arc extiende ARM hacia infraestructuras situadas fuera del centro de datos nativo de Azure.</p>
+  </div>
+  <hr>
+  <div>
+    <b>2. ¿Qué dos componentes podría usar para implementar una implementación de "infraestructura como código"?</b>
+    <p><b>✅ Respuesta:</b> Plantillas de Bicep y ARM.</p>
+    <p><i>Razón:</i> Ambos son lenguajes declarativos nativos procesados por Azure Resource Manager.</p>
+  </div>
+</div>
+</section>
+
+<section id="repaso">
+<h2>Repaso final (Flashcards)</h2>
+<ul>
+  <li><b>ARM:</b> Punto de entrada único que procesa, autentica y orquesta todas las peticiones en Azure.</li>
+  <li><b>Cloud Shell:</b> Consola web autenticada que no requiere software instalado localmente.</li>
+  <li><b>Azure Arc:</b> Puente para gobernar servidores locales y de otras nubes.</li>
+  <li><b>Bicep:</b> Sintaxis declarativa simplificada para Infraestructura como Código.</li>
+  <li><b>Copilot:</b> Asistente operativo de IA (las decisiones finales siempre son humanas).</li>
+</ul>
+</section>
+
+</main>
+</div>
+
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+
+</body>
+</html>
