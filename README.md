@@ -21,7 +21,7 @@ Manuales y apuntes visuales orientados a la preparación del examen **AZ-900**, 
 * **[Módulo 8: Identidad, acceso y seguridad](modulo-8.html)**
 * **[Módulo 9: Etiquetas (tags) en Azure](modulo-9.html)**
 * **[Módulo 10: Gobernanza y cumplimiento en Azure](modulo-10.html)**
-* **[Módulo 11: Herramientas de administración, Azure Arc y ARM](modulo-11.html)** *(¡Nuevo!)*
+* **[Módulo 11: Herramientas de administración, Azure Arc y ARM](modulo-11.html)**
 
 ---
 
