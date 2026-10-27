@@ -2,12 +2,11 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1,viewport-fit=cover">
-  <title>Manual AZ-900 Módulo 10</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Manual AZ-900 Módulo 11</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Layout: cabecera azul Azure, índice lateral fijo, versión resumida y muy visual con cinco temas */
     :root {
       --bg:#f3f7fc; --surface:#ffffff; --surface2:#e8f1fb; --fg:#0b1b2e; --muted:#47607c;  
       --azure:#0078d4; --azure-deep:#004e8c; --azure-soft:#cfe5f8; --violet:#6b4fd8; --violet-soft:#e4defa; --line:#c9d9ea;  
@@ -60,11 +59,9 @@
     code { font: 500 14px var(--mono); background: var(--surface2); border-radius: 4px; padding: 1px 6px; }
     .idea { background: linear-gradient(135deg,var(--azure-soft),var(--surface2)); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; max-width: 72ch; margin-bottom: 16px; }
     .idea b { color: var(--azure); }
-    .callout { background: var(--surface2); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; max-width: 72ch; }
+    .callout { background: var(--surface2); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; max-width: 72ch; margin-bottom: 16px; }
     .callout b { color: var(--azure); }
-    .rule { background: rgba(196,49,75,.1); border: 1px solid var(--bad); border-left: 5px solid var(--bad); border-radius: 10px; padding: 14px 18px; max-width: 72ch; }
-    .rule b { color: var(--bad); }
-    .tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+    .tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); margin-bottom: 16px; }
     table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 15px; }
     th { background: var(--azure-deep); color: #fff; text-align: left; font: 600 13px var(--display); padding: 10px 14px; letter-spacing: .02em; }
     td { padding: 10px 14px; border-top: 1px solid var(--line); vertical-align: top; }
@@ -72,113 +69,22 @@
     tr:hover td { background: var(--surface2); }
     ul { margin: 0 0 12px; padding-left: 20px; }
     li { margin-bottom: 4px; }
-    .check { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 8px; }
-    .check label { display: flex; gap: 10px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; cursor: pointer; }
-    .check input { accent-color: var(--azure); width: 18px; height: 18px; margin-top: 3px; flex: none; }
-    .check input:checked + span { text-decoration: line-through; color: var(--muted); }
-    .flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 16px; }
-    .node { padding: 8px 14px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); font-weight: 600; }
-    .node.az { background: var(--azure); color: #fff; border-color: var(--azure); }
-    .arrow { color: var(--azure); font-weight: 700; }
-    .split { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 12px; margin-bottom: 12px; }
-    .box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
-    .box h4 { margin: 0 0 6px; font: 600 15px var(--display); }
-    .box.ms { border-top: 3px solid var(--azure); }
-    .box.cl { border-top: 3px solid var(--violet); }
-    .box.tl { border-top: 3px solid var(--teal); }
-    .box.or { border-top: 3px solid #d97706; }
-    .box p { margin: 0 0 6px; font-size: 15px; }
-    .box ul { margin: 0 0 6px; font-size: 15px; }
-    .pc { font-size: 14px; color: var(--muted); margin-top: 8px; }
-    .asir { background: var(--violet-soft); border: 1px solid var(--line); border-left: 4px solid var(--violet); border-radius: 10px; padding: 14px 18px; max-width: 72ch; margin: 16px 0; }
+    .asir { background: var(--violet-soft); border: 1px solid var(--line); border-left: 4px solid var(--violet); border-radius: 10px; padding: 14px 18px; max-width: 72ch; margin: 12px 0; }
     .asir h4 { margin: 0 0 6px; font: 600 13px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--violet); }
     .asir p, .asir ul { margin: 0 0 6px; font-size: 15px; }
     .badge { display: inline-block; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--violet); border: 1px solid var(--violet); border-radius: 999px; padding: 1px 8px; margin-left: 8px; vertical-align: middle; }
-    .quote { border-left: 3px solid var(--azure); padding: 4px 0 4px 14px; margin: 0 0 10px; font-weight: 500; }
-    .mnemo { display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: 8px; }
-    .mnemo div { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: 14px; }
-    .mnemo b { display: block; color: var(--azure); font: 600 15px var(--display); }
     details { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; }
     summary { cursor: pointer; font-weight: 600; }
     details p { margin: 8px 0 0; color: var(--azure); font-weight: 500; }
     details .ex { margin-top: 8px; }
     details .ex p { margin: 8px 0 0; color: var(--fg); font-weight: 400; }
     details .ex p b { color: var(--azure); }
-    .src { font-size: 14px; color: var(--muted); }
-    .src a { color: var(--azure); }
-    .fig { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; max-width: 860px; min-width: 0; }
-    .ok { color: var(--ok); font-weight: 700; }
-    .no { color: var(--bad); font-weight: 700; }
-    .cols { columns: 2 260px; column-gap: 28px; padding-left: 20px; }
-    .cols li { break-inside: avoid; }
     footer { text-align: center; color: var(--muted); font: 500 13px var(--mono); padding: 24px 0 8px; border-top: 1px solid var(--line); max-width: 1100px; margin: 0 auto; }
-    
-    /* Módulo 10: embudo de Microsoft Purview */
-    .fun { max-width: 820px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
-    .fun .top { background: var(--azure-deep); color: #fff; text-align: center; padding: 12px; font: 700 17px var(--display); }
-    .fun .top small { display: block; font: 500 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; opacity: .9; margin-top: 2px; }
-    .fun .srcs { display: grid; grid-template-columns: repeat(3,1fr); background: var(--surface2); text-align: center; font-weight: 600; padding: 10px 6px; gap: 6px; }
-    .fun .steps { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 22px; background: var(--azure-soft); padding: 12px; font-weight: 600; }
-    .fun .gov { background: #4c2f8f; color: #fff; text-align: center; padding: 10px; font: 700 14px var(--display); letter-spacing: .06em; text-transform: uppercase; }
-    .fun .two { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); }
-    .fun .two > div { background: var(--violet-soft); min-width: 0; }
-    .fun .two h4 { margin: 0; padding: 9px 12px; background: #6b4fd8; color: #fff; font: 600 14px var(--display); text-align: center; }
-    .fun .two ul { margin: 0; padding: 12px 14px 6px 30px; font-size: 14.5px; }
-    .fun .two p { margin: 0; padding: 0 14px 12px; font-size: 13px; color: var(--muted); }
-    
-    /* Módulo 10: flujo de Azure Policy */
-    .pol { max-width: 820px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
-    .pol .t1 { background: var(--azure-deep); color: #fff; text-align: center; padding: 12px; font: 700 15px/1.3 var(--display); }
-    .pol .t1 small { display: block; font: 500 13px var(--body); opacity: .92; margin-top: 2px; }
-    .pol .init { background: var(--azure-soft); padding: 10px 12px; text-align: center; font-weight: 600; }
-    .pol .init small { display: block; font: 500 13px var(--body); color: var(--muted); }
-    .pol .defs { display: grid; grid-template-columns: repeat(auto-fit,minmax(170px,1fr)); gap: 1px; background: var(--line); }
-    .pol .defs div { background: var(--surface2); padding: 8px 10px; font-size: 13.5px; text-align: center; }
-    .pol .defs b { display: block; font: 600 12px var(--mono); color: var(--azure); }
-    .pol .scope { padding: 12px; text-align: center; background: var(--surface); border-bottom: 1px solid var(--line); }
-    .pol .scope .lbl { display: block; font: 600 13px var(--display); margin-bottom: 8px; }
-    .pol .scope .flow { justify-content: center; margin: 0; }
-    .pol .evalbar { background: #0a5cb0; color: #fff; text-align: center; padding: 9px; font: 700 13px var(--display); letter-spacing: .05em; text-transform: uppercase; }
-    .pol .results { display: grid; grid-template-columns: repeat(auto-fit,minmax(170px,1fr)); }
-    .pol .results > div { padding: 12px; text-align: center; font-size: 14px; }
-    .pol .results b { display: block; font: 700 14px var(--display); }
-    .pol .results .g { background: rgba(21,128,61,.12); }
-    .pol .results .g b { color: var(--ok); }
-    .pol .results .r { background: rgba(196,49,75,.12); }
-    .pol .results .r b { color: var(--bad); }
-    .pol .results small { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
-    
-    /* Módulo 10: bloqueos */
-    .lockhd { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 12px; }
-    .lockhd > div { border-radius: 10px; padding: 12px 14px; color: #fff; font: 700 15px var(--display); }
-    .lockhd small { display: block; font: 500 13px var(--body); opacity: .95; margin-top: 2px; }
-    .lockhd .d { background: #b45309; }
-    .lockhd .r { background: #1d4ed8; }
-    .lockt td.p, .lockt td.b { font-weight: 700; white-space: nowrap; }
-    .lockt td.p { color: var(--ok); }
-    .lockt td.b { color: var(--bad); }
-    .tree { display: flex; flex-direction: column; gap: 0; max-width: 520px; }
-    .tree .t { border: 2px solid var(--azure); background: var(--surface2); border-radius: 10px; padding: 8px 14px; font-weight: 600; text-align: center; }
-    .tree .t small { display: block; font: 500 12.5px var(--body); color: var(--muted); }
-    .tree .t.has { border-color: var(--teal); }
-    .tree .t.has small { color: var(--teal); font-weight: 600; }
-    .tree .dn { text-align: center; color: var(--violet); font: 600 12px var(--mono); padding: 4px 0; }
-    .kids { display: grid; grid-template-columns: repeat(auto-fit,minmax(130px,1fr)); gap: 8px; }
-    .twostep { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; margin: 8px 0; }
-    .twostep .s { flex: 1 1 200px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); padding: 10px 14px; font-weight: 600; }
-    .twostep .s b { display: block; font: 700 12px var(--mono); letter-spacing: .08em; color: var(--azure); text-transform: uppercase; }
-    .twostep .go { align-self: center; color: var(--azure); font: 700 22px var(--display); }
-    
-    /* Módulo 10: ficha de decisión */
-    .vs td:first-child { white-space: nowrap; }
     @media(max-width: 820px) {
       .wrap { grid-template-columns: 1fr; gap: 20px; }
       nav { position: static; flex-direction: row; flex-wrap: wrap; gap: 6px; }
       nav a { border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; }
       nav .sep { display: none; }
-    }
-    @media(prefers-reduced-motion:no-preference) {
-      a, tr td { transition: background .15s, color .15s; }
     }
   </style>
 </head>
@@ -186,8 +92,8 @@
   <header class="hero">
     <div class="hero-in">
       <div class="tag">AZ-900 · Microsoft Azure Fundamentals</div>
-      <h1>Módulo 10: Gobernanza y cumplimiento en Azure</h1>
-      <p class="lead">Versión resumida y visual: Microsoft Purview, Azure Policy, bloqueos de recursos y Service Trust Portal, con una ampliación sobre Copilot. Con las dos preguntas de Learn, un repaso exprés y el contraste con Microsoft Learn.</p>
+      <h1>Módulo 11: Herramientas de administración, Azure Arc y ARM</h1>
+      <p class="lead">Herramientas de administración, Azure Arc y ARM (IaC) | 85% Visual - 15% Texto. Azure Portal, Cloud Shell, PowerShell, CLI, Copilot, gestión híbrida y despliegues declarativos.</p>
       <div class="chips">
         <span class="chip">Gema San</span>
         <span class="chip">Contrastado con Microsoft Learn</span>
@@ -199,374 +105,262 @@
   <div class="wrap">
     <nav aria-label="Índice">
       <a href="index.html">← Todos los módulos</a>
-      <a href="#mapa">Mapa del módulo</a>
-      <div class="sep">Temas</div>
-      <a href="#u1">1 · Microsoft Purview</a>
-      <a href="#u2">2 · Azure Policy</a>
-      <a href="#u3">3 · Bloqueos de recursos</a>
-      <a href="#u4">4 · Service Trust Portal</a>
-      <a href="#u5">5 · Copilot (ampliación)</a>
-      <div class="sep">Examen</div>
-      <a href="#examen">Qué cae</a>
-      <a href="#learn-q">Preguntas de Learn</a>
-      <div class="sep">Cierre</div>
-      <a href="#repaso">Repaso final</a>
-      <a href="#learn">Contraste con Learn</a>
+      <a href="#mapa">Mapa de la unidad</a>
+      <a href="#cuadros">Cuadros Maestros</a>
+      <a href="#conceptos">Conceptos Clave</a>
+      <a href="#comparativas">Comparativas</a>
+      <a href="#examen">Examen</a>
+      <a href="#learn-q">Preguntas Learn</a>
+      <a href="#az104">Relación AZ-104</a>
+      <a href="#frases">Frases de examen</a>
+      <a href="#trucos">Trucos</a>
+      <a href="#repaso">Repaso exprés</a>
     </nav>
     
     <main>
       <section id="mapa">
-        <h2>Mapa del módulo</h2>
-        <p>Es el segundo módulo del bloque de administración y gobierno (30–35 % del examen). Sigue al de etiquetas (Módulo 9). Aquí no se configura nada: se trata de reconocer qué herramienta resuelve cada necesidad de gobernanza y cumplimiento.</p>
+        <h2>1. Mapa de la unidad</h2>
         <div class="tablebox">
           <table>
             <thead>
-              <tr><th>Herramienta</th><th>Idea en una frase</th><th>Palabra clave</th></tr>
+              <tr><th>Azure Portal</th><th>Cloud Shell</th><th>Azure PowerShell & CLI</th><th>Azure Arc</th><th>ARM & Bicep (IaC)</th><th>Copilot in Azure</th></tr>
             </thead>
             <tbody>
-              <tr><td>Microsoft Purview</td><td>Gobierno de los datos</td><td>Descubrir, clasificar, linaje</td></tr>
-              <tr><td>Azure Policy</td><td>Estándares y reglas de configuración</td><td>Directivas e iniciativas</td></tr>
-              <tr><td>Bloqueos de recursos</td><td>Protección contra borrados o cambios accidentales</td><td>Delete y ReadOnly</td></tr>
-              <tr><td>Service Trust Portal</td><td>Informes de auditoría y certificaciones de Microsoft</td><td>ISO, SOC</td></tr>
-              <tr><td>Copilot <span class="badge">Ampliación</span></td><td>Asistente de IA para trabajar con Azure</td><td>Decide una persona</td></tr>
+              <tr>
+                <td>Interfaz gráfica Web</td>
+                <td>Shell en navegador</td>
+                <td>Scripting / Automatización</td>
+                <td>Gestión Híbrida / Multinube</td>
+                <td>Infraestructura como Código</td>
+                <td>Asistente de Operaciones IA</td>
+              </tr>
             </tbody>
           </table>
-        </div>
-        
-        <h3>Qué habilidad de la guía cubre cada tema</h3>
-        <div class="tablebox">
-          <table>
-            <thead>
-              <tr><th>Habilidad de la guía de estudio</th><th>Tema</th><th>Estado</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Describir el propósito de Microsoft Purview</td><td>1</td><td>En este manual</td></tr>
-              <tr><td>Describir el propósito de Azure Policy</td><td>2</td><td>En este manual</td></tr>
-              <tr><td>Describir el propósito de los bloqueos de recursos</td><td>3</td><td>En este manual</td></tr>
-              <tr><td>Service Trust Portal</td><td>4</td><td>Está en el módulo de Learn, no como habilidad propia de la guía</td></tr>
-              <tr><td>Copilot</td><td>5</td><td>Ampliación: no está en el módulo ni en la guía</td></tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <h3>Lo que debo saber de este módulo</h3>
-        <ul class="check" id="checklist">
-          <li><label><input type="checkbox"><span>Purview: descubre, clasifica y traza el linaje de los datos</span></label></li>
-          <li><label><input type="checkbox"><span>Las dos áreas de Purview: riesgo y cumplimiento, y gobernanza unificada de datos</span></label></li>
-          <li><label><input type="checkbox"><span>Azure Policy: define estándares, asigna ámbitos y evalúa el cumplimiento</span></label></li>
-          <li><label><input type="checkbox"><span>Iniciativa = grupo de directivas relacionadas</span></label></li>
-          <li><label><input type="checkbox"><span>Las directivas se heredan hacia abajo por el ámbito</span></label></li>
-          <li><label><input type="checkbox"><span>Bloqueo Delete (CanNotDelete) frente a ReadOnly</span></label></li>
-          <li><label><input type="checkbox"><span>Los bloqueos se heredan y ganan a RBAC, incluso al propietario</span></label></li>
-          <li><label><input type="checkbox"><span>Para tocar un recurso bloqueado: primero quitar el bloqueo</span></label></li>
-          <li><label><input type="checkbox"><span>Service Trust Portal: informes de auditoría ISO y SOC para descargar</span></label></li>
-          <li><label><input type="checkbox"><span>Copilot ayuda, pero la decisión final es de una persona</span></label></li>
-        </ul>
-      </section>
-      
-      <section id="u1">
-        <div class="unit"><span class="n">TEMA 1/5</span></div>
-        <h2>Microsoft Purview</h2>
-        <p class="idea"><b>Idea principal.</b> Purview es una familia de soluciones de gobernanza de datos, riesgo y cumplimiento. Da una vista única de tus datos locales, multinube y SaaS, con descubrimiento automático, clasificación de datos sensibles y linaje de extremo a extremo.</p>
-        
-        <div class="fun" role="img" aria-label="Embudo de Microsoft Purview: datos locales, multinube y SaaS pasan por descubrimiento, clasificación y linaje, y salen como datos gobernados hacia dos áreas: riesgo y cumplimiento, y gobernanza unificada de datos.">
-          <div class="top">Microsoft Purview<small>Datos sin procesar</small></div>
-          <div class="srcs"><span>Local</span><span>Multinube</span><span>SaaS</span></div>
-          <div class="steps"><span>▼ Descubrimiento de datos</span><span>▼ Clasificación de datos</span><span>▼ Linaje de datos</span></div>
-          <div class="gov">Datos gobernados</div>
-          <div class="two">
-            <div>
-              <h4>Riesgo y cumplimiento</h4>
-              <ul>
-                <li>Protege los datos confidenciales en nubes, aplicaciones y dispositivos.</li>
-                <li>Identifica riesgos de datos y gestiona el cumplimiento.</li>
-                <li>Ayuda a empezar con el cumplimiento normativo.</li>
-              </ul>
-              <p>Se apoya en Microsoft 365.</p>
-            </div>
-            <div>
-              <h4>Gobernanza unificada de datos</h4>
-              <ul>
-                <li>Mapea el entorno con clasificación y linaje.</li>
-                <li>Localiza dónde están los datos sensibles.</li>
-                <li>Protege el acceso a los datos a gran escala.</li>
-                <li>Genera información útil sobre cómo se almacenan y usan.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <p class="pc">Cuadro rehecho a partir de los apuntes de Gemini y del diagrama de Learn.</p>
-        
-        <h3>Tres palabras para recordar</h3>
-        <div class="split">
-          <div class="box ms"><h4>Descubrimiento</h4><p>Encuentra los datos allí donde estén.</p></div>
-          <div class="box tl"><h4>Clasificación</h4><p>Identifica cuáles son sensibles.</p></div>
-          <div class="box cl"><h4>Linaje</h4><p>Sigue el recorrido del dato, de dónde viene y adónde va.</p></div>
-        </div>
-        
-        <div class="callout"><b>Para el examen.</b> Si el enunciado habla de datos (dónde están, cuáles son sensibles, de dónde vienen), la respuesta es Purview. No es la herramienta para el rendimiento (eso es Azure Monitor) ni para las reglas de configuración (eso es Azure Policy).</div>
-        
-        <div class="asir">
-          <h4>Traducción ASIR</h4>
-          <p>Es un inventario inteligente de datos: un escáner que recorre servidores locales, otras nubes y aplicaciones SaaS, etiqueta lo confidencial (DNI, datos de clientes) y dibuja el mapa de por dónde circula. Piensa en un DLP más un catálogo de datos de toda la empresa.</p>
         </div>
       </section>
-      
-      <section id="u2">
-        <div class="unit"><span class="n">TEMA 2/5</span></div>
-        <h2>Azure Policy</h2>
-        <p class="idea"><b>Idea principal.</b> Azure Policy permite crear, asignar y administrar directivas que controlan o auditan tus recursos. Impone reglas sobre la configuración para que los recursos sigan cumpliendo tus estándares, y puede impedir que se creen recursos no conformes.</p>
+
+      <section id="cuadros">
+        <h2>2. Cuadros maestros de la unidad</h2>
         
-        <div class="pol" role="img" aria-label="Flujo de Azure Policy: una iniciativa agrupa directivas, se asigna a un ámbito que se hereda en cascada de grupo de administración a suscripción y grupo de recursos, y se evalúa cada recurso como conforme o no conforme.">
-          <div class="t1">Azure Policy<small>Define estándares, asigna ámbitos y evalúa el cumplimiento</small></div>
-          <div class="init">Iniciativa: Habilitar la supervisión en el centro de seguridad<small>Agrupa más de 100 definiciones de directivas</small></div>
-          <div class="defs">
-            <div><b>Directiva 1</b>Supervisar bases de datos SQL sin cifrar</div>
-            <div><b>Directiva 2</b>Supervisar vulnerabilidades del sistema operativo</div>
-            <div><b>Directiva 3</b>Supervisar la falta de protección de endpoints</div>
-          </div>
-          <div class="scope">
-            <span class="lbl">Se asigna a un ámbito y se hereda en cascada</span>
-            <div class="flow">
-              <span class="node">1 · Grupo de administración</span><span class="arrow">→</span>
-              <span class="node">2 · Suscripción</span><span class="arrow">→</span>
-              <span class="node">3 · Grupo de recursos</span>
-            </div>
-          </div>
-          <div class="evalbar">Se evalúa cada recurso</div>
-          <div class="results">
-            <div class="g"><b>Máquina virtual</b>Conforme</div>
-            <div class="r"><b>Base de datos SQL</b>No conforme<small>Según el efecto, se corrige o se bloquea</small></div>
-            <div class="g"><b>Almacenamiento</b>Conforme</div>
-          </div>
+        <div class="callout">
+          <b>CUADRO IMPORTANTE PARA FUTURAS CERTIFICACIONES: Herramientas de Administración de Azure</b>
+          <ul>
+            <li><b>GRÁFICA | Azure Portal:</b> Consola basada en web para compilar, administrar y supervisar recursos en la nube[cite: 3].</li>
+            <li><b>ENTORNO | Cloud Shell:</b> Shell basado en navegador con autenticación integrada. Sin instalación local[cite: 3].</li>
+            <li><b>LÍNEA DE COMANDOS | Azure PowerShell:</b> Scripting basado en Cmdlets para tareas de automatización repetibles[cite: 3].</li>
+            <li><b>LÍNEA DE COMANDOS | Azure CLI:</b> Comandos basados en Bash con las mismas capacidades que PowerShell[cite: 3].</li>
+            <li><b>ASISTIDO POR IA | Copilot in Azure:</b> Asistente de IA para orientación contextual en lenguaje natural[cite: 3].</li>
+          </ul>
         </div>
-        <p class="pc">Cuadro rehecho a partir de los apuntes de Gemini y del diagrama de Learn. El ejemplo de iniciativa es el que usa Learn.</p>
-        
-        <h3>Directiva e iniciativa</h3>
-        <div class="tablebox">
-          <table>
-            <thead>
-              <tr><th>Concepto</th><th>Qué es</th><th>Ejemplo</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Directiva (policy)</td><td>Una regla individual sobre la configuración de los recursos</td><td>Permitir solo ciertos tamaños de máquina virtual</td></tr>
-              <tr><td>Iniciativa (initiative)</td><td>Un grupo de directivas relacionadas, para seguir el cumplimiento de un objetivo mayor</td><td>La iniciativa de supervisión con más de 100 directivas</td></tr>
-            </tbody>
-          </table>
+
+        <div class="callout">
+          <b>CUADRO IMPORTANTE PARA FUTURAS CERTIFICACIONES: Azure Arc — Gestión Unificada entre Entornos</b>
+          <p>Azure Arc (vía Azure Resource Manager)[cite: 3]:</p>
+          <ul>
+            <li>└─ <b>Azure:</b> Recursos nativos administrados con directivas, supervisión y cumplimiento[cite: 3].</li>
+            <li>└─ <b>On-premises (Local):</b> Servidores, Clústeres Kubernetes, SQL Server, Servicios de datos, VMs[cite: 3].</li>
+            <li>└─ <b>Other Clouds (Multinube):</b> Servidores, Clústeres Kubernetes, SQL Server, Servicios de datos, VMs[cite: 3].</li>
+          </ul>
         </div>
+
+        <div class="callout">
+          <b>CUADRO IMPORTANTE PARA FUTURAS CERTIFICACIONES: Flujo de Solicitudes de Azure Resource Manager (ARM)</b>
+          <p>HERRAMIENTAS (Azure Portal, CLI/PowerShell, REST APIs/SDKs) ──&gt; <b>AZURE RESOURCE MANAGER (Auth + Orquestación)</b> ──&gt; SERVICIOS (Compute, Networking, Storage + Data)[cite: 3]</p>
+        </div>
+
+        <div class="callout">
+          <b>INFRAESTRUCTURA COMO CÓDIGO (IaC): Plantillas ARM (JSON) | Bicep (Declarativo DSL)</b>[cite: 4]
+        </div>
+      </section>
+
+      <section id="conceptos">
+        <h2>3. Conceptos clave</h2>
         
-        <h3>Cómo funciona</h3>
+        <h3>Azure Portal</h3>
+        <p><b>Qué es:</b> Consola unificada basada en web para administrar suscripciones y recursos mediante GUI[cite: 4].</p>
+        <p><b>ASIR:</b> Equivalente al Administrador del Servidor (Server Manager) o consolas MMC web de Windows Server[cite: 4].</p>
+        <p><b>Sirve para:</b></p>
         <ul>
-          <li><b>Se asigna a un ámbito</b>: grupo de administración, suscripción, grupo de recursos o recurso.</li>
-          <li><b>Se hereda hacia abajo</b>: una directiva en un grupo de recursos se aplica a todo lo que se cree dentro.</li>
-          <li><b>Evalúa también lo que ya existe</b>: no solo los recursos nuevos, también los creados antes de la directiva.</li>
-          <li><b>Puede impedir recursos no conformes</b> y, en algunos casos, corregirlos. Por ejemplo, añadir la etiqueta <code>AppName</code> si falta.</li>
-          <li><b>Admite excepciones</b>: puedes marcar recursos como exentos y mantener el control.</li>
+          <li>Compilar, administrar y supervisar infraestructuras y apps[cite: 4].</li>
+          <li>Crear paneles personalizados para visualización de recursos[cite: 4].</li>
         </ul>
-        
-        <div class="callout"><b>Para el examen.</b> «Evitar que se creen recursos no conformes sin evaluarlos a mano» es Azure Policy. Y no confundas: Azure Policy se ocupa de <i>cómo están configurados</i> los recursos. Quién puede hacer qué es RBAC (Módulo 8).</div>
-        
-        <p style="margin-top:12px"><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Los cuadros de Gemini dicen que se evalúa «continuamente». En realidad Azure Policy evalúa un recurso cuando se crea o actualiza, cuando se asigna una directiva nueva y, además, cada 24 horas. Y la corrección automática depende del efecto de la directiva: unas solo auditan o deniegan y otras corrigen (efectos <code>modify</code> y <code>deployIfNotExists</code>). Los recursos que ya existían se corrigen con una tarea de corrección (remediation).</p>
-        
-        <div class="asir">
-          <h4>Traducción ASIR</h4>
-          <p>Son las directivas de grupo (GPO) de Azure: defines la configuración que deben cumplir los recursos, la aplicas a una unidad (suscripción, grupo de recursos) y se hereda hacia abajo. Y como una GPO, también puede corregir lo que se salga de la norma.</p>
-        </div>
+        <p><b>Examen:</b> Disponibilidad continua y presencia en cada centro de datos (tolerante a fallos)[cite: 4].</p>
+        <p><b>Ejemplo:</b> Crear una Máquina Virtual desde un explorador web sin instalar software[cite: 4].</p>
+
+        <h3>Azure Cloud Shell</h3>
+        <p><b>Qué es:</b> Entorno de comandos ejecutable en navegador, con autenticación automática[cite: 4].</p>
+        <p><b>ASIR:</b> Acceso por SSH o PowerShell Remoto precargado desde una consola web sin cliente local[cite: 4].</p>
+        <p><b>Sirve para:</b></p>
+        <ul>
+          <li>Ejecutar scripts de PowerShell o Bash sin instalar CLI/PowerShell localmente[cite: 4].</li>
+          <li>Acceso directo asociando un almacenamiento para guardar scripts[cite: 4].</li>
+        </ul>
+        <p><b>Examen:</b> Autentica automáticamente con las credenciales de la sesión activa de Azure[cite: 4].</p>
+        <p><b>Ejemplo:</b> Administrar recursos desde un Chromebook o equipo cliente sin permisos de instalación[cite: 4].</p>
+
+        <h3>Azure PowerShell vs Azure CLI</h3>
+        <p><b>Qué es:</b> Herramientas de línea de comandos multiplataforma (Windows, Linux, Mac) para automatización[cite: 4].</p>
+        <p><b>ASIR:</b> PowerShell cmdlets habituales en Windows Server vs Scripts Bash en Linux[cite: 4].</p>
+        <p><b>Sirve para:</b></p>
+        <ul>
+          <li>Automatizar la creación repetitiva de infraestructura[cite: 4].</li>
+          <li>Interactuar directamente con la API REST de Azure[cite: 4].</li>
+        </ul>
+        <p><b>Examen:</b> Son funcionalmente equivalentes; la elección depende de la preferencia sintáctica del administrador (Cmdlets vs Bash)[cite: 4].</p>
+        <p><b>Ejemplo:</b> Crear 50 máquinas virtuales iterativamente con un script[cite: 4].</p>
+
+        <h3>Azure Arc</h3>
+        <p><b>Qué es:</b> Servicio que extiende la gestión y gobernanza de ARM a servidores locales, Kubernetes y otras nubes[cite: 4].</p>
+        <p><b>ASIR:</b> Proyectar servidores locales o de otros hipervisores dentro del inventario de Azure Active Directory / ARM[cite: 4].</p>
+        <p><b>Sirve para:</b></p>
+        <ul>
+          <li>Aplicar Azure Policy e inventario unificado en entorno híbrido/multinube[cite: 4].</li>
+          <li>Gestionar servidores Windows/Linux y bases de datos fuera de Azure[cite: 5].</li>
+        </ul>
+        <p><b>Examen:</b> Proyecta recursos FUERA de Azure dentro de ARM[cite: 5].</p>
+        <p><b>Ejemplo:</b> Controlar directivas de seguridad de un servidor físico local desde el Portal de Azure[cite: 5].</p>
+
+        <h3>Infraestructura como Código (IaC) — ARM Templates & Bicep</h3>
+        <p><b>Qué es:</b> Gestión e implementación de infraestructura mediante archivos de definición declarativos[cite: 5].</p>
+        <p><b>ASIR:</b> Despliegue automatizado de roles/servicios mediante scripts desatendidos o DSC[cite: 5].</p>
+        <p><b>Sirve para:</b></p>
+        <ul>
+          <li>Despliegues repetibles, coherentes e idempotentes[cite: 5].</li>
+          <li>Definir orden de dependencias y ejecución en paralelo[cite: 5].</li>
+        </ul>
+        <p><b>Examen:</b> ARM usa sintaxis JSON; Bicep es un lenguaje declarativo más conciso y fácil de leer[cite: 5].</p>
+        <p><b>Ejemplo:</b> Redefinir toda la red y servidores de la empresa en un único archivo <code>.bicep</code>[cite: 5].</p>
       </section>
-      
-      <section id="u3">
-        <div class="unit"><span class="n">TEMA 3/5</span></div>
-        <h2>Bloqueos de recursos</h2>
-        <p class="idea"><b>Idea principal.</b> Un bloqueo (resource lock) impide que un recurso se elimine o se cambie por accidente. Incluso con RBAC, alguien con permisos suficientes podría borrar un recurso crítico. El bloqueo añade esa capa de protección.</p>
-        
-        <div class="lockhd">
-          <div class="d">Bloqueo Delete<small>En la CLI y en las plantillas se llama CanNotDelete</small></div>
-          <div class="r">Bloqueo ReadOnly<small>Solo lectura: equivale al rol Reader para todos</small></div>
-        </div>
-        
-        <div class="tablebox" style="margin-top:12px">
-          <table class="lockt">
-            <thead>
-              <tr><th>Acción sobre el recurso</th><th>Delete (CanNotDelete)</th><th>ReadOnly</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Leer</td><td class="p">✔ Permitido</td><td class="p">✔ Permitido</td></tr>
-              <tr><td>Modificar</td><td class="p">✔ Permitido</td><td class="b">✖ Bloqueado</td></tr>
-              <tr><td>Eliminar</td><td class="b">✖ Bloqueado</td><td class="b">✖ Bloqueado</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="pc">Se pueden poner en un recurso, un grupo de recursos o una suscripción, desde el portal (Configuración → Bloqueos), PowerShell, la CLI o una plantilla ARM.</p>
-        
-        <h3>Herencia</h3>
-        <p>Los bloqueos se heredan: si bloqueas un grupo de recursos, todos sus recursos quedan bloqueados, también los que añadas después.</p>
-        <div class="fig" style="max-width:560px">
-          <div class="tree">
-            <div class="t has">Grupo de recursos<small>Bloqueo Delete aplicado</small></div>
-            <div class="dn">▼ heredan el bloqueo</div>
-            <div class="kids">
-              <div class="t has">Máquina virtual<small>heredado</small></div>
-              <div class="t has">Cuenta de almacenamiento<small>heredado</small></div>
-              <div class="t has">Base de datos SQL<small>heredado</small></div>
-            </div>
-          </div>
-        </div>
-        
-        <h3>¿Cómo modifico o borro un recurso bloqueado?</h3>
-        <div class="twostep">
-          <div class="s"><b>Paso 1</b>Quitar el bloqueo</div>
-          <span class="go">→</span>
-          <div class="s"><b>Paso 2</b>Realizar la acción (editar o borrar)</div>
-        </div>
-        
-        <div class="rule" style="margin-top:12px"><b>Regla de examen.</b> Los bloqueos se aplican independientemente de los permisos RBAC. Incluso un propietario (Owner) debe quitar primero el bloqueo antes de poder eliminar el recurso.</div>
-        
-        <p style="margin-top:12px"><span class="badge" style="margin:0 8px 0 0">Ampliación</span>Si hay varios bloqueos en la cadena de herencia, prevalece el más restrictivo. Los bloqueos solo limitan los cambios del recurso en sí (operaciones de gestión), no lo que el recurso hace: un bloqueo ReadOnly en una base de datos no impide leer ni escribir datos en ella. Para crear o quitar bloqueos hace falta, por ejemplo, el rol Owner o User Access Administrator.</p>
-        
-        <div class="asir">
-          <h4>Traducción ASIR</h4>
-          <p>Es como la casilla «Proteger objeto contra eliminación accidental» de Active Directory: aunque seas administrador, tienes que desmarcarla antes de borrar. El bloqueo ReadOnly sería el atributo de solo lectura aplicado a toda una carpeta, heredado por todo lo que contiene.</p>
-        </div>
-      </section>
-      
-      <section id="u4">
-        <div class="unit"><span class="n">TEMA 4/5</span></div>
-        <h2>Service Trust Portal</h2>
-        <p class="idea"><b>Idea principal.</b> El Service Trust Portal es el portal de Microsoft con contenido, herramientas y recursos sobre sus prácticas de seguridad, privacidad y cumplimiento. Sirve para consultar y descargar la documentación que necesitas ante tus propias auditorías.</p>
-        
-        <div class="split">
-          <div class="box ms">
-            <h4>Qué encuentras</h4>
-            <ul>
-              <li>Informes de auditoría y certificaciones, como ISO y SOC 1, 2 y 3.</li>
-              <li>Cómo implementa Microsoft los controles que protegen sus servicios y los datos de los clientes.</li>
-            </ul>
-          </div>
-          <div class="box tl">
-            <h4>Cómo se usa</h4>
-            <ul>
-              <li>Se entra en <code>servicetrust.microsoft.com</code>.</li>
-              <li>Para parte del contenido hay que iniciar sesión con una cuenta de Microsoft Entra y aceptar el acuerdo de confidencialidad (NDA).</li>
-            </ul>
-          </div>
-        </div>
-        
-        <h3>Los tres apartados del menú</h3>
+
+      <section id="comparativas">
+        <h2>4. Comparativas</h2>
         <div class="tablebox">
           <table>
             <thead>
-              <tr><th>Apartado</th><th>Para qué sirve</th></tr>
+              <tr><th>Característica</th><th>Azure CLI / PowerShell</th><th>Plantillas ARM (JSON)</th><th>Bicep</th></tr>
             </thead>
             <tbody>
-              <tr><td>Service Trust Portal</td><td>Volver a la página de inicio.</td></tr>
-              <tr><td>My Library</td><td>Guardar documentos y recibir avisos cuando se actualicen.</td></tr>
-              <tr><td>All Documents</td><td>Lugar único con todos los documentos, desde donde los anclas a tu biblioteca.</td></tr>
+              <tr><td>Enfoque</td><td>Imperativo (Paso a paso)[cite: 5]</td><td>Declarativo (Estado final)[cite: 5]</td><td>Declarativo (Estado final)[cite: 5]</td></tr>
+              <tr><td>Sintaxis</td><td>Bash / Cmdlets[cite: 5]</td><td>JSON (Complejo)[cite: 5]</td><td>DSL (Sencillo y conciso)[cite: 5]</td></tr>
+              <tr><td>Uso Principal</td><td>Tareas puntuales / Scripting[cite: 5]</td><td>Automatización empresarial[cite: 5]</td><td>Automatización moderna[cite: 5]</td></tr>
+              <tr><td>Idempotencia</td><td>Manual[cite: 5]</td><td>Nativa integrada[cite: 5]</td><td>Nativa integrada[cite: 5]</td></tr>
             </tbody>
           </table>
         </div>
-        
-        <div class="callout" style="margin-top:12px"><b>Para el examen.</b> «Dónde descargo los informes de auditoría y certificaciones de Microsoft» es el Service Trust Portal. No es una herramienta que configure ni vigile tus recursos: es un repositorio de documentación.</div>
-        
-        <div class="asir">
-          <h4>Traducción ASIR</h4>
-          <p>Es el portal de documentación de un proveedor de hosting: cuando un auditor te pide el certificado de la sala del CPD, lo descargas de ahí en vez de pedirlo por correo.</p>
-        </div>
       </section>
-      
-      <section id="u5">
-        <div class="unit"><span class="n">TEMA 5/5</span></div>
-        <h2>Copilot en Azure <span class="badge">Ampliación</span></h2>
-        <p class="idea"><b>Idea principal.</b> Es un asistente de IA que ayuda a diseñar, operar, optimizar y resolver problemas en Azure. Puede, por ejemplo, ayudarte a redactar directivas, proponer una arquitectura o preparar listas de comprobación para una auditoría. No forma parte del módulo de Learn ni de la guía de estudio.</p>
-        
-        <div class="split">
-          <div class="box ms">
-            <h4>Qué hace</h4>
-            <ul>
-              <li>Responde preguntas y genera consultas.</li>
-              <li>Propone arquitecturas y borradores de directivas.</li>
-              <li>Prepara listas de comprobación.</li>
-            </ul>
-          </div>
-          <div class="box or">
-            <h4>Clave</h4>
-            <p>La supervisión y la decisión final son siempre de la persona administradora.</p>
-            <p>Trabaja con tus permisos y te pide confirmación antes de actuar.</p>
-          </div>
-        </div>
-        
-        <div class="callout"><b>Para el examen.</b> Aunque la IA proponga cambios, Azure Policy sigue imponiendo tus estándares (ubicaciones permitidas, etiquetas obligatorias, SKU aprobados). Así puedes ir más rápido sin saltarte el cumplimiento.</div>
-      </section>
-      
+
       <section id="examen">
-        <h2>Qué cae en el examen</h2>
-        <h3>¿Qué herramienta uso?</h3>
-        <div class="tablebox">
-          <table class="vs">
-            <thead>
-              <tr><th>Si el enunciado dice</th><th>Piensa en</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Evitar crear recursos no conformes con la normativa o con los estándares</td><td>Azure Policy</td></tr>
-              <tr><td>Evitar el borrado o el cambio accidental de un recurso</td><td>Bloqueo de recursos</td></tr>
-              <tr><td>Descubrir, clasificar y trazar el linaje de datos en varios entornos</td><td>Microsoft Purview</td></tr>
-              <tr><td>Descargar informes de auditoría e ISO de Microsoft</td><td>Service Trust Portal</td></tr>
-              <tr><td>Dar o quitar permisos a personas</td><td>RBAC (Módulo 8)</td></tr>
-              <tr><td>Clasificar y repartir costes</td><td>Etiquetas (Módulo 9)</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <h2>5. Examen</h2>
+        <p><b>Qué quiere evaluar Microsoft:</b></p>
+        <ul>
+          <li>Cae mucho: Identificar la herramienta correcta para entornos híbridos (Azure Arc) y para la gestión declarativa (ARM/Bicep)[cite: 6].</li>
+          <li>Cae mucho: Reconocer que la consola Cloud Shell incluye tanto PowerShell como Bash (CLI)[cite: 6].</li>
+          <li>Errores típicos: Confundir Azure Policy (reglas de cumplimiento) con Azure Arc (gestión de recursos fuera de Azure)[cite: 6].</li>
+        </ul>
         
-        <h3>Errores típicos</h3>
         <div class="tablebox">
           <table>
             <thead>
-              <tr><th>Error</th><th>Lo correcto</th></tr>
+              <tr><th>Error</th><th>Correcto</th><th>Palabras Clave</th></tr>
             </thead>
             <tbody>
-              <tr><td>RBAC evita el borrado accidental</td><td>No si el usuario tiene permiso de eliminar, incluso si es propietario. Para eso están los bloqueos.</td></tr>
-              <tr><td>Un propietario puede saltarse un bloqueo</td><td>No: debe quitarlo primero.</td></tr>
-              <tr><td>Purview sirve para vigilar el rendimiento o la configuración</td><td>Purview es para datos. Rendimiento: Azure Monitor. Configuración: Azure Policy.</td></tr>
-              <tr><td>Un bloqueo de grupo de recursos solo protege al propio grupo</td><td>Se hereda en todos sus recursos.</td></tr>
-              <tr><td>Una iniciativa es una sola regla</td><td>Es un grupo de directivas relacionadas.</td></tr>
+              <tr>
+                <td>Usar Azure CLI para gestionar servidores locales.</td>
+                <td>Usar Azure Arc para extender ARM a servidores locales[cite: 6].</td>
+                <td>Híbrido, Multinube, On-premises[cite: 6].</td>
+              </tr>
+              <tr>
+                <td>Modificar recursos manualmente para garantizar consistencia[cite: 6].</td>
+                <td>Usar IaC (ARM/Bicep) para desatendido y repetibilidad[cite: 6].</td>
+                <td>Declarativo, JSON, Idempotente[cite: 6].</td>
+              </tr>
             </tbody>
           </table>
         </div>
       </section>
-      
+
       <section id="learn-q">
-        <h2>Preguntas de Learn</h2>
-        <p class="pc" style="margin-top:0">Son las dos de la evaluación del módulo. Intenta responder antes de abrirlas.</p>
+        <h2>6. Preguntas Learn (Examen)</h2>
         <details>
-          <summary>¿Cómo puedes evitar la creación de recursos no conformes, sin tener que evaluar cada recurso manualmente? (Azure Policy, Microsoft Purview o Azure Resource Monitor)</summary>
+          <summary>¿Qué servicio le ayuda a administrar los entornos de Azure, locales y multinube?</summary>
           <div class="ex">
-            <p><b>Azure Policy.</b></p>
-            <p><b>Por qué.</b> Define y hace cumplir reglas de configuración de forma automática, y puede denegar los recursos que no las cumplen.</p>
-            <p><b>Trampa.</b> Purview es para datos y la herramienta de rendimiento es Azure Monitor.</p>
+            <p><b>Respuesta correcta: Azure Arc</b>[cite: 6].</p>
+            <p><b>¿Por qué?:</b> Azure Arc extiende el plano de control de Azure Resource Manager (ARM) a infraestructura ubicada fuera de Azure (On-premises y otras nubes)[cite: 6].</p>
+            <p><b>Trampa:</b> Azure Policy o Azure Cloud Manager no gestionan la proyección de recursos de múltiples nubes por sí mismos[cite: 6].</p>
           </div>
         </details>
+        
         <details>
-          <summary>¿Qué servicio le permite descargar informes de auditoría de cumplimiento e ISO de Microsoft? (Service Trust Portal, Azure Policy o Purview)</summary>
+          <summary>¿Qué dos componentes podría usar para implementar una implementación de 'infraestructura como código'?</summary>
           <div class="ex">
-            <p><b>Service Trust Portal.</b></p>
-            <p><b>Por qué.</b> Es el repositorio central de documentación de cumplimiento y certificaciones de Microsoft.</p>
+            <p><b>Respuesta correcta: Plantillas de Bicep y ARM</b>[cite: 6].</p>
+            <p><b>¿Por qué?:</b> Ambos son lenguajes declarativos diseñados para definir la infraestructura deseada e implementarla a través de ARM[cite: 6].</p>
+            <p><b>Trampa:</b> Azure Policy y Azure Arc son para gobernanza y gestión híbrida, no formatos de definición de IaC[cite: 6].</p>
           </div>
         </details>
       </section>
-      
-      <section id="repaso">
-        <h2>Repaso final</h2>
+
+      <section id="az104">
+        <h2>7. Relación con AZ-104</h2>
+        <div class="tablebox">
+          <table>
+            <thead>
+              <tr><th>Concepto AZ-900</th><th>Qué administrarás en AZ-104</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Azure CLI / PowerShell</td>
+                <td>Creación y automatización masiva de grupos de recursos, VNets y máquinas virtuales mediante scripts[cite: 6].</td>
+              </tr>
+              <tr>
+                <td>Azure Arc</td>
+                <td>Instalación de agentes de Azure Arc en servidores Windows/Linux locales para monitorización y parches[cite: 6].</td>
+              </tr>
+              <tr>
+                <td>ARM / Bicep</td>
+                <td>Creación, depuración e implementación de plantillas bicep complejas e integración en pipelines CI/CD[cite: 6].</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="frases">
+        <h2>8. Frases de examen</h2>
         <ul>
-          <li><b>Purview:</b> Descubre, clasifica y traza el linaje de los datos.</li>
-          <li><b>Azure Policy:</b> Define estándares, asigna ámbitos y evalúa el cumplimiento.</li>
-          <li><b>Bloqueos de recursos:</b> Protegen contra borrados (Delete/CanNotDelete) o cambios (ReadOnly).</li>
-          <li><b>Service Trust Portal:</b> Descarga de informes de auditoría y certificaciones (ISO, SOC).</li>
-          <li><b>Copilot:</b> Asistente de IA para operar Azure; la decisión final siempre es humana.</li>
+          <li>Azure Resource Manager (ARM) centraliza la autenticación, autorización y orquestación de todas las solicitudes[cite: 6].</li>
+          <li>Azure Arc gestiona servidores, clústeres de Kubernetes y bases de datos tanto en local como en otras nubes[cite: 7].</li>
+          <li>Cloud Shell permite ejecutar comandos desde el navegador web sin instalar herramientas en el equipo local[cite: 7].</li>
+          <li>Bicep ofrece una sintaxis más limpia y concisa que las plantillas JSON de ARM[cite: 7].</li>
+          <li>Copilot en Azure actúa como asistente operativo en lenguaje natural que requiere validación humana[cite: 7].</li>
         </ul>
       </section>
-      
-      <section id="learn">
-        <h2>Contraste con Microsoft Learn</h2>
-        <p>Los manuales de Microsoft Learn tratan estos temas de forma más dispersa. Aquí se han agrupado en el bloque de administración y gobierno, destacando las palabras clave de examen para distinguir rápidamente entre Purview (datos), Policy (configuración), Bloqueos (protección) y Service Trust Portal (auditorías).</p>
+
+      <section id="trucos">
+        <h2>9. Trucos para memorizar</h2>
+        <ul>
+          <li><b>Azure Arc ──&gt;</b> El puente hacia servidores locales y otras nubes[cite: 7].</li>
+          <li><b>ARM ──&gt;</b> La puerta de entrada a todos los servicios de Azure[cite: 7].</li>
+          <li><b>Bicep ──&gt;</b> El hermano fácil y moderno de las plantillas JSON[cite: 7].</li>
+          <li><b>Cloud Shell ──&gt;</b> La terminal web sin instalación[cite: 7].</li>
+          <li><b>Copilot ──&gt;</b> El copiloto/asistente (el humano siempre confirma)[cite: 7].</li>
+        </ul>
+      </section>
+
+      <section id="repaso">
+        <h2>10. Repaso exprés</h2>
+        <ol>
+          <li>Todas las peticiones a Azure (Portal, CLI, PowerShell, API) pasan obligatoriamente por Azure Resource Manager (ARM)[cite: 7].</li>
+          <li>Azure Portal es la interfaz gráfica Web accesible desde cualquier navegador[cite: 7].</li>
+          <li>Cloud Shell es la terminal integrada en navegador que no requiere instalación local y autentica automáticamente[cite: 7].</li>
+          <li>Azure CLI (basado en Bash) y Azure PowerShell (cmdlets) son funcionalmente equivalentes para scripting y automatización[cite: 7].</li>
+          <li>Infraestructura como Código (IaC) permite definir el estado deseado en archivos reutilizables e idempotentes[cite: 7].</li>
+          <li>Las Plantillas ARM estructuran la IaC mediante archivos JSON[cite: 7].</li>
+          <li>Bicep es un lenguaje declarativo simplificado que compila en plantillas ARM[cite: 7].</li>
+          <li>Azure Arc extiende la gobernanza y gestión de ARM a servidores locales (On-premises), Kubernetes y multinube (AWS/GCP)[cite: 7].</li>
+          <li>Copilot en Azure ayuda a redactar scripts, consultas y arquitecturas usando IA contextual[cite: 7].</li>
+          <li>La decisión final sobre cambios en producción generados por Copilot SIEMPRE recae en el administrador humano[cite: 7].</li>
+        </ol>
       </section>
     </main>
   </div>
