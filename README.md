@@ -17,6 +17,7 @@ Manuales por módulos para preparar el examen **AZ-900: Microsoft Azure Fundamen
 | 7 | Almacenamiento en Azure | Versión resumida: 5 temas | `modulo-7.html` |
 | 8 | Identidad, acceso y seguridad en Azure | Versión resumida: 9 temas | `modulo-8.html` |
 | 9 | Etiquetas (tags) en Azure | Versión resumida: 4 temas | `modulo-9.html` |
+| 10 | Gobernanza y cumplimiento en Azure | Versión resumida: 5 temas | `modulo-10.html` |
 
 El Módulo 4 cubre la infraestructura física (regiones, zonas de disponibilidad, pares de regiones y regiones soberanas) y la de administración (recursos, grupos de recursos, suscripciones y grupos de administración).
 
@@ -30,13 +31,15 @@ El Módulo 8 cubre identidad, acceso y seguridad: Microsoft Entra ID (con Entra 
 
 El Módulo 9 cubre las etiquetas: qué son (pares nombre-valor), sus seis usos, cómo se administran, cómo las exige Azure Policy, por qué no se heredan por defecto y sus límites. Es una versión resumida y abre el bloque de administración y gobierno.
 
+El Módulo 10 cubre gobernanza y cumplimiento: Microsoft Purview (descubrimiento, clasificación y linaje de datos), Azure Policy (directivas, iniciativas, ámbitos y herencia), bloqueos de recursos (Delete y ReadOnly, y por qué ganan a RBAC) y Service Trust Portal. Incluye una ampliación sobre Copilot, las dos preguntas de evaluación de Learn y el contraste con la documentación oficial. Se creó a partir de los apuntes de Gemini.
+
 ## Cómo encajan en el examen
 
 | Bloque del examen | Peso | Manuales |
 | --- | --- | --- |
 | Conceptos cloud | 25–30 % | Módulos 1, 2 y 3 |
 | Arquitectura y servicios de Azure | 35–40 % | Módulos 4 (componentes arquitectónicos), 5 (servicios de proceso), 6 (redes), 7 (almacenamiento) y 8 (identidad, acceso y seguridad) |
-| Administración y gobierno | 30–35 % | En curso: Módulo 9 (etiquetas). Pendiente el resto |
+| Administración y gobierno | 30–35 % | En curso: Módulo 9 (etiquetas) y Módulo 10 (gobernanza y cumplimiento). Pendiente el resto |
 
 Pesos según la guía de estudio de Microsoft (habilidades medidas desde el 20 de julio de 2026).
 
@@ -62,6 +65,7 @@ az900-study-guide/
 ├── modulo-7.html
 ├── modulo-8.html
 ├── modulo-9.html
+├── modulo-10.html
 └── README.md
 ```
 
@@ -73,8 +77,8 @@ Cada página es un único archivo HTML autocontenido. Solo carga las fuentes des
 2. Súbelos:
 
    ```
-   git add index.html modulo-9.html README.md
-   git commit -m "Añade el Módulo 9 (etiquetas) y actualiza la portada"
+   git add index.html modulo-10.html README.md
+   git commit -m "Añade el Módulo 10 (gobernanza y cumplimiento) y actualiza la portada"
    git push
    ```
 
