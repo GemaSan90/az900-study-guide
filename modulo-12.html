@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Manual AZ-900 Módulo 12</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>
+/* Layout: cabecera azul Azure, índice lateral fijo, versión resumida con tres temas (Advisor, Service Health y Azure Monitor), panel de Advisor, tres vistas de salud, mapa de Azure Monitor y panel de alertas, todo traducido al español */
+:root{
+  --bg:#f3f7fc; --surface:#ffffff; --surface2:#e8f1fb; --fg:#0b1b2e; --muted:#47607c;
+  --azure:#0078d4; --azure-deep:#004e8c; --azure-soft:#cfe5f8; --violet:#6b4fd8; --violet-soft:#e4defa; --line:#c9d9ea;
+  --teal:#0f766e; --ok:#15803d; --bad:#c4314b; --amber:#b45309; --hero1:#005ba1; --hero2:#0078d4; --on-hero:#ffffff;
+  --display:'Sora',system-ui,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --teal:#2dd4bf; --ok:#4ade80; --bad:#ff7a90; --amber:#fbbf24; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#070d17; --surface:#0d1726; --surface2:#122238; --fg:#e6eef8; --muted:#9db3cc;
+  --azure:#2e9bf0; --azure-deep:#0078d4; --azure-soft:#10355a; --violet:#a08bff; --violet-soft:#2a2350; --line:#1d3350;
+  --teal:#2dd4bf; --ok:#4ade80; --bad:#ff7a90; --amber:#fbbf24; --hero1:#003a6b; --hero2:#0078d4; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.hero{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:56px max(16px,env(safe-area-inset-left,0px)) 48px;background:radial-gradient(1200px 420px at 85% -10%,rgba(160,139,255,.45),transparent 60%),linear-gradient(135deg,var(--hero1),var(--hero2));color:var(--on-hero)}
+.hero-in{max-width:1100px;margin:0 auto}
+.tag{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+h1{font:800 clamp(30px,5.4vw,54px)/1.08 var(--display);margin:14px 0 14px;text-wrap:balance;letter-spacing:-.02em}
+.lead{max-width:60ch;font-size:18px;opacity:.95;margin:0 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 12px var(--mono);padding:6px 12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(255,255,255,.1)}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:210px minmax(0,1fr);gap:40px;padding-block:36px 72px}
+nav{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line)}
+nav a:hover,nav a:focus-visible{color:var(--azure);border-left-color:var(--azure);outline:none}
+nav .sep{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
+main{min-width:0;display:flex;flex-direction:column;gap:48px}
+section{scroll-margin-top:24px;min-width:0}
+.unit{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.unit .n{font:700 12px var(--mono);letter-spacing:.08em;color:var(--azure);border:1px solid var(--azure);border-radius:6px;padding:3px 8px;white-space:nowrap}
+h2{font:700 26px/1.2 var(--display);margin:0 0 14px;letter-spacing:-.01em;text-wrap:balance}
+h3{font:600 17px var(--display);margin:26px 0 8px;color:var(--azure)}
+p{margin:0 0 12px;max-width:70ch}
+code{font:500 14px var(--mono);background:var(--surface2);border-radius:4px;padding:1px 6px}
+.idea{background:linear-gradient(135deg,var(--azure-soft),var(--surface2));border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch;margin-bottom:16px}
+.idea b{color:var(--azure)}
+.callout{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;max-width:72ch}
+.callout b{color:var(--azure)}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th{background:var(--azure-deep);color:#fff;text-align:left;font:600 13px var(--display);padding:10px 14px;letter-spacing:.02em}
+td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600;color:var(--azure)}
+tr:hover td{background:var(--surface2)}
+ul{margin:0 0 12px;padding-left:20px}li{margin-bottom:4px}
+ol{margin:0 0 12px;padding-left:22px}
+.check{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.check label{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer}
+.check input{accent-color:var(--azure);width:18px;height:18px;margin-top:3px;flex:none}
+.check input:checked+span{text-decoration:line-through;color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 16px}
+.node{padding:8px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-weight:600}
+.node small{display:block;font:500 12px var(--body);color:var(--muted)}
+.node.az{background:var(--azure);color:#fff;border-color:var(--azure)}
+.node.az small{color:#fff;opacity:.92}
+.arrow{color:var(--azure);font-weight:700}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.box h4{margin:0 0 6px;font:600 15px var(--display)}
+.box.ms{border-top:3px solid var(--azure)}.box.cl{border-top:3px solid var(--violet)}.box.tl{border-top:3px solid var(--teal)}.box.or{border-top:3px solid #d97706}
+.box p{margin:0 0 6px;font-size:15px}
+.box ul{margin:0 0 6px;font-size:15px}
+.pc{font-size:14px;color:var(--muted);margin-top:8px}
+.asir{background:var(--violet-soft);border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:10px;padding:14px 18px;max-width:72ch;margin:16px 0}
+.asir h4{margin:0 0 6px;font:600 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+.asir p,.asir ul{margin:0 0 6px;font-size:15px}
+.badge{display:inline-block;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--violet);border:1px solid var(--violet);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle}
+.quote{border-left:3px solid var(--azure);padding:4px 0 4px 14px;margin:0 0 10px;font-weight:500}
+.mnemo{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.mnemo div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px}
+.mnemo b{display:block;color:var(--azure);font:600 15px var(--display)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+details .ex{margin-top:8px}
+details .ex p{margin:8px 0 0;color:var(--fg);font-weight:400}
+details .ex p b{color:var(--azure)}
+.src{font-size:14px;color:var(--muted)}
+.src a{color:var(--azure)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;max-width:900px;min-width:0}
+.fig-t{font:700 15px var(--display);margin:0 0 10px}
+.ok{color:var(--ok);font-weight:700}
+.no{color:var(--bad);font-weight:700}
+footer{text-align:center;color:var(--muted);font:500 13px var(--mono);padding:24px 0 8px;border-top:1px solid var(--line);max-width:1100px;margin:0 auto}
+
+/* Módulo 12: panel de Advisor */
+.advgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.ac{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface2);min-width:0}
+.ac h4{margin:0;padding:8px 12px;background:var(--azure-deep);color:#fff;font:600 14px var(--display)}
+.ac .b{padding:10px 12px}
+.ac .big{font:800 26px var(--display);color:var(--azure);line-height:1.1}
+.ac .big small{font:500 12px var(--body);color:var(--muted);margin-left:4px}
+.ac .imp{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 6px;font:600 12px var(--body)}
+.ac .imp span{border-radius:6px;padding:1px 8px;color:#fff}
+.i-a{background:#c4314b}.i-m{background:#b45309}.i-b{background:#0a66b5}
+.ac .rs{font-size:13px;color:var(--muted)}
+.ac.good .b{color:var(--ok);font-weight:600;font-size:14px}
+.ac .save{display:inline-block;margin-top:6px;background:var(--ok);color:#fff;border-radius:6px;padding:1px 8px;font:600 12px var(--body)}
+
+/* Módulo 12: tres vistas de salud */
+.scope{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.sv{border:2px solid var(--azure-deep);border-radius:12px;overflow:hidden;background:var(--surface2);min-width:0;text-align:center}
+.sv h4{margin:0;padding:9px 10px;background:var(--azure-deep);color:#fff;font:600 15px var(--display)}
+.sv .sub{margin:0;padding:8px 10px 0;font-size:14px;color:var(--muted)}
+.sv .dots{padding:10px 8px;font-size:15px;letter-spacing:5px;line-height:1.5;color:var(--azure)}
+.sv .foot{padding:0 10px 12px;font-size:14px;color:var(--muted)}
+.sv .vm{display:inline-block;border:3px solid var(--azure);border-radius:8px;padding:6px 16px;font:700 16px var(--mono);color:var(--azure);margin:12px 0 6px}
+.sv .okc{color:var(--ok);font-weight:700;font-size:22px;display:block}
+.narrow{display:flex;justify-content:space-between;gap:12px;font:500 12px var(--mono);color:var(--muted);margin:8px 2px 0}
+
+/* Módulo 12: mapa de Azure Monitor */
+.mon{display:grid;grid-template-columns:minmax(120px,.8fr) 28px minmax(130px,.8fr) 28px minmax(0,2.4fr);gap:8px;align-items:center}
+.mon .col{display:flex;flex-direction:column;gap:6px;min-width:0}
+.mon .it{background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:7px 10px;text-align:center;font-weight:600;font-size:14px}
+.mon .it.cu{background:var(--surface);border-style:dashed}
+.mon .dp{border:2px solid var(--azure-deep);border-radius:10px;background:var(--surface2);padding:8px;min-width:0}
+.mon .dp h5{margin:0 0 6px;text-align:center;font:700 14px var(--display);color:var(--azure-deep)}
+.mon .dp .it{background:var(--surface)}
+.mon .ar{color:var(--azure);font:700 22px var(--display);text-align:center}
+.mon .grp{border:1px solid var(--line);border-radius:10px;background:var(--surface2);padding:8px 12px;min-width:0}
+.mon .grp h5{margin:0 0 4px;font:700 14px var(--display);color:var(--azure-deep)}
+.mon .grp span{display:inline-block;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1px 8px;margin:2px 4px 2px 0;font-size:13.5px}
+@media(max-width:820px){.mon{grid-template-columns:1fr}.mon .ar{transform:rotate(90deg)}}
+
+/* Módulo 12: panel de alertas */
+.kpis{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.kpis div{flex:1 1 150px;background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--muted)}
+.kpis b{display:block;font:800 26px var(--display);color:var(--azure);line-height:1.1}
+.sev{display:inline-block;width:4px;height:14px;border-radius:2px;margin-right:8px;vertical-align:middle}
+.s0{background:#c4314b}.s1{background:#d97706}.s2{background:#eab308}.s3{background:#0a66b5}.s4{background:#1e3a8a}
+
+@media(max-width:820px){.wrap{grid-template-columns:1fr;gap:20px}nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}nav a{border:1px solid var(--line);border-radius:999px;padding:4px 12px}nav .sep{display:none}}
+@media(prefers-reduced-motion:no-preference){a,tr td{transition:background .15s,color .15s}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="hero-in">
+  <div class="tag">AZ-900 · Microsoft Azure Fundamentals</div>
+  <h1>Módulo 12: Herramientas de supervisión de Azure</h1>
+  <p class="lead">Versión resumida: Azure Advisor, Azure Service Health y Azure Monitor (Log Analytics, alertas y Application Insights). Con repaso de examen y relación con el AZ-104.</p>
+  <div class="chips"><span class="chip">Gema San</span><span class="chip">Contrastado con Microsoft Learn</span><span class="chip">Sueña. Aprende. Crece.</span></div>
+</div></header>
+
+<div class="wrap">
+<nav aria-label="Índice">
+  <a href="index.html">← Todos los módulos</a>
+  <a href="#mapa">Mapa del módulo</a>
+  <div class="sep">Temas</div>
+  <a href="#u1">1 · Azure Advisor</a><a href="#u2">2 · Azure Service Health</a><a href="#u3">3 · Azure Monitor</a>
+  <div class="sep">Examen</div>
+  <a href="#comparativa">Cuál uso</a><a href="#examen">Qué cae</a><a href="#learn-q">Preguntas de Learn</a><a href="#az104">Relación con AZ-104</a>
+  <div class="sep">Cierre</div>
+  <a href="#repaso">Repaso final</a><a href="#learn">Contraste con Learn</a>
+</nav>
+<main>
+
+<section id="mapa"><h2>Mapa del módulo</h2>
+<p>Es el último módulo del bloque de administración y gobierno (30–35 % del examen). Sigue al de herramientas de administración (Módulo 11). Aquí no se configura nada: se trata de saber qué herramienta responde a cada pregunta de supervisión.</p>
+<div class="tablebox"><table><thead><tr><th>Herramienta</th><th>Pregunta que responde</th><th>Palabra clave</th></tr></thead><tbody>
+<tr><td>Azure Advisor</td><td>¿Qué puedo mejorar en mis recursos?</td><td>Recomendaciones</td></tr>
+<tr><td>Azure Service Health</td><td>¿Qué le pasa a Azure y cómo me afecta?</td><td>Estado, interrupciones, mantenimiento</td></tr>
+<tr><td>Azure Monitor</td><td>¿Cómo van mis recursos y mis aplicaciones?</td><td>Métricas, registros, alertas</td></tr></tbody></table></div>
+<div class="flow" style="margin-top:12px"><span class="node">Advisor<small>Te aconseja</small></span><span class="arrow">+</span><span class="node">Service Health<small>Te informa del estado de Azure</small></span><span class="arrow">+</span><span class="node az">Azure Monitor<small>Mide y te avisa</small></span></div>
+<h3>Qué habilidad de la guía cubre cada tema</h3>
+<div class="tablebox"><table><thead><tr><th>Habilidad de la guía de estudio</th><th>Tema</th></tr></thead><tbody>
+<tr><td>Describir el propósito de Azure Advisor</td><td>1</td></tr>
+<tr><td>Describir Azure Service Health</td><td>2</td></tr>
+<tr><td>Describir Azure Monitor, incluidos Log Analytics, alertas y Application Insights</td><td>3</td></tr></tbody></table></div>
+<h3>Lo que debo saber de este módulo</h3>
+<ul class="check" id="checklist">
+  <li><label><input type="checkbox"><span>Las cinco categorías de Advisor</span></label></li>
+  <li><label><input type="checkbox"><span>Una recomendación se puede aplicar, posponer o descartar</span></label></li>
+  <li><label><input type="checkbox"><span>Estado de Azure, Service Health y Resource Health</span></label></li>
+  <li><label><input type="checkbox"><span>Resource Health: ¿el problema es de Azure o mío?</span></label></li>
+  <li><label><input type="checkbox"><span>Azure Monitor: recopila, analiza y actúa</span></label></li>
+  <li><label><input type="checkbox"><span>Log Analytics: consultas sobre los datos de Monitor</span></label></li>
+  <li><label><input type="checkbox"><span>Alerta = condición + grupo de acciones</span></label></li>
+  <li><label><input type="checkbox"><span>Application Insights: aplicaciones web, estén donde estén</span></label></li>
+</ul></section>
+
+<section id="u1"><div class="unit"><span class="n">TEMA 1/3</span></div>
+<h2>Azure Advisor</h2>
+<p class="idea"><b>Idea principal.</b> Advisor evalúa tus recursos de Azure y te recomienda mejoras. Es una guía personalizada de procedimientos recomendados dentro del portal.</p>
+<div class="fig"><p class="fig-t">Las cinco categorías de recomendación</p>
+<div class="tablebox"><table><thead><tr><th>Categoría</th><th>Qué hace por ti</th></tr></thead><tbody>
+<tr><td>Fiabilidad</td><td>Mantiene las aplicaciones en ejecución marcando riesgos de configuración</td></tr>
+<tr><td>Seguridad</td><td>Detecta amenazas y vulnerabilidades que podrían causar brechas</td></tr>
+<tr><td>Rendimiento</td><td>Identifica cambios que aceleran las aplicaciones</td></tr>
+<tr><td>Excelencia operativa</td><td>Sugiere mejoras de flujo de trabajo y de implementación</td></tr>
+<tr><td>Costes</td><td>Encuentra formas de reducir el gasto en Azure</td></tr></tbody></table></div></div>
+<h3>Qué puedes hacer con cada recomendación</h3>
+<div class="flow"><span class="node az">Aplicarla ya</span><span class="arrow">/</span><span class="node">Posponerla</span><span class="arrow">/</span><span class="node">Descartarla</span></div>
+<ul><li>El panel muestra las recomendaciones de todas tus suscripciones. Se filtra por suscripción, grupo de recursos o servicio.</li><li>Puedes configurar notificaciones para que Advisor avise de las recomendaciones nuevas.</li></ul>
+<div class="fig" style="margin-top:12px"><p class="fig-t">Panel de Advisor <span class="badge">Ejemplo de Learn, traducido</span></p>
+<div class="advgrid">
+  <div class="ac"><h4>Fiabilidad</h4><div class="b"><div class="big">4<small>recomendaciones</small></div><div class="imp"><span class="i-a">0 alto</span><span class="i-m">4 medio</span><span class="i-b">0 bajo</span></div><div class="rs">122 recursos afectados</div></div></div>
+  <div class="ac"><h4>Seguridad</h4><div class="b"><div class="big">31<small>recomendaciones</small></div><div class="imp"><span class="i-a">20 alto</span><span class="i-m">7 medio</span><span class="i-b">4 bajo</span></div><div class="rs">218 recursos afectados</div></div></div>
+  <div class="ac good"><h4>Rendimiento</h4><div class="b">✔ Estás siguiendo todas las recomendaciones de rendimiento</div></div>
+  <div class="ac"><h4>Excelencia operativa</h4><div class="b"><div class="big">1<small>recomendación</small></div><div class="imp"><span class="i-a">0 alto</span><span class="i-m">0 medio</span><span class="i-b">1 bajo</span></div><div class="rs">1 recurso afectado</div></div></div>
+  <div class="ac"><h4>Costes</h4><div class="b"><div class="big">3<small>recomendaciones</small></div><div class="imp"><span class="i-a">1 alto</span><span class="i-m">2 medio</span><span class="i-b">0 bajo</span></div><div class="rs">14 recursos afectados</div><span class="save">7.437 USD de ahorro al año</span></div></div>
+</div>
+<p class="pc" style="margin-top:8px">Alto, medio y bajo indican el impacto de la recomendación. Las cifras son las del ejemplo de Learn, no datos reales.</p></div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Es el Best Practices Analyzer de Windows Server o un informe de auditoría de tu infraestructura, pero continuo y con la acción sugerida al lado.</p></div></section>
+
+<section id="u2"><div class="unit"><span class="n">TEMA 2/3</span></div>
+<h2>Azure Service Health</h2>
+<p class="idea"><b>Idea principal.</b> Service Health te mantiene informado del estado de Azure y de tus recursos. Combina tres vistas que van de lo global a lo individual.</p>
+<div class="fig"><p class="fig-t">Azure Service Health: de lo global a lo individual</p>
+<div class="scope">
+  <div class="sv"><h4>Estado de Azure</h4><p class="sub">Todos los servicios, todas las regiones</p><div class="dots">● ● ● ● ●<br>● ● ● ● ●<br>● ● ● ● ●<br>● ● ● ● ●</div><div class="foot">Vista global</div></div>
+  <div class="sv"><h4>Service Health</h4><p class="sub">Tus servicios, tus regiones</p><div class="dots">● ● ●<br>● ● ●<br>🔔</div><div class="foot">Alertas para tu entorno</div></div>
+  <div class="sv"><h4>Resource Health</h4><p class="sub">Un recurso individual</p><span class="vm">VM</span><span class="okc">✔</span><div class="foot">Funciona con normalidad</div></div>
+</div>
+<div class="narrow"><span>Más amplio</span><span>Más concreto</span></div></div>
+<h3>Cuándo mirar cada una</h3>
+<div class="tablebox"><table><thead><tr><th>Vista</th><th>Qué te dice</th></tr></thead><tbody>
+<tr><td>Estado de Azure</td><td>Imagen global. Se consulta cuando oyes de una interrupción generalizada y quieres saber si afecta a Azure</td></tr>
+<tr><td>Service Health</td><td>Interrupciones, mantenimiento programado y avisos de estado relevantes para los servicios y regiones que usas. Admite alertas</td></tr>
+<tr><td>Resource Health</td><td>Si un recurso concreto (por ejemplo, una VM) funciona bien o tiene un problema, y si el problema está en el lado de Azure o en el tuyo</td></tr></tbody></table></div>
+<ul style="margin-top:12px"><li>Las alertas históricas se conservan para detectar tendencias.</li><li>Valor operativo: cuando un evento afecta a tu carga de trabajo, Service Health ofrece vínculos a soporte técnico para responder rápido.</li></ul>
+<div class="asir"><h4>Traducción ASIR</h4><p>Estado de Azure es la página de estado de tu proveedor. Service Health es el parte de incidencias y mantenimiento que te envía a ti. Resource Health es el estado de tu propio servidor.</p></div></section>
+
+<section id="u3"><div class="unit"><span class="n">TEMA 3/3</span></div>
+<h2>Azure Monitor</h2>
+<p class="idea"><b>Idea principal.</b> Azure Monitor es una plataforma para recopilar, analizar y actuar sobre los datos de tus recursos y aplicaciones. Funciona en Azure, en local y en multinube.</p>
+<div class="fig"><p class="fig-t">Amplitud de Azure Monitor <span class="badge">Importante para futuras certificaciones</span></p>
+<div class="mon">
+  <div class="col"><div class="it">Cargas de trabajo</div><div class="it">Infraestructura</div><div class="it">Plataforma Azure</div><div class="it cu">Orígenes personalizados</div></div>
+  <div class="ar">→</div>
+  <div class="dp"><h5>Plataforma de datos</h5><div class="col"><div class="it">Métricas</div><div class="it">Registros</div><div class="it">Seguimientos</div></div></div>
+  <div class="ar">→</div>
+  <div class="col">
+    <div class="grp"><h5>Experiencias</h5><span>Aplicación</span><span>Contenedor</span><span>VM</span><span>Red</span><span>…</span></div>
+    <div class="grp"><h5>Visualizar</h5><span>Workbooks</span><span>Paneles</span><span>Power BI</span><span>Grafana</span></div>
+    <div class="grp"><h5>Analizar</h5><span>Explorador de métricas</span><span>Log Analytics</span></div>
+    <div class="grp"><h5>Responder</h5><span>Alertas y acciones</span><span>Escalado automático</span></div>
+    <div class="grp"><h5>Integrar</h5><span>Event Hubs</span><span>Logic Apps</span><span>API de importación y exportación</span></div>
+  </div>
+</div>
+<p class="pc" style="margin-top:8px">Diagrama de Learn traducido. Los nombres de producto se mantienen en inglés.</p></div>
+<p style="margin-top:12px">Recopila registros y métricas de aplicaciones, sistemas operativos y capas de red. Los guarda de forma centralizada y los pone a tu disposición en paneles, consultas y alertas.</p>
+
+<h3>Log Analytics</h3>
+<p>Es la herramienta del portal para <b>escribir y ejecutar consultas</b> sobre los datos recopilados por Azure Monitor. Sirve para un filtrado sencillo (todos los errores de la última hora) o para análisis avanzados de tendencias.</p>
+
+<h3>Alertas de Azure Monitor</h3>
+<div class="flow"><span class="node">Condición definida<small>Azure Monitor detecta que se cumple</small></span><span class="arrow">→</span><span class="node az">Regla de alerta<small>Condición + grupo de acciones</small></span><span class="arrow">→</span><span class="node">Grupo de acciones<small>Quién recibe el aviso y qué ocurre después</small></span></div>
+<div class="tablebox"><table><thead><tr><th>Tipo</th><th>Se basa en</th><th>Ejemplo de Learn</th></tr></thead><tbody>
+<tr><td>Alerta de métrica</td><td>Una métrica</td><td>Correo cuando la CPU de una VM se mantiene por encima del 80 %</td></tr>
+<tr><td>Alerta de registro</td><td>Un registro</td><td>Detectar un patrón de error concreto en varios recursos</td></tr></tbody></table></div>
+<div class="callout" style="margin-top:12px"><b>Para el examen.</b> Los grupos de acciones se reutilizan en Azure Monitor, Service Health y Azure Advisor.</div>
+<div class="fig" style="margin-top:12px"><p class="fig-t">Panel de alertas <span class="badge">Ejemplo de Learn, traducido</span></p>
+<div class="kpis"><div><b>29</b>Total de alertas</div><div><b>1</b>Grupos inteligentes (96,55 % de reducción)</div><div><b>15</b>Total de reglas de alerta (13 habilitadas)</div></div>
+<div class="tablebox"><table><thead><tr><th>Gravedad</th><th>Total de alertas</th><th>Nuevas</th><th>Confirmadas</th><th>Cerradas</th></tr></thead><tbody>
+<tr><td><span class="sev s0"></span>Sev 0</td><td>26</td><td>26</td><td>0</td><td>0</td></tr>
+<tr><td><span class="sev s1"></span>Sev 1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td><span class="sev s2"></span>Sev 2</td><td>3</td><td>3</td><td>0</td><td>0</td></tr>
+<tr><td><span class="sev s3"></span>Sev 3</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td><span class="sev s4"></span>Sev 4</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">Filtros del ejemplo: suscripción, grupo de recursos y rango de tiempo (última hora). Sev 0 es la más grave.</p></div>
+
+<h3>Application Insights</h3>
+<p>Característica de Azure Monitor que supervisa el rendimiento y el uso de <b>aplicaciones web</b>, se ejecuten en Azure, en local o en otra nube.</p>
+<div class="split">
+  <div class="box ms"><h4>Cómo se activa</h4><ul><li>Añadiendo un SDK al código de la aplicación.</li><li>Habilitando el agente, sin cambios en el código.</li></ul></div>
+  <div class="box tl"><h4>Qué supervisa</h4><ul><li>Tasas de solicitud, tiempos de respuesta y tasas de error.</li><li>Llamadas de dependencia y su rendimiento.</li><li>Tiempos de carga, recuento de usuarios y tendencias de sesión.</li><li>Contadores del servidor: CPU, memoria y red.</li></ul></div>
+  <div class="box cl"><h4>Pruebas de disponibilidad</h4><p>Envían solicitudes sintéticas a la aplicación para saber que responde, incluso con poco tráfico.</p></div>
+</div>
+<div class="asir"><h4>Traducción ASIR</h4><p>Azure Monitor es el Zabbix, Nagios o PRTG de Azure, más el Visor de eventos y el Monitor de rendimiento centralizados. Log Analytics es el buscador sobre esos registros. Un grupo de acciones es la lista de distribución o el script que se dispara con el aviso. Application Insights es el APM de la aplicación web.</p></div></section>
+
+<section id="comparativa"><h2>Cuál uso</h2>
+<div class="tablebox"><table><thead><tr><th>Herramienta</th><th>Responde a</th><th>Ámbito</th><th>Palabra clave</th></tr></thead><tbody>
+<tr><td>Azure Advisor</td><td>¿Qué mejoro?</td><td>Tus suscripciones</td><td>Recomendaciones</td></tr>
+<tr><td>Estado de Azure</td><td>¿Hay una caída general?</td><td>Todo Azure</td><td>Global</td></tr>
+<tr><td>Service Health</td><td>¿Qué eventos de Azure me afectan?</td><td>Tus servicios y regiones</td><td>Interrupciones, mantenimiento</td></tr>
+<tr><td>Resource Health</td><td>¿Está bien este recurso?</td><td>Un recurso</td><td>Azure o tu lado</td></tr>
+<tr><td>Azure Monitor</td><td>¿Cómo va y avísame</td><td>Recursos y aplicaciones</td><td>Métricas, registros, alertas</td></tr></tbody></table></div></section>
+
+<section id="examen"><h2>Qué cae en el examen</h2>
+<p>Microsoft quiere comprobar que distingues las tres herramientas y sabes a cuál recurrir según el enunciado.</p>
+<h3>Errores típicos</h3>
+<div class="tablebox"><table><thead><tr><th>Error</th><th>Lo correcto</th></tr></thead><tbody>
+<tr><td>«Capacidad» es una categoría de Advisor</td><td>No. Son fiabilidad, seguridad, rendimiento, excelencia operativa y costes.</td></tr>
+<tr><td>Service Health dice si mi VM concreta está afectada</td><td>Eso es Resource Health. Service Health avisa de eventos de tus servicios y regiones.</td></tr>
+<tr><td>Estado de Azure es una vista personalizada</td><td>Es la vista global de todos los servicios y regiones.</td></tr>
+<tr><td>Advisor mide el rendimiento y lanza alertas de métricas</td><td>Advisor recomienda. Medir y alertar es de Azure Monitor.</td></tr>
+<tr><td>Application Insights solo sirve en Azure</td><td>También supervisa aplicaciones en local y en otras nubes.</td></tr></tbody></table></div>
+<h3>Palabras clave</h3>
+<div class="tablebox"><table><thead><tr><th>Si el enunciado dice</th><th>Piensa en</th></tr></thead><tbody>
+<tr><td>Recomendaciones, mejores prácticas, reducir el gasto</td><td>Azure Advisor</td></tr>
+<tr><td>Interrupción generalizada, estado de todo Azure</td><td>Estado de Azure</td></tr>
+<tr><td>Mantenimiento programado, interrupciones en mis regiones</td><td>Service Health</td></tr>
+<tr><td>¿Se ha visto afectada mi VM o mi aplicación?</td><td>Resource Health</td></tr>
+<tr><td>Escribir consultas sobre los datos recopilados</td><td>Log Analytics</td></tr>
+<tr><td>Notificar cuando se cumple una condición</td><td>Alertas de Azure Monitor</td></tr>
+<tr><td>Rendimiento y uso de una aplicación web, SDK, pruebas de disponibilidad</td><td>Application Insights</td></tr></tbody></table></div></section>
+
+<section id="learn-q"><h2>Preguntas de Learn</h2>
+<p class="pc" style="margin-top:0">Son las dos de la comprobación de conocimientos del módulo. Intenta responder antes de abrirlas.</p>
+<details><summary>1. ¿Cuál no es una de las categorías de recomendación de Azure Advisor? (Confiabilidad, Capacidad o Coste)</summary><div class="ex"><p><b>Capacidad.</b></p>
+<p><b>Por qué.</b> Advisor recomienda en cinco categorías: fiabilidad, seguridad, rendimiento, excelencia operativa y costes. La capacidad no está entre ellas.</p>
+<p><b>Trampa.</b> «Confiabilidad» es «fiabilidad» en la versión en español de Learn, y «Coste» es la categoría Cost.</p></div></details>
+<details><summary>2. Recibes un correo de que las máquinas virtuales de una región donde tienes VM implementadas sufren una interrupción. ¿Qué componente de Azure Service Health te indicará si tu aplicación se ha visto afectada? (Estado de Azure, Service Health o Resource Health)</summary><div class="ex"><p><b>Resource Health.</b></p>
+<p><b>Por qué.</b> El correo habla de la región. Para saber si tu recurso concreto está afectado y si el problema es de Azure o tuyo, hay que mirar Resource Health.</p>
+<p><b>Trampa.</b> Estado de Azure es la vista global. Service Health ya te ha avisado del evento en tus regiones, pero no dice si tu recurso en concreto se ha visto afectado.</p></div></details></section>
+
+<section id="az104"><h2>Relación con AZ-104</h2>
+<p>Tu meta es el AZ-104. Esto es lo que cambia de un examen a otro.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>AZ-900</th><th>AZ-104</th></tr></thead><tbody>
+<tr><td>Azure Advisor</td><td>Saber las cinco categorías</td><td>Revisar y aplicar recomendaciones</td></tr>
+<tr><td>Service Health</td><td>Distinguir las tres vistas</td><td>Crear alertas de Service Health y de Resource Health</td></tr>
+<tr><td>Azure Monitor</td><td>Saber qué recopila y qué ofrece</td><td>Configurar métricas, registros y alertas</td></tr>
+<tr><td>Alertas</td><td>Condición más grupo de acciones</td><td>Crear reglas de alerta y grupos de acciones</td></tr>
+<tr><td>Log Analytics</td><td>Saber que sirve para consultas</td><td>Consultar registros desde un espacio de trabajo</td></tr>
+<tr><td>Application Insights</td><td>Saber qué supervisa</td><td>Supervisar aplicaciones web</td></tr></tbody></table></div>
+<p class="pc" style="margin-top:8px">Es una orientación de estudio, no una lista oficial de Microsoft.</p></section>
+
+<section id="repaso"><h2>Repaso final</h2>
+<h3>Frases de examen</h3>
+<ul>
+  <li>✅ Azure Advisor recomienda mejoras en cinco categorías.</li>
+  <li>✅ Cada recomendación de Advisor se puede aplicar, posponer o descartar.</li>
+  <li>✅ Estado de Azure es la vista global. Service Health, la de tus servicios y regiones. Resource Health, la de un recurso.</li>
+  <li>✅ Resource Health indica si el problema está en el lado de Azure o en el tuyo.</li>
+  <li>✅ Azure Monitor recopila, analiza y actúa sobre los datos de recursos y aplicaciones.</li>
+  <li>✅ Log Analytics sirve para escribir y ejecutar consultas sobre los datos de Azure Monitor.</li>
+  <li>✅ Una regla de alerta combina una condición y un grupo de acciones.</li>
+  <li>✅ Los grupos de acciones se reutilizan en Azure Monitor, Service Health y Advisor.</li>
+  <li>✅ Application Insights supervisa aplicaciones web en Azure, en local o en otra nube.</li></ul>
+<h3>Trucos para memorizar</h3>
+<div class="mnemo">
+  <div><b>Advisor</b>El consejero</div><div><b>Estado de Azure</b>El mapa global</div><div><b>Service Health</b>Mi parte de incidencias</div><div><b>Resource Health</b>Mi recurso</div><div><b>Azure Monitor</b>El cuadro de mandos</div><div><b>Log Analytics</b>El buscador de registros</div><div><b>Alerta</b>Condición + acción</div><div><b>Application Insights</b>La radiografía de la app</div><div><b>Capacidad</b>La intrusa de Advisor</div></div>
+<h3>Repaso exprés</h3>
+<ol>
+  <li>Advisor aconseja en cinco categorías: fiabilidad, seguridad, rendimiento, excelencia operativa y costes.</li>
+  <li>Puedes aplicar, posponer o descartar cada recomendación.</li>
+  <li>Service Health son tres vistas: Estado de Azure, Service Health y Resource Health.</li>
+  <li>Va de lo global a lo individual.</li>
+  <li>Resource Health dice si el fallo es de Azure o tuyo.</li>
+  <li>Azure Monitor recopila, analiza y actúa. Funciona en Azure, local y multinube.</li>
+  <li>Su base son métricas, registros y seguimientos.</li>
+  <li>Log Analytics ejecuta consultas sobre esos datos.</li>
+  <li>Una alerta es una condición más un grupo de acciones.</li>
+  <li>Hay alertas de métrica y de registro.</li>
+  <li>Los grupos de acciones valen para Monitor, Service Health y Advisor.</li>
+  <li>Application Insights vigila aplicaciones web con SDK o con agente.</li>
+  <li>Sus pruebas de disponibilidad envían solicitudes sintéticas.</li></ol>
+<h3>Escenarios para practicar</h3>
+<p class="pc">Ejercicios propios para entrenar la elección de herramienta. No son preguntas de Microsoft.</p>
+<details><summary>Quieres saber cómo ahorrar en tu suscripción de Azure.</summary><div class="ex"><p><b>Azure Advisor.</b></p><p>La categoría de costes recomienda formas de reducir el gasto.</p></div></details>
+<details><summary>Hay noticias de una caída grande y quieres saber si afecta a Azure.</summary><div class="ex"><p><b>Estado de Azure.</b></p><p>Es la vista global de todos los servicios y regiones.</p></div></details>
+<details><summary>Quieres que te avisen del mantenimiento programado en las regiones donde trabajas.</summary><div class="ex"><p><b>Service Health con una alerta.</b></p><p>Muestra mantenimiento relevante para tu entorno y admite alertas.</p></div></details>
+<details><summary>Quieres que te avisen por correo cuando la CPU de una VM pase del 80 %.</summary><div class="ex"><p><b>Una alerta de métrica de Azure Monitor.</b></p><p>Condición en la regla y correo en el grupo de acciones.</p></div></details>
+<details><summary>Quieres saber qué tiempos de respuesta tiene tu aplicación web, aunque no esté en Azure.</summary><div class="ex"><p><b>Application Insights.</b></p><p>Supervisa aplicaciones web en Azure, en local o en otra nube.</p></div></details></section>
+
+<section id="learn"><h2>Contraste con Microsoft Learn</h2>
+<p>Revisé estos apuntes con la documentación oficial el 30 de octubre de 2026. Es una versión resumida, así que solo he tocado lo que afecta al examen.</p>
+<div class="tablebox"><table><thead><tr><th>Tema</th><th>Resultado</th></tr></thead><tbody>
+<tr><td>Estructura del módulo</td><td>El módulo <i>Describe monitoring tools in Azure</i> tiene 6 unidades: introducción, Advisor, Service Health, Azure Monitor, evaluación del módulo y resumen. Este manual cubre las tres unidades de contenido y la evaluación. De la introducción solo vi la portada con los objetivos y no he recibido la unidad de resumen.</td></tr>
+<tr><td>Guía de estudio</td><td>La guía (habilidades medidas desde el 20 de julio de 2026) lista las tres habilidades tal cual: Advisor, Service Health y Azure Monitor con Log Analytics, alertas y Application Insights. Los pesos del bloque no cambian respecto al Módulo 1.</td></tr>
+<tr><td>Advisor</td><td>Las cinco categorías coinciden con la documentación: fiabilidad, seguridad, rendimiento, costes y excelencia operativa. El panel es el ejemplo de Learn y sus cifras no son datos reales. Learn dice «Cost» sin traducir en la unidad y «confiabilidad» en español: son costes y fiabilidad.</td></tr>
+<tr><td>Service Health</td><td>Coinciden las tres vistas. La documentación añade que Service Health informa de cinco tipos de evento: incidencias, mantenimiento planificado, avisos de estado, avisos de seguridad y actualizaciones de facturación. Y que Resource Health no necesita configuración, es gratuito y muestra los estados disponible, no disponible, degradado y desconocido. Lo dejé fuera del manual para no alargarlo.</td></tr>
+<tr><td>Pregunta 2 de la evaluación</td><td>La respuesta (Resource Health) coincide con la marcada como correcta en tu captura. La documentación confirma el matiz: Service Health informa de eventos en tus servicios y regiones, y Resource Health diagnostica si un recurso concreto se ve afectado y si el motivo es de Azure o tuyo.</td></tr>
+<tr><td>Azure Monitor</td><td>Diagrama de Learn traducido al español. La documentación actual describe sus datos como métricas, registros, seguimientos y eventos. Mantengo los tres del diagrama de Learn.</td></tr>
+<tr><td>Log Analytics</td><td>Coincide. La documentación añade que las consultas se escriben en KQL (lenguaje de consultas Kusto). La unidad de Learn no lo nombra y no lo incluí en el manual.</td></tr>
+<tr><td>Alertas</td><td>Coincide con la regla de alerta (condición más grupo de acciones) y con que los grupos de acciones se reutilizan en Azure Monitor, Service Health y Advisor. La documentación añade un tercer tipo, las alertas del registro de actividad: las de Service Health y Resource Health son de este tipo. No aparece en la unidad de Learn y no lo incluí.</td></tr>
+<tr><td>Application Insights</td><td>Coincide con la unidad (SDK o agente, y qué supervisa). La documentación actual lo describe como una función de Azure Monitor basada en OpenTelemetry para supervisar el rendimiento de aplicaciones. La unidad de Learn sigue hablando de SDK y de agente, que es lo que se pregunta.</td></tr>
+<tr><td>Pregunta 1 de la evaluación</td><td>La respuesta (Capacidad) coincide con la marcada como correcta en tu captura y con las cinco categorías de la documentación.</td></tr>
+<tr><td>Traducciones ASIR, relación con AZ-104, trucos y escenarios</td><td>Son material didáctico, no datos de Microsoft. La relación con el AZ-104 es una orientación de estudio.</td></tr></tbody></table></div>
+<p class="src" style="margin-top:14px">Fuentes:
+<a href="https://learn.microsoft.com/training/modules/describe-monitoring-tools-azure/">Módulo Describe monitoring tools in Azure</a> ·
+<a href="https://learn.microsoft.com/azure/advisor/advisor-overview">Introducción a Azure Advisor</a> ·
+<a href="https://learn.microsoft.com/azure/service-health/overview">Qué es Azure Service Health</a> ·
+<a href="https://learn.microsoft.com/azure/service-health/service-health-faq">Preguntas frecuentes de Service Health</a> ·
+<a href="https://learn.microsoft.com/azure/service-health/resource-health-faq">Preguntas frecuentes de Resource Health</a> ·
+<a href="https://learn.microsoft.com/azure/azure-monitor/fundamentals/overview">Información general de Azure Monitor</a> ·
+<a href="https://learn.microsoft.com/azure/azure-monitor/alerts/alerts-overview">Alertas de Azure Monitor</a> ·
+<a href="https://learn.microsoft.com/azure/azure-monitor/alerts/action-groups">Grupos de acciones</a> ·
+<a href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900">Guía de estudio AZ-900</a></p></section>
+
+</main></div>
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+<script>
+(function(){var KEY='az900-m12-check',boxes=document.querySelectorAll('#checklist input');
+try{var s=JSON.parse(localStorage.getItem(KEY)||'[]');boxes.forEach(function(b,i){b.checked=!!s[i]})}catch(e){}
+boxes.forEach(function(b){b.addEventListener('change',function(){try{localStorage.setItem(KEY,JSON.stringify([].map.call(boxes,function(x){return x.checked})))}catch(e){}})})})();
+</script>
+</body>
+</html>
