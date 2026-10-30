@@ -1,6 +1,6 @@
 # Guía de Estudio AZ-900 — Microsoft Azure Fundamentals
 
-Manuales y apuntes visuales orientados a la preparación del examen **AZ-900**, con explicaciones enfocadas al perfil de **Administración de Sistemas (SMR / ASIR)**, resúmenes visuales, traducción a conceptos On-premises y laboratorios prácticos reales.
+Manuales y apuntes visuales orientados a la preparación del examen **AZ-900**, con explicaciones enfocadas al perfil de **Administración de Sistemas (SMR / ASIR)**, resúmenes visuales, traducción a conceptos On-premises y preguntas de comprobación.
 
 ---
 
@@ -22,11 +22,7 @@ Manuales y apuntes visuales orientados a la preparación del examen **AZ-900**, 
 * **[Módulo 9: Etiquetas (tags) en Azure](modulo-9.html)**
 * **[Módulo 10: Gobernanza y cumplimiento en Azure](modulo-10.html)**
 * **[Módulo 11: Herramientas de administración, Azure Arc y ARM](modulo-11.html)**
-
----
-
-## 🛠️ Laboratorios Prácticos
-* **[Laboratorio 1: Hospedaje de un sitio web estático en Azure Blob Storage](laboratorio-1.html)** — Despliegue serverless, gestión del contenedor `$web` y validación con evidencias reales en Azure Portal.
+* **[Módulo 12: Herramientas de supervisión de Azure](modulo-12.html)**
 
 ---
 
