@@ -103,16 +103,22 @@
           <span class="meta">Módulo completo · 3 temas</span>
           <span class="go">Abrir el manual →</span>
         </a>
-        <a class="card" href="modulo-12.html">
-          <span class="num">MÓDULO 12</span>
-          <h3>Herramientas de supervisión de Azure</h3>
-          <p>Azure Advisor, Azure Service Health (Estado de Azure, Service Health y Resource Health) y Azure Monitor con Log Analytics, alertas y Application Insights.</p>
-          <span class="meta">Versión resumida · 3 temas</span>
-          <span class="go">Abrir el manual →</span>
-        </a>
       </div>
     </section>
 
+    <section>
+      <h2>Laboratorios prácticos</h2>
+      <div class="grid">
+        <a class="card wip" href="laboratorio-1.html">
+          <span class="num">LABORATORIO 1</span>
+          <h3>Hospedaje de sitio web estático en Azure Blob Storage</h3>
+          <p>Creación de cuenta de almacenamiento, contenedor $web, carga de landing page V1/V2, página 404 personalizada y validación pública.</p>
+          <span class="meta">Práctica guiada · Con capturas reales</span>
+          <span class="go">Ver laboratorio →</span>
+        </a>
+      </div>
+    </section>
+    
     <section>
       <h2>Cómo encajan en el examen</h2>
       <div class="tablebox">
@@ -123,7 +129,7 @@
           <tbody>
             <tr><td>Conceptos cloud</td><td>25–30 %</td><td>Módulos 1, 2 y 3</td></tr>
             <tr><td>Arquitectura y servicios de Azure</td><td>35–40 %</td><td>Módulos 4, 5, 6 y 7</td></tr>
-            <tr><td>Administración y gobierno</td><td>30–35 %</td><td>Módulos 8, 9, 10, 11 y 12</td></tr>
+            <tr><td>Administración y gobierno</td><td>30–35 %</td><td>Módulos 8, 9, 10 y 11</td></tr>
           </tbody>
         </table>
       </div>
@@ -147,3 +153,249 @@
   <footer>Gema San · Sueña. Aprende. Crece.</footer>
 </body>
 </html>
+```[cite: 39]
+
+---
+
+### 📄 2. Código exacto para `laboratorio-1.html`
+*(Este archivo ya tiene los nombres exactos de tus fotos vinculados a cada tarjeta, con el estilo visual idéntico a tus módulos)*[cite: 40]
+
+```html
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Laboratorio 1: Hospedaje de sitio web estático | Guía AZ-900</title>
+<meta name="description" content="Laboratorio práctico guiado 1 de Azure: Hospedaje de un sitio web estático en Azure Blob Storage con evidencias reales.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px;padding-block:36px 72px}
+  nav{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+  nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line)}
+  nav a:hover,nav a:focus-visible{color:var(--azure);border-left-color:var(--azure);outline:none}
+  nav .sep{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
+  
+  .screenshot-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .screenshot-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .screenshot-card img:hover { opacity: 0.9; }
+  .screenshot-caption {
+    padding: 10px 14px;
+    background: var(--surface2);
+    font: 500 13px var(--mono);
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+  }
+  
+  .modal{display:none;position:fixed;z-index:1000;top:0;left:0;width:100%;height:100%;background-color:rgba(7,13,23,0.9);justify-content:center;align-items:center;padding:1rem;}
+  .modal-content{max-width:92%;max-height:92%;border-radius:8px;}
+
+  @media(max-width:820px){
+    .wrap{grid-template-columns:1fr;gap:20px}
+    nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}
+    nav a{border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="tag">Laboratorio Práctico #1 · Azure Blob Storage</div>
+    <h1>Hospedaje de un sitio web estático</h1>
+    <p class="lead">Despliegue serverless de una landing page y página de error 404 personalizada utilizando una cuenta de almacenamiento en Azure.</p>
+    <div class="chips">
+      <span class="chip">Gema San</span>
+      <span class="chip">Ejecución Real en Azure Portal</span>
+      <span class="chip">ASIR & Cloud</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav aria-label="Índice del Lab">
+    <span class="sep">Índice</span>
+    <a href="#mapa">1. Resumen y Mapa</a>
+    <a href="#fase1">2. Creación y Storage</a>
+    <a href="#fase2">3. Web Estática y URL</a>
+    <a href="#fase3">4. Carga y Pruebas V1/V2</a>
+    <a href="#fase4">5. Limpieza</a>
+    <span class="sep" style="margin-top:12px">Navegación</span>
+    <a href="index.html">← Inicio</a>
+  </nav>
+
+  <main>
+    <section id="mapa">
+      <h2>1. Resumen y Mapa del Laboratorio</h2>
+      <p>Este laboratorio práctico implementa un sitio web estático con arquitectura sin servidor (Serverless) aprovechando el servicio de objetos de Azure.</p>
+      
+      <div class="tablebox">
+        <table>
+          <thead>
+            <tr><th>Componente Azure</th><th>Parámetro / Valor Aplicado</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Grupo de Recursos</td><td><code>rg-gp-static-website</code></td></tr>
+            <tr><td>Cuenta de Almacenamiento</td><td><code>gemastaticweb01</code> (Standard, LRS, Spain Central)[cite: 21]</td></tr>
+            <tr><td>Contenedor Web</td><td><code>$web</code> (Generado automáticamente al activar el servicio)</td></tr>
+            <tr><td>Punto de Conexión Público</td><td><code>https://gemastaticweb01.z43.web.core.windows.net/</code>[cite: 16]</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="fase1">
+      <h2>2. Creación de la Cuenta de Almacenamiento</h2>
+      <p>Configuración inicial de los parámetros básicos en el portal de Azure para aprovisionar la infraestructura base[cite: 21].</p>
+
+      <div class="screenshot-card">
+        <img src="images/images-storage-account-config.png" alt="Configuración de la cuenta de almacenamiento" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia: Parámetros en la creación de <code>gemastaticweb01</code> (Spain Central, LRS)[cite: 21].</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/imagesstorage-account-review.png" alt="Revisión previa a la creación" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia: Validación de la plantilla antes de lanzar el despliegue final[cite: 23].</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/images-storage-account-created.png" alt="Implementación completada" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia: Notificación de despliegue completado para <code>gemastaticweb01</code>[cite: 22].</div>
+      </div>
+    </section>
+
+    <section id="fase2">
+      <h2>3. Habilitación del Sitio Web Estático</h2>
+      <p>Activación de la característica de hospedaje web nativa dentro de las opciones de Blob Service y configuración de documentos predeterminados[cite: 16, 20].</p>
+
+      <div class="screenshot-card">
+        <img src="images/images-static-website-enabled.png" alt="Habilitación del servicio web estático" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia: Configuración de <code>index.html</code> como índice y <code>404.html</code> como ruta de error[cite: 20].</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/image-imagespublic-endpoint.png" alt="Punto de conexión público generado" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia: URL del punto final público principal asignada por Azure[cite: 16].</div>
+      </div>
+    </section>
+
+    <section id="fase3">
+      <h2>4. Carga de Contenido y Comprobación (V1 / V2)</h2>
+      <p>Subida de los archivos HTML al contenedor especial <code>$web</code> y validación en vivo de las versiones de la landing page y el error personalizado[cite: 17, 18, 19, 24].</p>
+
+      <div class="screenshot-card">
+        <img src="images/images-web-container.png" alt="Contenedor $web con ficheros subidos" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia: Contenedor <code>$web</code> albergando los blobs con nivel de acceso Hot[cite: 24].</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/images-site-running-v1.png" alt="Sitio en vivo Versión 1" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia: Visualización correcta de la Versión 1 de la landing page[cite: 18].</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/images-custom-404-page.png" alt="Página de error 404 personalizada" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia: Respuesta ante rutas inexistentes (<code>/fakepage</code>) mostrando el error personalizado[cite: 17].</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/images-site-running-v2.png" alt="Sitio web actualizado a Versión 2" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia: Actualización en caliente instantánea tras sobrescribir el archivo <code>index.html</code> (Versión 2)[cite: 19].</div>
+      </div>
+    </section>
+
+    <section id="fase4">
+      <h2>5. Limpieza y Buenas Prácticas FinOps</h2>
+      <div class="callout">
+        <b>Importante para control de costes:</b> Al terminar las pruebas de laboratorio, recuerda eliminar el grupo de recursos <code>rg-gp-static-website</code> completo desde el portal para evitar cargos innecesarios en tu suscripción de Azure.
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="imageModal" class="modal" onclick="closeModal()">
+  <img id="modalImg" class="modal-content" alt="Vista ampliada">
+</div>
+
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+
+<script>
+  function zoomImage(src) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    modal.style.display = 'flex';
+    modalImg.src = src;
+  }
+  function closeModal() {
+    document.getElementById('imageModal').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
+```[cite: 40]
+
+---
+
+### 📄 3. Código exacto para `README.md`
+*(Copia este código, guárdalo como `README.md` y súbelo a la raíz de tu repositorio para que la descripción general quede perfecta)*[cite: 41]
+
+```markdown
+# Guía de Estudio AZ-900 — Microsoft Azure Fundamentals
+
+Manuales y apuntes visuales orientados a la preparación del examen **AZ-900**, con explicaciones enfocadas al perfil de **Administración de Sistemas (SMR / ASIR)**, resúmenes visuales, traducción a conceptos On-premises y preguntas de comprobación.
+
+---
+
+## 📚 Estructura de Módulos
+
+### Bloque 1: Conceptos Cloud (25–30%)
+* **[Módulo 1: Descripción de la informática en la nube](modulo-1.html)**
+* **[Módulo 2: Ventajas de usar servicios en la nube](modulo-2.html)**
+* **[Módulo 3: Tipos de servicio en la nube (IaaS, PaaS, SaaS)](modulo-3.html)**
+
+### Bloque 2: Arquitectura y Servicios de Azure (35–40%)
+* **[Módulo 4: Componentes arquitectónicos principales](modulo-4.html)**
+* **[Módulo 5: Servicios de proceso en Azure](modulo-5.html)**
+* **[Módulo 6: Redes y conectividad en Azure](modulo-6.html)**
+* **[Módulo 7: Almacenamiento en Azure](modulo-7.html)**
+
+### Bloque 3: Administración y Gobierno (30–35%)
+* **[Módulo 8: Identidad, acceso y seguridad](modulo-8.html)**
+* **[Módulo 9: Etiquetas (tags) en Azure](modulo-9.html)**
+* **[Módulo 10: Gobernanza y cumplimiento en Azure](modulo-10.html)**
+* **[Módulo 11: Herramientas de administración, Azure Arc y ARM](modulo-11.html)**
+
+---
+
+## 🛠️ Laboratorios Prácticos
+* **[Laboratorio 1: Hospedaje de un sitio web estático en Azure Blob Storage](laboratorio-1.html)** — Despliegue serverless, gestión del contenedor `$web` y validación con evidencias reales en Azure Portal.
+
+---
+
+## 🛠️ Filosofía del Manual
+* **Visual > Texto:** Esquemas, diagramas y tablas estructuradas.
+* **ASIR Edition:** Conceptos cruzados con Windows Server, Active Directory, redes e infraestructura local.
+* **AZ-104 Ready:** Base sólida pensando en la siguiente certificación de administración.
+
+---
+
+*Gema San · Sueña. Aprende. Crece.*
+```[cite: 41]
+
+---
+
+Sube estos tres archivos (`index.html`, `laboratorio-1.html` y `README.md`) a tu repositorio de GitHub[cite: 39, 40, 41], espera un par de minutos a que GitHub Pages lo compile y estará listo. ¡Con esto cerramos este bloque de prácticas y podrás seguir avanzando a tope!
