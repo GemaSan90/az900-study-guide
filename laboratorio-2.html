@@ -80,36 +80,36 @@
 
     <section id="ejercicio1">
       <h2>2. Ejercicio 1: Creación de recursos y aplicación de etiquetas</h2>
-      <p>Se crea el grupo de recursos <code>rg-gp-tags-locks</code> y dos cuentas de almacenamiento. Después se etiquetan el grupo y las cuentas para organizarlos y poder localizarlos mediante filtros. En las capturas se observa, por ejemplo, <code>departamento: desarrollo</code> y <code>entorno: prueba</code> en la primera cuenta, y <code>departamento: operaciones</code> y <code>entorno: prueba</code> en la segunda.</p>
+      <p>Se crea el grupo de recursos <code>rg-gp-tags-locks</code> y dos cuentas de almacenamiento. Después se etiquetan el grupo y las cuentas para organizarlos y poder localizarlos mediante filtros. La primera cuenta se etiqueta para el departamento de desarrollo y la segunda para el de operaciones; ambas pertenecen al entorno de prueba.</p>
 
       <div class="screenshot-card">
-        <img src="images/lab2-ejercicio1-01.png" alt="Implementación del grupo de recursos y la primera cuenta de almacenamiento" loading="lazy" onclick="zoomImage(this.src)">
-        <div class="screenshot-caption">📷 Evidencia 1: implementación completada en el grupo de recursos <code>rg-gp-tags-locks</code>.</div>
+        <img src="images/lab2-ejercicio1-01.png" alt="Implementación completada de la primera cuenta de almacenamiento stgptagslockgsc1" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 1: implementación completada de la primera cuenta de almacenamiento <code>stgptagslockgsc1</code> en el grupo de recursos <code>rg-gp-tags-locks</code>.</div>
       </div>
 
       <div class="screenshot-card">
-        <img src="images/lab2-ejercicio1-02.png" alt="Configuración de la primera cuenta de almacenamiento" loading="lazy" onclick="zoomImage(this.src)">
-        <div class="screenshot-caption">📷 Evidencia 2: configuración de la cuenta de almacenamiento en Azure Portal, incluida la región Spain Central.</div>
+        <img src="images/lab2-ejercicio1-02.png" alt="Etiquetas departamento desarrollo y entorno prueba aplicadas al grupo de recursos" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 2: etiquetas aplicadas al grupo de recursos <code>rg-gp-tags-locks</code>: <code>departamento: desarrollo</code> y <code>entorno: prueba</code>.</div>
       </div>
 
       <div class="screenshot-card">
-        <img src="images/lab2-ejercicio1-03.png" alt="Creación de una cuenta de almacenamiento en Azure" loading="lazy" onclick="zoomImage(this.src)">
-        <div class="screenshot-caption">📷 Evidencia 3: creación de la cuenta de almacenamiento con rendimiento estándar y redundancia local.</div>
+        <img src="images/lab2-ejercicio1-03.png" alt="Etiquetas de la primera cuenta de almacenamiento stgptagslockgsc1" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 3: etiquetas de la primera cuenta de almacenamiento <code>stgptagslockgsc1</code>: <code>departamento: desarrollo</code> y <code>entorno: prueba</code>.</div>
       </div>
 
       <div class="screenshot-card">
-        <img src="images/lab2-ejercicio1-04.png" alt="Etiquetas departamento y entorno en la cuenta de almacenamiento" loading="lazy" onclick="zoomImage(this.src)">
-        <div class="screenshot-caption">📷 Evidencia 4: etiquetas aplicadas a la primera cuenta: <code>departamento: desarrollo</code> y <code>entorno: prueba</code>.</div>
+        <img src="images/lab2-ejercicio1-04.png" alt="Etiquetas de la segunda cuenta de almacenamiento stgptagsopsgsc2" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 4: etiquetas de la segunda cuenta de almacenamiento <code>stgptagsopsgsc2</code>: <code>departamento: operaciones</code> y <code>entorno: prueba</code>.</div>
       </div>
 
       <div class="screenshot-card">
-        <img src="images/lab2-ejercicio1-05.png" alt="Etiquetas aplicadas al grupo de recursos" loading="lazy" onclick="zoomImage(this.src)">
-        <div class="screenshot-caption">📷 Evidencia 5: etiquetas organizativas aplicadas al grupo de recursos.</div>
+        <img src="images/lab2-ejercicio1-05.png" alt="Filtrado del grupo de recursos para mostrar la primera cuenta por departamento desarrollo" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 5: filtro por la etiqueta <code>departamento: desarrollo</code>, que muestra la primera cuenta de almacenamiento <code>stgptagslockgsc1</code>.</div>
       </div>
 
       <div class="screenshot-card">
-        <img src="images/lab2-ejercicio1-06.png" alt="Segunda cuenta de almacenamiento con etiquetas diferentes" loading="lazy" onclick="zoomImage(this.src)">
-        <div class="screenshot-caption">📷 Evidencia 6: segunda cuenta de almacenamiento etiquetada para el departamento de operaciones y el entorno de prueba.</div>
+        <img src="images/lab2-ejercicio1-06.png" alt="Filtrado del grupo de recursos para mostrar la segunda cuenta por departamento operaciones" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 6: filtro por la etiqueta <code>departamento: operaciones</code>, que muestra la segunda cuenta de almacenamiento <code>stgptagsopsgsc2</code>.</div>
       </div>
 
       <div class="callout">
@@ -133,21 +133,21 @@
 
     <section id="ejercicio3">
       <h2>4. Ejercicio 3: Prueba de la aplicación de bloqueos</h2>
-      <p>Se prueban los bloqueos intentando realizar operaciones protegidas. La cuenta con bloqueo de eliminación no se puede borrar y la cuenta con bloqueo de solo lectura no permite modificaciones. Después de quitar los bloqueos, se comprueba que las operaciones vuelven a estar disponibles.</p>
+      <p>Se prueban los bloqueos intentando realizar operaciones protegidas. La cuenta con bloqueo de solo lectura no permite añadir etiquetas y la cuenta con bloqueo de eliminación no se puede borrar. Después de quitar los bloqueos, se comprueba que las operaciones vuelven a estar disponibles.</p>
 
       <div class="screenshot-card">
-        <img src="images/lab2-ejercicio3-08.png" alt="Intento de eliminación de una cuenta protegido por un bloqueo" loading="lazy" onclick="zoomImage(this.src)">
-        <div class="screenshot-caption">📷 Evidencia 1: Azure rechaza el intento de eliminar la cuenta protegida por el bloqueo de eliminación.</div>
+        <img src="images/lab2-ejercicio3-08.png" alt="Azure rechaza añadir etiquetas a la cuenta protegida con un bloqueo de solo lectura" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 1: el bloqueo de solo lectura impide añadir nuevas etiquetas a la cuenta de almacenamiento.</div>
       </div>
 
       <div class="screenshot-card">
-        <img src="images/lab2-ejercicio3-09.png" alt="Intento de modificar etiquetas en un recurso de solo lectura" loading="lazy" onclick="zoomImage(this.src)">
-        <div class="screenshot-caption">📷 Evidencia 2: la modificación de etiquetas no se puede completar mientras está activo el bloqueo de solo lectura.</div>
+        <img src="images/lab2-ejercicio3-09.png" alt="Azure rechaza eliminar la cuenta protegida con un bloqueo de eliminación" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 2: el bloqueo de eliminación impide eliminar la cuenta de almacenamiento protegida.</div>
       </div>
 
       <div class="screenshot-card">
-        <img src="images/lab2-ejercicio3-10.png" alt="Operación de eliminación después de retirar el bloqueo" loading="lazy" onclick="zoomImage(this.src)">
-        <div class="screenshot-caption">📷 Evidencia 3: tras retirar el bloqueo correspondiente, Azure permite realizar la operación que antes estaba protegida.</div>
+        <img src="images/lab2-ejercicio3-10.png" alt="Bloqueo retirado y confirmación de que ya no hay bloqueos activos" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 3: tras retirar el bloqueo correspondiente, Azure confirma que ya no está activo.</div>
       </div>
 
       <div class="screenshot-card">
