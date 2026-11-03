@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Laboratorio 2: Etiquetas y bloqueos en Azure | Guía AZ-900</title>
+<meta name="description" content="Laboratorio práctico de Azure: creación de recursos, aplicación de etiquetas, bloqueos y limpieza final.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px;padding-block:36px 72px}
+  nav{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+  nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line)}
+  nav a:hover,nav a:focus-visible{color:var(--azure);border-left-color:var(--azure);outline:none}
+  nav .sep{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
+
+  .screenshot-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:16px 0}
+  .screenshot-card img{width:100%;height:auto;display:block;cursor:pointer;transition:opacity .2s}
+  .screenshot-card img:hover{opacity:.9}
+  .screenshot-caption{padding:10px 14px;background:var(--surface2);font:500 13px var(--mono);color:var(--muted);border-top:1px solid var(--line)}
+
+  .modal{display:none;position:fixed;z-index:1000;inset:0;width:100%;height:100%;background-color:rgba(7,13,23,.9);justify-content:center;align-items:center;padding:1rem}
+  .modal-content{max-width:92%;max-height:92%;border-radius:8px}
+
+  @media(max-width:820px){
+    .wrap{grid-template-columns:1fr;gap:20px}
+    nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}
+    nav a{border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="tag">Laboratorio Práctico #2 · Azure Governance</div>
+    <h1>Etiquetas y bloqueos de recursos</h1>
+    <p class="lead">Creación de un grupo de recursos y dos cuentas de almacenamiento, organización mediante etiquetas, protección con bloqueos y limpieza final del entorno.</p>
+    <div class="chips">
+      <span class="chip">Gema San</span>
+      <span class="chip">Azure Tags & Resource Locks</span>
+      <span class="chip">ASIR & Cloud</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav aria-label="Índice del laboratorio">
+    <span class="sep">Índice</span>
+    <a href="#mapa">1. Resumen y mapa</a>
+    <a href="#ejercicio1">2. Recursos y etiquetas</a>
+    <a href="#ejercicio2">3. Aplicación de bloqueos</a>
+    <a href="#ejercicio3">4. Prueba de bloqueos</a>
+    <a href="#limpieza">5. Limpieza</a>
+    <span class="sep" style="margin-top:12px">Navegación</span>
+    <a href="index.html">← Inicio</a>
+  </nav>
+
+  <main>
+    <section id="mapa">
+      <h2>1. Resumen y mapa del laboratorio</h2>
+      <p>En esta práctica se crea un grupo de recursos con dos cuentas de almacenamiento. Se organizan mediante etiquetas, se aplican bloqueos para protegerlas frente a operaciones no deseadas y se comprueba el efecto de retirar dichos bloqueos. Al final se elimina el grupo de recursos para limpiar el entorno.</p>
+
+      <div class="tablebox">
+        <table>
+          <thead>
+            <tr><th>Componente Azure</th><th>Valor de la práctica</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Grupo de recursos</td><td><code>rg-gp-tags-locks</code></td></tr>
+            <tr><td>Cuenta de almacenamiento 1</td><td><code>stgptagslockgsc1</code></td></tr>
+            <tr><td>Cuenta de almacenamiento 2</td><td><code>stgptagsopsgsc2</code></td></tr>
+            <tr><td>Región</td><td><code>Spain Central</code></td></tr>
+            <tr><td>Etiquetas aplicadas</td><td><code>departamento</code> y <code>entorno</code></td></tr>
+            <tr><td>Tipos de bloqueo probados</td><td><code>Eliminar</code> y <code>Solo lectura</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="ejercicio1">
+      <h2>2. Ejercicio 1: Creación de recursos y aplicación de etiquetas</h2>
+      <p>Se crea el grupo de recursos <code>rg-gp-tags-locks</code> y dos cuentas de almacenamiento. Después se etiquetan el grupo y las cuentas para organizarlos y poder localizarlos mediante filtros. En las capturas se observa, por ejemplo, <code>departamento: desarrollo</code> y <code>entorno: prueba</code> en la primera cuenta, y <code>departamento: operaciones</code> y <code>entorno: prueba</code> en la segunda.</p>
+
+      <div class="screenshot-card">
+        <img src="images/lab2-ejercicio1-01.png" alt="Implementación del grupo de recursos y la primera cuenta de almacenamiento" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 1: implementación completada en el grupo de recursos <code>rg-gp-tags-locks</code>.</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/lab2-ejercicio1-02.png" alt="Configuración de la primera cuenta de almacenamiento" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 2: configuración de la cuenta de almacenamiento en Azure Portal, incluida la región Spain Central.</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/lab2-ejercicio1-03.png" alt="Creación de una cuenta de almacenamiento en Azure" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 3: creación de la cuenta de almacenamiento con rendimiento estándar y redundancia local.</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/lab2-ejercicio1-04.png" alt="Etiquetas departamento y entorno en la cuenta de almacenamiento" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 4: etiquetas aplicadas a la primera cuenta: <code>departamento: desarrollo</code> y <code>entorno: prueba</code>.</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/lab2-ejercicio1-05.png" alt="Etiquetas aplicadas al grupo de recursos" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 5: etiquetas organizativas aplicadas al grupo de recursos.</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/lab2-ejercicio1-06.png" alt="Segunda cuenta de almacenamiento con etiquetas diferentes" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 6: segunda cuenta de almacenamiento etiquetada para el departamento de operaciones y el entorno de prueba.</div>
+      </div>
+
+      <div class="callout">
+        <b>Idea clave:</b> las etiquetas son pares nombre-valor que ayudan a clasificar y filtrar recursos. No se heredan automáticamente del grupo de recursos: hay que aplicarlas también a cada recurso que se quiera etiquetar.
+      </div>
+    </section>
+
+    <section id="ejercicio2">
+      <h2>3. Ejercicio 2: Aplicación de bloqueos de recursos</h2>
+      <p>Se aplican dos tipos de bloqueo a las cuentas de almacenamiento: un bloqueo de eliminación para impedir el borrado accidental y un bloqueo de solo lectura para evitar cambios en el recurso. Los bloqueos se configuran desde Azure y se comprueba su ámbito.</p>
+
+      <div class="screenshot-card">
+        <img src="images/lab2-ejercicio2-07.png" alt="Bloqueos de eliminación y solo lectura aplicados a las cuentas de almacenamiento" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia: bloqueo <code>prevent-delete</code> de tipo Eliminar y bloqueo <code>read-only-rg</code> de tipo Solo lectura, aplicados a las cuentas indicadas.</div>
+      </div>
+
+      <div class="callout">
+        <b>Importante:</b> un bloqueo de solo lectura también puede impedir operaciones de escritura, como modificar etiquetas. Para retirar un bloqueo o realizar una operación protegida, se necesitan permisos adecuados.
+      </div>
+    </section>
+
+    <section id="ejercicio3">
+      <h2>4. Ejercicio 3: Prueba de la aplicación de bloqueos</h2>
+      <p>Se prueban los bloqueos intentando realizar operaciones protegidas. La cuenta con bloqueo de eliminación no se puede borrar y la cuenta con bloqueo de solo lectura no permite modificaciones. Después de quitar los bloqueos, se comprueba que las operaciones vuelven a estar disponibles.</p>
+
+      <div class="screenshot-card">
+        <img src="images/lab2-ejercicio3-08.png" alt="Intento de eliminación de una cuenta protegido por un bloqueo" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 1: Azure rechaza el intento de eliminar la cuenta protegida por el bloqueo de eliminación.</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/lab2-ejercicio3-09.png" alt="Intento de modificar etiquetas en un recurso de solo lectura" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 2: la modificación de etiquetas no se puede completar mientras está activo el bloqueo de solo lectura.</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/lab2-ejercicio3-10.png" alt="Operación de eliminación después de retirar el bloqueo" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 3: tras retirar el bloqueo correspondiente, Azure permite realizar la operación que antes estaba protegida.</div>
+      </div>
+
+      <div class="screenshot-card">
+        <img src="images/lab2-ejercicio3-11.png" alt="Operaciones normales disponibles después de quitar los bloqueos" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia 4: comprobación de que, al retirar los bloqueos, las operaciones normales vuelven a estar disponibles.</div>
+      </div>
+    </section>
+
+    <section id="limpieza">
+      <h2>5. Limpieza de recursos</h2>
+      <p>Al terminar la práctica, se elimina el grupo de recursos <code>rg-gp-tags-locks</code>, junto con los recursos que contiene. Así se evita mantener recursos de laboratorio activos y se reducen posibles costes en la suscripción.</p>
+
+      <div class="screenshot-card">
+        <img src="images/lab2-limpieza-01.png" alt="Eliminación correcta del grupo de recursos del laboratorio" loading="lazy" onclick="zoomImage(this.src)">
+        <div class="screenshot-caption">📷 Evidencia final: Azure confirma la eliminación del grupo de recursos <code>rg-gp-tags-locks</code>.</div>
+      </div>
+
+      <div class="callout">
+        <b>Laboratorio completado:</b> se han creado y etiquetado recursos, se han probado bloqueos de eliminación y de solo lectura, y se ha limpiado el entorno al finalizar.
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="imageModal" class="modal" onclick="closeModal()" role="dialog" aria-modal="true" aria-label="Vista ampliada de la captura">
+  <img id="modalImg" class="modal-content" alt="Vista ampliada">
+</div>
+
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+
+<script>
+  function zoomImage(src) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    modal.style.display = 'flex';
+    modalImg.src = src;
+  }
+
+  function closeModal() {
+    document.getElementById('imageModal').style.display = 'none';
+  }
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') closeModal();
+  });
+</script>
+
+</body>
+</html>

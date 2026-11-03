@@ -27,11 +27,16 @@ Manuales y apuntes visuales orientados a la preparación del examen **AZ-900**, 
 ---
 
 ## 🛠️ Laboratorios Prácticos
+
 * **[Laboratorio 1: Hospedaje de un sitio web estático en Azure Blob Storage](laboratorio-1.html)** — Despliegue serverless, gestión del contenedor `$web` y validación con evidencias reales en Azure Portal.
+* **[Laboratorio 2: Etiquetas y bloqueos de recursos en Azure](laboratorio-2.html)** — Creación de un grupo de recursos y dos cuentas de almacenamiento, aplicación y filtrado de etiquetas, pruebas de bloqueos de eliminación y solo lectura, y limpieza final.
+
+Las capturas de los laboratorios se encuentran en la carpeta `images/` y se referencian desde las páginas HTML mediante rutas relativas.
 
 ---
 
 ## 🛠️ Filosofía del Manual
+
 * **Visual > Texto:** Esquemas, diagramas y tablas estructuradas.
 * **ASIR Edition:** Conceptos cruzados con Windows Server, Active Directory, redes e infraestructura local.
 * **AZ-104 Ready:** Base sólida pensando en la siguiente certificación de administración.
