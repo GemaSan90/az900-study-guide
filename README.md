@@ -30,7 +30,7 @@ Manuales y apuntes visuales orientados a la preparación del examen **AZ-900**, 
 
 * **[Laboratorio 1: Hospedaje de un sitio web estático en Azure Blob Storage](laboratorio-1.html)** — Despliegue serverless, gestión del contenedor `$web` y validación con evidencias reales en Azure Portal.
 * **[Laboratorio 2: Etiquetas y bloqueos de recursos en Azure](laboratorio-2.html)** — Creación de un grupo de recursos y dos cuentas de almacenamiento, aplicación y filtrado de etiquetas, pruebas de bloqueos de eliminación y solo lectura, y limpieza final.
-* **[Laboratorio 3: Creación de un punto de conexión de sitio web sencillo con Azure Functions](laboratorio-3.html)** — Proyecto guiado de Azure Functions para crear una aplicación de funciones con plan de consumo, activar un HTTP trigger y validar la ejecución y los logs.
+* **[Laboratorio 3: Creación de un punto de conexión web sencillo con Azure Functions](laboratorio-3.html)** — Creación de una aplicación de funciones con plan de Consumo para Windows, publicación de una función HTTP desde Cloud Shell, validación de la autorización, revisión de Application Insights y limpieza de recursos.
 
 Las capturas de los laboratorios se encuentran en la carpeta `images/` y se referencian desde las páginas HTML mediante rutas relativas.
 
