@@ -107,20 +107,24 @@
       </div>
 
       <h3>Restringir el acceso y probar con una clave</h3>
-      <p>Se cambia el nivel de autorización de <code>anonymous</code> a <code>function</code> y se vuelve a publicar. A partir de ese cambio, la función requiere una clave para autorizar la llamada. La evidencia recibida muestra una respuesta correcta con clave; no se aportó una captura del error 401 sin clave.</p>
+      <p>Se cambia el nivel de autorización de <code>anonymous</code> a <code>function</code> y se vuelve a publicar. Sin una clave, Azure devuelve un error HTTP 401; al añadir una clave válida, la función responde correctamente.</p>
       <div class="screenshot-card">
         <img src="images/lab3-08-auth-function-publicacion.png" alt="Cloud Shell muestra authLevel function y la publicación de la función" loading="lazy" onclick="zoomImage(this.src,this.alt)">
         <div class="screenshot-caption">📷 Cloud Shell confirma <code>authLevel: 'function'</code> y la publicación actualizada.</div>
       </div>
       <div class="screenshot-card">
-        <img src="images/lab3-09-prueba-clave-redactada.png" alt="GetStatus devuelve Hello, world! al invocarse con clave, con el secreto redactado" loading="lazy" onclick="zoomImage(this.src,this.alt)">
-        <div class="screenshot-caption">📷 La llamada con clave devuelve <code>Hello, world!</code>. La clave debe quedar oculta en la imagen que se suba.</div>
+        <img src="images/lab3-09-error-401-sin-clave.png" alt="El endpoint devuelve HTTP ERROR 401 al invocarlo sin clave" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Al abrir el endpoint sin clave, el navegador muestra <code>HTTP ERROR 401</code>: la llamada no está autorizada.</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-10-prueba-clave-redactada.png" alt="GetStatus devuelve Hello, world! al invocarse con clave; el valor de la clave se ha ocultado" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Tras añadir una clave válida, la función devuelve <code>Hello, world!</code>. El valor de la clave debe permanecer oculto en la captura.</div>
       </div>
       <div class="callout"><b>Seguridad:</b> no publiques la clave de función en la URL, las capturas ni el repositorio. Si se ha expuesto, renuévala desde Azure.</div>
 
       <h3>Revisar los registros de invocación</h3>
       <div class="screenshot-card">
-        <img src="images/lab3-10-application-insights-trazas.png" alt="Application Insights muestra trazas e invocaciones de GetStatus" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <img src="images/lab3-11-application-insights-trazas.png" alt="Application Insights muestra trazas e invocaciones de GetStatus" loading="lazy" onclick="zoomImage(this.src,this.alt)">
         <div class="screenshot-caption">📷 Application Insights muestra trazas durante el intervalo consultado, incluida una entrada de <code>GetStatus</code>.</div>
       </div>
       <div class="callout"><b>Nota:</b> una solicitud 401 puede ser rechazada por el host antes de ejecutar la función y no aparecer como invocación en estos registros.</div>
@@ -130,7 +134,7 @@
       <h2>5. Limpieza de recursos</h2>
       <p>Al terminar, se elimina el grupo de recursos del laboratorio y la carpeta del proyecto de Cloud Shell para no dejar recursos o archivos temporales.</p>
       <div class="screenshot-card">
-        <img src="images/lab3-11-limpieza.png" alt="Limpieza del grupo de recursos y eliminación del directorio del proyecto en Cloud Shell" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <img src="images/lab3-12-limpieza.png" alt="Limpieza del grupo de recursos y eliminación del directorio del proyecto en Cloud Shell" loading="lazy" onclick="zoomImage(this.src,this.alt)">
         <div class="screenshot-caption">📷 Evidencia final: vista de grupos de recursos sin elementos en el filtro actual y comando de Cloud Shell para borrar <code>func-gp-endpoint</code>.</div>
       </div>
       <div class="callout"><b>Laboratorio completado:</b> aplicación creada, función publicada y probada, monitorización comprobada y entorno limpiado.</div>
