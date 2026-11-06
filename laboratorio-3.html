@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Laboratorio 3: Azure Functions | Guía AZ-900</title>
+  <meta name="description" content="Proyecto guiado de Azure Functions: creación de una aplicación de funciones, publicación de un endpoint HTTP, validación, monitorización y limpieza.">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px;padding-block:36px 72px}
+    nav{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+    nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-left:2px solid var(--line)}
+    nav a:hover,nav a:focus-visible{color:var(--azure);border-left-color:var(--azure);outline:none}
+    nav .sep{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
+    .screenshot-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:16px 0}
+    .screenshot-card img{width:100%;height:auto;display:block;cursor:zoom-in;transition:opacity .2s}
+    .screenshot-card img:hover{opacity:.9}
+    .screenshot-caption{padding:10px 14px;background:var(--surface2);font:500 13px var(--mono);color:var(--muted);border-top:1px solid var(--line)}
+    .modal{display:none;position:fixed;z-index:1000;inset:0;width:100%;height:100%;background:rgba(7,13,23,.92);justify-content:center;align-items:center;padding:1rem}
+    .modal-content{max-width:92%;max-height:92%;border-radius:8px;object-fit:contain}
+    .checklist{padding-left:22px}
+    .checklist li{margin:.35rem 0}
+    @media(max-width:820px){.wrap{grid-template-columns:1fr;gap:20px}nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}nav a{border:1px solid var(--line);border-radius:999px;padding:4px 12px}}
+  </style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-in">
+    <div class="tag">Laboratorio Práctico #3 · Azure Functions</div>
+    <h1>Creación de un punto de conexión web sencillo con Azure Functions</h1>
+    <p class="lead">Proyecto guiado: crea una aplicación de funciones, publica una función HTTP, prueba el endpoint, restringe su acceso, revisa la telemetría y limpia los recursos.</p>
+    <div class="chips">
+      <span class="chip">Gema San</span>
+      <span class="chip">Azure Functions · Node.js</span>
+      <span class="chip">ASIR &amp; Cloud</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav aria-label="Índice del laboratorio">
+    <span class="sep">Índice</span>
+    <a href="#mapa">1. Resumen</a>
+    <a href="#ejercicio1">2. Aplicación de funciones</a>
+    <a href="#ejercicio2">3. Crear y publicar GetStatus</a>
+    <a href="#ejercicio3">4. Probar, proteger y monitorizar</a>
+    <a href="#limpieza">5. Limpieza</a>
+    <span class="sep" style="margin-top:12px">Navegación</span>
+    <a href="index.html">← Inicio</a>
+  </nav>
+
+  <main>
+    <section id="mapa">
+      <h2>1. Resumen y mapa del laboratorio</h2>
+      <p>En esta práctica se crea una aplicación de Azure Functions y una función HTTP llamada <code>GetStatus</code>. Se publica desde Azure Cloud Shell, se valida la respuesta desde el navegador, se cambia la autorización para requerir una clave y se consultan las invocaciones en Application Insights. Al final se eliminan los recursos y los archivos temporales del proyecto.</p>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>Componente</th><th>Valor de esta práctica</th></tr></thead>
+          <tbody>
+            <tr><td>Grupo de recursos</td><td><code>rg-gp-functions-endpoint</code></td></tr>
+            <tr><td>Aplicación de funciones</td><td><code>func-gp-endpoint-gsc</code></td></tr>
+            <tr><td>Región / sistema operativo</td><td><code>Spain Central</code> / <code>Windows</code></td></tr>
+            <tr><td>Plan que se pudo utilizar</td><td>Consumo para Windows · plan mostrado como <code>Y1</code></td></tr>
+            <tr><td>Entorno de ejecución</td><td><code>Node.js 24 LTS</code></td></tr>
+            <tr><td>Función HTTP</td><td><code>GetStatus</code>, inicialmente anónima y luego con autorización <code>function</code></td></tr>
+            <tr><td>Monitorización</td><td>Application Insights</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-01-proyecto-guiado.png" alt="Introducción al proyecto guiado de Azure Functions con sus objetivos de aprendizaje" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 1: introducción del proyecto guiado; presenta la creación de un endpoint con Azure Functions y los objetivos de crear la app, probar la función y limpiar los recursos.</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-02-ejercicio-creacion.png" alt="Descripción del ejercicio para crear una aplicación de funciones en un plan de consumo" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 2: descripción del ejercicio 1. La guía propone crear un grupo de recursos y una aplicación de funciones con alojamiento serverless.</div>
+      </div>
+    </section>
+
+    <section id="ejercicio1">
+      <h2>2. Ejercicio 1: Crear y verificar la aplicación de funciones</h2>
+      <p>La guía del ejercicio solicita elegir <strong>Consumo flexible (Flex Consumption)</strong>. Durante esta práctica, Azure indicó que la suscripción de prueba gratuita no era compatible con ese plan. Para continuar, se cambió la configuración a <strong>Consumo (Windows)</strong>; por eso las capturas posteriores corresponden a esa alternativa, no a Flex Consumption.</p>
+      <div class="screenshot-card">
+        <img src="images/lab3-03-instrucciones-flex.png" alt="Instrucciones de Azure para configurar la aplicación de funciones con Flex Consumption" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 3: instrucciones de la tarea 2. La guía solicita seleccionar Consumo flexible, configurar los parámetros de la app y habilitar Application Insights.</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-04-suscripcion-no-compatible.png" alt="Azure informa que la suscripción de prueba gratuita no admite Consumo flexible" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 4: el portal muestra el aviso de que la suscripción de prueba gratuita no es compatible con Consumo flexible y solicita seleccionar otra suscripción.</div>
+      </div>
+      <div class="callout">
+        <b>Apunte importante — incompatibilidad de la suscripción:</b> las instrucciones del proyecto indican Flex Consumption, pero la suscripción gratuita utilizada no permitió desplegar con ese plan. En este laboratorio se continuó con el plan Consumo para Windows. Si repites la práctica con otra suscripción, comprueba primero los planes disponibles y sus requisitos.
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-05-consumo-windows.png" alt="Formulario de creación configurado con Consumo Windows, Node.js y Spain Central" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 5: configuración alternativa del formulario de Azure: Consumo (Windows), grupo <code>rg-gp-functions-endpoint</code>, nombre <code>func-gp-endpoint-gsc</code>, región Spain Central y Node.js.</div>
+      </div>
+      <p>Después de completar la implementación, se comprueba que Azure creó la aplicación y sus recursos relacionados.</p>
+      <div class="screenshot-card">
+        <img src="images/lab3-06-implementacion-completada.png" alt="Azure confirma que la implementación de la aplicación de funciones se completó" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 6: resumen del despliegue con el estado «Se completó la implementación»; los recursos de la Function App y Application Insights aparecen con estado OK.</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-07-app-en-ejecucion.png" alt="Información general de func-gp-endpoint-gsc en ejecución en Windows" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 7: página de la aplicación <code>func-gp-endpoint-gsc</code> en el portal. Figura «En ejecución», con sistema operativo Windows y plan de App Service <code>Y1</code>.</div>
+      </div>
+    </section>
+
+    <section id="ejercicio2">
+      <h2>3. Ejercicio 2: Crear y publicar la función HTTP</h2>
+      <p>En Cloud Shell se prepara el proyecto de Functions con Node.js, se crea la función HTTP <code>GetStatus</code> con autorización anónima para la primera prueba y se publica en la aplicación creada en el ejercicio anterior.</p>
+      <div class="screenshot-card">
+        <img src="images/lab3-08-instrucciones-proyecto.png" alt="Instrucciones para inicializar el proyecto Node.js y crear GetStatus en Cloud Shell" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 8: instrucciones de Azure para crear el directorio del proyecto, inicializar Functions con Node.js y generar la función HTTP <code>GetStatus</code>.</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-09-instrucciones-publicacion.png" alt="Instrucciones para obtener el nombre de la aplicación y publicarla" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 9: pasos de publicación con Azure Functions Core Tools: obtener el nombre de la aplicación y ejecutar el comando de publicación.</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-10-instrucciones-url.png" alt="Formato de la URL de invocación que se obtiene al publicar GetStatus" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 10: la guía muestra la salida esperada tras publicar, incluida la URL de invocación de <code>GetStatus</code>, que se reutiliza para probar el endpoint.</div>
+      </div>
+      <p>Al primer intento de publicación apareció un error de configuración del almacenamiento del host. Tras resolverlo y volver a publicar, el despliegue se completó.</p>
+      <div class="screenshot-card">
+        <img src="images/lab3-11-error-almacenamiento-host.png" alt="Error de publicación que indica que falta configurar AzureWebJobsStorage" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 11: Cloud Shell informa que la Function App no tiene configurado el almacenamiento del host y solicita <code>AzureWebJobsStorage</code> o una configuración basada en identidad.</div>
+      </div>
+      <div class="callout">
+        <b>Resolución de errores — almacenamiento del host:</b> al adaptar el laboratorio desde Flex Consumption a Consumo (Windows), el comando de publicación informó que faltaba la configuración de almacenamiento del host. Para este modelo, revisa que la aplicación de funciones tenga configurado un almacenamiento válido mediante <code>AzureWebJobsStorage</code> (cadena de conexión) o la configuración basada en identidad admitida. No publiques cadenas de conexión ni claves en capturas o repositorios.
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-12-publicacion-ok-url.png" alt="Publicación correcta de GetStatus y URL de invocación en Cloud Shell" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 12: publicación completada correctamente. Cloud Shell lista <code>GetStatus</code> como <code>httpTrigger</code> y muestra su URL de invocación.</div>
+      </div>
+    </section>
+
+    <section id="ejercicio3">
+      <h2>4. Ejercicio 3: Probar, proteger y monitorizar el endpoint</h2>
+      <h3>4.1 Probar la respuesta y comprobar la función en el portal</h3>
+      <p>La primera comprobación invoca la URL desde el navegador. La respuesta <code>Hello, world!</code> confirma que la función responde; también se comprueba que la función aparece habilitada en la aplicación de Azure.</p>
+      <div class="screenshot-card">
+        <img src="images/lab3-13-instrucciones-prueba.png" alt="Instrucciones para probar el endpoint HTTP y verificar GetStatus en el portal" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 13: tareas de validación: probar la URL de invocación en el navegador y comprobar que <code>GetStatus</code> aparece en el portal con el desencadenador HTTP.</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-14-respuesta-hello-world.png" alt="El endpoint GetStatus responde Hello, world! en una ventana privada" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 14: el endpoint abierto en una ventana InPrivate devuelve <code>Hello, world!</code>, mostrando la respuesta de la función en el navegador.</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-15-getstatus-habilitada.png" alt="El portal muestra GetStatus habilitada con desencadenador HTTP" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 15: en la aplicación de funciones, el portal lista <code>GetStatus</code>, el desencadenador <code>HTTP</code> y el estado «Habilitada».</div>
+      </div>
+
+      <h3>4.2 Cambiar el nivel de autorización</h3>
+      <p>Después de comprobar la respuesta anónima, la guía cambia el nivel de autorización de <code>anonymous</code> a <code>function</code>. De este modo, las solicitudes necesitan una clave de función.</p>
+      <div class="screenshot-card">
+        <img src="images/lab3-16-instrucciones-auth-function.png" alt="Instrucciones para cambiar authLevel de anonymous a function" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 16: instrucciones de Azure para actualizar el nivel de autorización de la función y verificar el valor <code>authLevel: 'function'</code>.</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-17-shell-publicacion-restringida.png" alt="Cloud Shell comprueba authLevel function y vuelve a publicar GetStatus" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 17: Cloud Shell muestra el aviso de sesión efímera, la comprobación de <code>authLevel: 'function'</code> y una publicación correcta de la función actualizada.</div>
+      </div>
+
+      <h3>4.3 Probar el acceso restringido</h3>
+      <p>La guía propone comprobar que una llamada sin clave devuelve 401 y, a continuación, invocar la función con una clave. La captura de la respuesta exitosa acredita la llamada autorizada; no se incluye aquí el valor de la clave.</p>
+      <div class="screenshot-card">
+        <img src="images/lab3-18-instrucciones-acceso-restringido.png" alt="Instrucciones para comprobar el error 401 sin clave y recuperar el acceso con una clave" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 18: instrucciones para verificar la respuesta no autorizada sin clave y volver a acceder usando una clave de función.</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-19-respuesta-con-clave-redactada.png" alt="GetStatus devuelve Hello, world! tras incluir una clave de función, con el secreto redactado" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 19: el endpoint vuelve a responder <code>Hello, world!</code> al incluir el parámetro de clave. La captura que se publique debe tener el valor secreto oculto o recortado.</div>
+      </div>
+      <div class="callout">
+        <b>Seguridad:</b> una clave visible en una URL puede ser reutilizada por otras personas. Antes de guardar la captura en <code>images/</code>, redacta el valor de <code>code</code>; si la clave real quedó expuesta, renuévala desde Azure. No incluyas secretos en HTML, commits ni documentación pública.
+      </div>
+
+      <h3>4.4 Revisar las invocaciones en Application Insights</h3>
+      <p>Application Insights permite revisar trazas y solicitudes de la aplicación. La guía señala que las respuestas 401 pueden no aparecer como ejecuciones de la función, porque Azure puede rechazarlas antes de invocarla.</p>
+      <div class="screenshot-card">
+        <img src="images/lab3-20-instrucciones-application-insights.png" alt="Instrucciones para revisar solicitudes y registros de ejecución en Application Insights" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 20: instrucciones para buscar las invocaciones en Application Insights y, para un análisis adicional, consultar la tabla <code>requests</code>.</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="images/lab3-21-trazas-application-insights.png" alt="Trazas de GetStatus y actividad de la aplicación en Application Insights" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia 21: vista de búsqueda de Application Insights con trazas durante las últimas horas; entre los resultados se identifica una traza de <code>GetStatus</code> y datos de estado del host.</div>
+      </div>
+      <div class="callout">
+        <b>Nota sobre los 401:</b> una solicitud no autorizada puede no registrarse como una ejecución de la función, ya que el host puede rechazarla antes de invocarla. Por ello, la consulta de invocaciones sirve para confirmar las llamadas procesadas, pero no necesariamente todas las solicitudes rechazadas.
+      </div>
+    </section>
+
+    <section id="limpieza">
+      <h2>5. Limpieza de recursos y archivos</h2>
+      <p>Al terminar, se elimina el grupo de recursos del laboratorio para quitar la aplicación de funciones y los recursos asociados. También se borra el directorio del proyecto de Cloud Shell. Comprueba los recursos y el ámbito de suscripción antes de confirmar cualquier eliminación.</p>
+      <div class="screenshot-card">
+        <img src="images/lab3-22-limpieza-recursos-cloud-shell.png" alt="Vista sin grupos de recursos y comando para borrar la carpeta del proyecto de Cloud Shell" loading="lazy" onclick="zoomImage(this.src,this.alt)">
+        <div class="screenshot-caption">📷 Evidencia final: el panel de grupos de recursos indica que no hay grupos para mostrar en la vista actual y Cloud Shell muestra la eliminación de la carpeta <code>func-gp-endpoint</code>.</div>
+      </div>
+      <div class="callout">
+        <b>Laboratorio completado:</b> se creó y publicó <code>GetStatus</code>, se comprobó su respuesta HTTP, se configuró el acceso con clave, se revisaron las trazas y se limpiaron los recursos y archivos de trabajo.
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="imageModal" class="modal" onclick="closeModal()" role="dialog" aria-modal="true" aria-label="Vista ampliada de la captura">
+  <img id="modalImg" class="modal-content" alt="Vista ampliada de la captura">
+</div>
+<footer>Gema San · Sueña. Aprende. Crece.</footer>
+<script>
+  function zoomImage(src, alt) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    modal.style.display = 'flex';
+    modalImg.src = src;
+    modalImg.alt = alt || 'Vista ampliada de la captura';
+  }
+  function closeModal() {
+    document.getElementById('imageModal').style.display = 'none';
+  }
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') closeModal();
+  });
+</script>
+</body>
+</html>
